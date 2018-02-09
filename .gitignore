@@ -1,12 +1,10 @@
 // output folders
-bin/
-target/
-.idea/
+bin
+target
+.idea
 .DS_Store
-.iml
+*.iml
 
 // temporary generated files
 *.xtendbin
 *._trace
-
-node_modules/
