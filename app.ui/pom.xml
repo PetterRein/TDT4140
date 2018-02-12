@@ -48,11 +48,6 @@
 			<version>2.12.0</version>
 		</dependency>
 		 -->
-		<dependency>
-			<groupId>fischer.clemens</groupId>
-			<artifactId>fx-map-control</artifactId> 
-			<version>1.0</version>
-		</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>
