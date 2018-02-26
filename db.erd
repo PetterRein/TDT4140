@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram height="1020" made_with_version="1.5" name="Default" width="1180">
+    <entity id="0" is_weak="false" name="User" x="591" y="45">
+        <attributes>
+            <attribute is_hidden="false" is_key="true" name="id" type=""/>
+            <attribute is_hidden="false" is_key="false" name="role" type=""/>
+            <attribute is_hidden="false" is_key="false" name="name" type=""/>
+            <attribute is_hidden="false" is_key="false" name="email" type=""/>
+            <attribute is_hidden="false" is_key="false" name="password_hash" type=""/>
+            <attribute is_hidden="false" is_key="false" name="salt" type=""/>
+        </attributes>
+    </entity>
+    <entity id="1" is_weak="true" name="Admin" x="493" y="260">
+        <attributes/>
+    </entity>
+    <entity id="2" is_weak="true" name="Patient" x="685" y="247">
+        <attributes>
+            <attribute is_hidden="false" is_key="false" name="birthOfYear" type=""/>
+        </attributes>
+    </entity>
+    <entity id="3" is_weak="true" name="Doctor" x="583" y="247">
+        <attributes>
+            <attribute is_hidden="false" is_key="false" name="birthOfYear" type=""/>
+        </attributes>
+    </entity>
+    <entity id="4" is_weak="false" name="PatientData" x="811" y="56">
+        <attributes>
+            <attribute is_hidden="false" is_key="true" name="id" type=""/>
+            <attribute is_hidden="false" is_key="true" name="patientId" type=""/>
+            <attribute is_hidden="false" is_key="true" name="doctorId" type=""/>
+            <attribute is_hidden="false" is_key="false" name="rating" type=""/>
+            <attribute is_hidden="false" is_key="false" name="extraInfo" type=""/>
+            <attribute is_hidden="false" is_key="false" name="timestamp" type=""/>
+        </attributes>
+    </entity>
+</diagram>
