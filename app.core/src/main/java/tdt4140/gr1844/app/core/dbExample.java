@@ -19,16 +19,18 @@ public class dbExample {
                 statement.setQueryTimeout(30);  // set timeout to 30 sec.
 
                 statement.executeUpdate("drop table if exists person");
-                statement.executeUpdate("create table person (id integer, name string)");
-                statement.executeUpdate("insert into person values(1, 'leo')");
-                statement.executeUpdate("insert into person values(2, 'yui')");
+                statement.executeUpdate("create table if not EXISTS users (id integer, role varchar, name varchar, email varchar, password_hash varchar," +
+                                                                                " salt varchar, PRIMARY KEY(id))");
+                statement.executeUpdate("create table if not EXISTS patientdata (id integer, patientID integer, doctorID integer, rating integer, extrainfo varchar," +
+                                                                        " timestamp integer, PRIMARY KEY(id), FOREIGN KEY(patientID) references users(id), FOREIGN KEY(doctorID) references users(id) )");
+/*
                 ResultSet rs = statement.executeQuery("select * from person");
                 while(rs.next())
                 {
                     // read the result set
                     System.out.println("name = " + rs.getString("name"));
                     System.out.println("id = " + rs.getInt("id"));
-                }
+                }*/
             }
             catch(SQLException e)
             {
