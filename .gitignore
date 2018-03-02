@@ -9,3 +9,5 @@ out
 // temporary generated files
 *.xtendbin
 *._trace
+
+sample.db
