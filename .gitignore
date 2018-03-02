@@ -4,7 +4,10 @@ target
 .idea
 .DS_Store
 *.iml
+out
 
 // temporary generated files
 *.xtendbin
 *._trace
+
+sample.db
