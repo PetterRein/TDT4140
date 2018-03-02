@@ -7,7 +7,6 @@ import java.sql.SQLException;
 public class SqlConnect {
     // init database constants
     private static final String DATABASE_URL = "jdbc:sqlite:sample.db";
-
     // init connection object
     private Connection connection;
     // connect database
