@@ -10,25 +10,37 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.*;
 import javax.ws.rs.GET;
 
 public class WebGet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println(request.getParameterNames());
-        System.out.println(request.getHeaderNames());
-        System.out.println(request.getQueryString());
-       /** System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-
-        BufferedReader rd = new BufferedReader(
-                new InputStreamReader(response.getEntity().getContent()));
-
-        StringBuffer result = new StringBuffer();
-        String line = "";
-        while ((line = rd.readLine()) != null) {
-            result.append(line);
+        if (Arrays.toString(request.getParameterValues("user")) != "null"){
+            System.out.println("Para: " + Arrays.toString(request.getParameterValues("user")));
+            System.out.println("Para: " + Arrays.toString(request.getParameterValues("password")));
+            //Run sjekk om user og passord er i databasem
         }
+        else if(Arrays.toString(request.getParameterValues("userID")) != "null"){
+            System.out.println("Para: " + Arrays.toString(request.getParameterValues("userID")));
+        }
+        else if (Arrays.toString(request.getParameterValues("patientID")) != "null"){
+            System.out.println("Para: " + Arrays.toString(request.getParameterValues("patientID")));
+        }
+        else if (Arrays.toString(request.getParameterValues("doctorID")) != "null"){
+            System.out.println("Para: " + Arrays.toString(request.getParameterValues("doctorID")));
+        }
+        /** System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
 
-        System.out.println(result.toString());**/
+         BufferedReader rd = new BufferedReader(
+         new InputStreamReader(response.getEntity().getContent()));
+
+         StringBuffer result = new StringBuffer();
+         String line = "";
+         while ((line = rd.readLine()) != null) {
+         result.append(line);
+         }
+
+         System.out.println(result.toString());**/
 
     }
 
@@ -50,13 +62,13 @@ public class WebGet extends HttpServlet {
                     }
                 }
             }
-           /** String[] segments = path.split("\\/");
-            if (segments.length == 1) {
-                System.out.println(segments[0]);
-            }**/
+            /** String[] segments = path.split("\\/");
+             if (segments.length == 1) {
+             System.out.println(segments[0]);
+             }**/
         }
 
-            PrintWriter out = response.getWriter();
+        PrintWriter out = response.getWriter();
         try {
             out.println("<!DOCTYPE html>");  // HTML 5
             out.println("<html><head>");
