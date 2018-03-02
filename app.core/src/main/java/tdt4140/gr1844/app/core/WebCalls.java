@@ -27,9 +27,10 @@ public class WebCalls {
         http.sendGet();
 
         System.out.println("\nTesting 2 - Send Http POST request");
-        ArrayList<String> name = new ArrayList(Collections.singleton("user"));
-        ArrayList<String> value = new ArrayList(Collections.singleton("Petter"));
-        http.sendPost(name, value);
+        String user = "Petter";
+        String password = "Test123";
+        http.sendPostUserLogin(user, password);
+        http.sendPostOne("doctorID", "123");
 
     }
 
@@ -64,7 +65,7 @@ public class WebCalls {
     }
 
     // HTTP POST request
-    private void sendPost(ArrayList<String> name, ArrayList<String> value) throws Exception {
+    private void sendPostUserLogin(String user, String password) throws Exception {
 
         String url = "http://localhost:8080/webapi";
 
@@ -75,9 +76,40 @@ public class WebCalls {
         post.setHeader("User-Agent", USER_AGENT);
 
         List<NameValuePair> urlParameters = new ArrayList<>();
-        for (int i = 0; i < name.size(); i++){
-            urlParameters.add(new BasicNameValuePair(name.get(i), value.get(i)));
+        urlParameters.add(new BasicNameValuePair("user", user));
+        urlParameters.add(new BasicNameValuePair("password", password));
+        post.setEntity(new UrlEncodedFormEntity(urlParameters));
+
+        HttpResponse response = client.execute(post);
+        System.out.println("\nSending 'POST' request to URL : " + url);
+        System.out.println("Post parameters : " + post.getEntity());
+        System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+
+        BufferedReader rd = new BufferedReader(
+                new InputStreamReader(response.getEntity().getContent()));
+
+        StringBuffer result = new StringBuffer();
+        String line = "";
+        while ((line = rd.readLine()) != null) {
+            result.append(line);
         }
+
+        System.out.println(result.toString());
+
+    }
+
+    private void sendPostOne(String key, String value) throws Exception {
+
+        String url = "http://localhost:8080/webapi";
+
+        HttpClient client = new DefaultHttpClient();
+        HttpPost post = new HttpPost(url);
+
+        // add header
+        post.setHeader("User-Agent", USER_AGENT);
+
+        List<NameValuePair> urlParameters = new ArrayList<>();
+        urlParameters.add(new BasicNameValuePair(key, value));
         post.setEntity(new UrlEncodedFormEntity(urlParameters));
 
         HttpResponse response = client.execute(post);
