@@ -5,7 +5,19 @@ import java.sql.SQLException;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+
+/**
+ * Contains the methods for handling/mutating the database.
+ */
 public class Database {
+
+	/**
+	 * Adds a new user to the database.
+	 * @param role The user's role.
+	 * @param name The user's name.
+	 * @param email The user's email address.
+	 * @param password The user's password.
+	 */
 	public static void addUser(String role, String name, String email, String password) {
 		String salt = BCrypt.gensalt();
 		String passwordHash = BCrypt.hashpw(password, salt);

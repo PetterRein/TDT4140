@@ -6,10 +6,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.naming.NamingException;
 
+/**
+* Contains the methods for handling/mutating the user's login state.
+*/
 public class Authentication {
-	//The login function takes the username and password
-	//It then checks if they are correct and returns true if they are
-	//It returns false if username and password is incorrect, or if the username doesn't exist in the database
+	/**
+	* Logs the user in.
+	* @param onlineOrOffline Check if the database is online or offline.
+	* @param username The user's username.
+	* @param password The user's password.
+	* @return {@code true} if the login was successful, {@code false} otherwise.
+	*/
 	public static boolean login(boolean onlineOrOffline, String username, String password) {
 		SqlConnect conn = new SqlConnect();
 		try {
