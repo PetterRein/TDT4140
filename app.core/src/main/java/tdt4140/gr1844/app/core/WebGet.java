@@ -21,13 +21,34 @@ public class WebGet extends HttpServlet {
             //Run sjekk om user og passord er i databasem
         }
         else if(Arrays.toString(request.getParameterValues("userID")) != "null"){
-            System.out.println("Para: " + Arrays.toString(request.getParameterValues("userID")));
+            System.out.println("Para UserID: " + Arrays.toString(request.getParameterValues("userID")));
         }
         else if (Arrays.toString(request.getParameterValues("patientID")) != "null"){
-            System.out.println("Para: " + Arrays.toString(request.getParameterValues("patientID")));
+            System.out.println("Para PatientID: " + Arrays.toString(request.getParameterValues("patientID")));
         }
         else if (Arrays.toString(request.getParameterValues("doctorID")) != "null"){
-            System.out.println("Para: " + Arrays.toString(request.getParameterValues("doctorID")));
+            System.out.println("Para DoctorID: " + Arrays.toString(request.getParameterValues("doctorID")));
+        }
+        else if(Arrays.toString(request.getParameterValues("delPatient")) != "null"){
+            System.out.println("Para DelPatient: " + Arrays.toString(request.getParameterValues("delPatient")));
+        }
+        else if(Arrays.toString(request.getParameterValues("addPatient")) != "null"){
+            System.out.println("Para AddPatient: " + Arrays.toString(request.getParameterValues("addPatient")));
+        }
+        else if(Arrays.toString(request.getParameterValues("delDoctor")) != "null"){
+            System.out.println("Para DelDoctor: " + Arrays.toString(request.getParameterValues("delDoctor")));
+        }
+        else if(Arrays.toString(request.getParameterValues("addPatient")) != "null"){
+            System.out.println("Para AddPatient: " + Arrays.toString(request.getParameterValues("addPatient")));
+        }
+        else if(Arrays.toString(request.getParameterValues("delDataPatient")) != "null"){
+            System.out.println("Para DelDataPatient: " + Arrays.toString(request.getParameterValues("delDataPatient")));
+        }
+        else if(Arrays.toString(request.getParameterValues("addDataPatient")) != "null"){
+            System.out.println("Para AddDataPatient: " + Arrays.toString(request.getParameterValues("addDataPatient")));
+        }
+        else if(Arrays.toString(request.getParameterValues("getPatientData")) != "null"){
+            System.out.println("Para PatientData: " + Arrays.toString(request.getParameterValues("getPatientData")));
         }
         /** System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
 
