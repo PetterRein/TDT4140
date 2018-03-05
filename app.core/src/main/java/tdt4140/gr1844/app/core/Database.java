@@ -36,6 +36,10 @@ public class Database {
 		}
 	}
 
+	/**
+	 * Deletes a user from the database by their e-mail address.
+	 * @param email The e-mail address of the user to be deleted.
+	 */
 	public static void deleteUser(String email) {
         try {
             SqlConnect conn = new SqlConnect();
