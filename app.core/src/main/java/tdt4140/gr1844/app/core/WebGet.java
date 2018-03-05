@@ -22,6 +22,7 @@ public class WebGet extends HttpServlet {
             System.out.println("Para: " + Arrays.toString(request.getParameterValues("user")));
             System.out.println("Para: " + Arrays.toString(request.getParameterValues("password")));
             //Run sjekk om user og passord er i databasem
+            
         }
         else if(Arrays.toString(request.getParameterValues("userID")) != "null"){
             System.out.println("Para UserID: " + Arrays.toString(request.getParameterValues("userID")));
