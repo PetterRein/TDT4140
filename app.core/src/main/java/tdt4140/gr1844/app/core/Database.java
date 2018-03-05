@@ -35,4 +35,16 @@ public class Database {
 			System.err.println(e);
 		}
 	}
+
+	public static void deleteUser(String email) {
+        try {
+            SqlConnect conn = new SqlConnect();
+            PreparedStatement statement = conn.connect().prepareStatement("delete from users(email) where email='?'");
+            statement.setString(1, email);
+            statement.executeUpdate();
+        }
+        catch(SQLException e) {
+            System.err.println(e);
+        }
+	}
 }

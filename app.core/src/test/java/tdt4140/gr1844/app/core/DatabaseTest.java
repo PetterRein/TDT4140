@@ -30,4 +30,18 @@ public class DatabaseTest {
 		Database.createUser("Doctor", "Tom", email, password);
 		Assert.assertTrue(Authentication.login(email, password));
 	}
+
+	/*@Test
+	public void deleteUserTest() {
+		String email = "tom@doctor.com";
+		Database.deleteUser(email);
+		SqlConnect conn2 = new SqlConnect();
+		try {
+			PreparedStatement statement = conn2.connect().prepareStatement("exists (select email from users where email=" + email + ")");
+			Assert.assertTrue(statement.execute());
+		}
+		catch(SQLException e) {
+			System.err.println(e);
+		}
+	}*/
 }
