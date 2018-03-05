@@ -18,7 +18,7 @@ public class Database {
 	 * @param email The user's email address.
 	 * @param password The user's password.
 	 */
-	public static void addUser(String role, String name, String email, String password) {
+	public static void createUser(String role, String name, String email, String password) {
 		String salt = BCrypt.gensalt();
 		String passwordHash = BCrypt.hashpw(password, salt);
 		try {
