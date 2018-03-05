@@ -34,6 +34,17 @@ public class WebCalls {
         http.sendPost(false, "doctorID", "123");
     }
 
+    public boolean loginUser(String user, String password) throws Exception {
+        int response = sendPost(true, user, password);
+        if (response == 200){
+            return true;
+        }
+        else{
+            return false;
+        }
+
+    }
+
     // HTTP GET request
     public int sendGet() throws Exception {
         String url = "http://www.google.com/search?q=developer";

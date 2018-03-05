@@ -20,4 +20,13 @@ public class WebCallsTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void testLoginUser(){
+        try {
+            Assert.assertTrue(http.loginUser("Petter", "123"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
