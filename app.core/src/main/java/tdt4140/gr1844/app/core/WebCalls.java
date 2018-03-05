@@ -28,10 +28,8 @@ public class WebCalls {
         System.out.println("Testing 1 - Send Http GET request");
         http.sendGet();
         System.out.println("\nTesting 2 - Send Http POST request");
-        String user = "Petter";
-        String password = "Test123";
-        http.sendPost(true, user, password);
-        http.sendPost(false, "doctorID", "123");
+        boolean e = http.loginUser("tom@doctor.com","password");
+        System.out.println("GAD:" + e);
     }
 
     public boolean loginUser(String user, String password) throws Exception {
