@@ -27,7 +27,7 @@ public class DatabaseTest {
 	public void addUserTest() {
 		String email = "tom@doctor.com";
 		String password = "password";
-		Database.addUser("Doctor", "Tom", email, password);
+		Database.createUser("Doctor", "Tom", email, password);
 		Assert.assertTrue(Authentication.login(email, password));
 	}
 }
