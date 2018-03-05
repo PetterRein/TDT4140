@@ -11,18 +11,38 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.*;
 import javax.ws.rs.GET;
 
 public class WebGet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Cookie myCookie = new Cookie("name", CookieValueGenerator.generateCookieValue(32));
-        response.addCookie(myCookie);
         if (Arrays.toString(request.getParameterValues("user")) != "null"){
+        	SqlConnect conn = new SqlConnect();
             System.out.println("Para: " + Arrays.toString(request.getParameterValues("user")));
             System.out.println("Para: " + Arrays.toString(request.getParameterValues("password")));
             //Run sjekk om user og passord er i databasem
-            
+            String username = Arrays.toString(request.getParameterValues("user"));
+            String password = Arrays.toString(request.getParameterValues("pasword"));
+            if (Authentication.login(username, password)) {
+            	String cookieValue = CookieValueGenerator.generateCookieValue(32);
+            	Cookie myCookie = new Cookie("name", cookieValue);
+            	//TODO insert new cookie value into database, send cookie to user
+            	try {
+            		PreparedStatement statement = conn.connect().prepareStatement("update users set cookie = ? where email = ?");
+            		statement.setString(1, cookieValue);
+            		statement.setString(2, username);
+            		response.addCookie(myCookie);
+            		response.setStatus(200);
+            	}
+            	catch(SQLException e) {
+            		response.setStatus(401);
+            	}
+            }
+            else {
+            	response.setStatus(401);
+            }
         }
         else if(Arrays.toString(request.getParameterValues("userID")) != "null"){
             System.out.println("Para UserID: " + Arrays.toString(request.getParameterValues("userID")));
