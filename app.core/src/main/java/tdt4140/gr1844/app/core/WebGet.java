@@ -3,6 +3,7 @@ package tdt4140.gr1844.app.core;
 import sun.net.www.http.HttpClient;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +16,8 @@ import javax.ws.rs.GET;
 
 public class WebGet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Cookie myCookie = new Cookie("name", CookieValueGenerator.generateCookieValue(32));
+        response.addCookie(myCookie);
         if (Arrays.toString(request.getParameterValues("user")) != "null"){
             System.out.println("Para: " + Arrays.toString(request.getParameterValues("user")));
             System.out.println("Para: " + Arrays.toString(request.getParameterValues("password")));
@@ -50,6 +53,8 @@ public class WebGet extends HttpServlet {
         else if(Arrays.toString(request.getParameterValues("getPatientData")) != "null"){
             System.out.println("Para PatientData: " + Arrays.toString(request.getParameterValues("getPatientData")));
         }
+        Cookie[] r = request.getCookies();
+        System.out.println(r);
         /** System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
 
          BufferedReader rd = new BufferedReader(
