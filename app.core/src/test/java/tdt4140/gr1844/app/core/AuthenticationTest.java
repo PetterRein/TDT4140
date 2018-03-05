@@ -18,13 +18,13 @@ public class AuthenticationTest {
 		try {
 			PreparedStatement statement1 = conn.connect().prepareStatement("drop table if exists users");
 			statement1.execute();
-			PreparedStatement statement2 = conn.connect().prepareStatement("create table users(id int, email varchar(64), passwordHash varchar(2000), salt varchar(256), primary key(id))");
+			PreparedStatement statement2 = conn.connect().prepareStatement("create table users(id int, email varchar(64), passwordHash varchar(2000), salt varchar(256), cookie varchar(32), primary key(id))");
 			statement2.execute();
 			String username = "correctEmail";
 			String password = "correctPassword";
 			salt = BCrypt.gensalt();
 			String passwordHash = BCrypt.hashpw(password, salt);
-			PreparedStatement statement3 = conn.connect().prepareStatement("insert into users values(1, ?, ?, ?)");
+			PreparedStatement statement3 = conn.connect().prepareStatement("insert into users values(1, ?, ?, ?, 'aaaa')");
 			statement3.setString(1, username);
 			statement3.setString(2, passwordHash);
 			statement3.setString(3, salt);
@@ -51,5 +51,15 @@ public class AuthenticationTest {
 	@Test
 	public void loginTestWrongPassword() {
 		Assert.assertFalse(Authentication.login("correctUsername", "wrongPassword"));
+	}
+	
+	@Test
+	public void logoutCorrectCookie() {
+		Assert.assertTrue(Authentication.logout("aaaa"));
+	}
+	
+	@Test
+	public void logoutWrongCookie() {
+		Assert.assertFalse(Authentication.logout("b"));
 	}
 }

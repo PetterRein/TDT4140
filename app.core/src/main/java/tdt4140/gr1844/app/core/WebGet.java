@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.*;
@@ -18,6 +19,15 @@ import javax.ws.rs.GET;
 
 public class WebGet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	Cookie[] cookies = request.getCookies();
+    	String sid = null;
+    	//Check if there is a session cookie provided
+    	for (Cookie cookie: cookies) {
+    		if (cookie.getValue().equals("SID")) {
+    			sid = cookie.getValue();
+    		}
+    	}
+    	
         if (Arrays.toString(request.getParameterValues("user")) != "null"){
         	SqlConnect conn = new SqlConnect();
             System.out.println("Para: " + Arrays.toString(request.getParameterValues("user")));
@@ -27,12 +37,13 @@ public class WebGet extends HttpServlet {
             String password = Arrays.toString(request.getParameterValues("pasword"));
             if (Authentication.login(username, password)) {
             	String cookieValue = CookieValueGenerator.generateCookieValue(32);
-            	Cookie myCookie = new Cookie("name", cookieValue);
+            	Cookie myCookie = new Cookie("SID", cookieValue);
             	//TODO insert new cookie value into database, send cookie to user
             	try {
             		PreparedStatement statement = conn.connect().prepareStatement("update users set cookie = ? where email = ?");
             		statement.setString(1, cookieValue);
             		statement.setString(2, username);
+            		statement.execute();
             		response.addCookie(myCookie);
             		response.setStatus(200);
             	}
@@ -42,6 +53,19 @@ public class WebGet extends HttpServlet {
             }
             else {
             	response.setStatus(401);
+            }
+        }
+        else if(Arrays.toString(request.getParameterValues("logout")) != "null"){
+            if (sid != null) {
+            	if (Authentication.logout(sid)) {
+            		//Send logout success response
+            	}
+            	else {
+            		//Send logout failure response
+            	}
+            }
+            else {
+            	//Send logout failure response
             }
         }
         else if(Arrays.toString(request.getParameterValues("userID")) != "null"){

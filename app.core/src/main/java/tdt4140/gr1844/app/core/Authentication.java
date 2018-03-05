@@ -47,4 +47,21 @@ public class Authentication {
 			return false;
 		}
 	}
+	
+	public static Boolean logout(String cookie) {
+		SqlConnect conn = new SqlConnect();
+		try {
+			System.out.println(cookie);
+			PreparedStatement statement = conn.connect().prepareStatement("update users set cookie = null where cookie = ?");
+			statement.setString(1, cookie);
+			int updateCheck = statement.executeUpdate();
+			//Returns true if something was updated
+			return updateCheck > 0;
+		}
+		catch(SQLException e) {
+			System.err.println(e);
+			return false;
+		}
+		
+	}
 }
