@@ -1,10 +1,10 @@
 // output folders
 bin
 target
-.idea
 .DS_Store
 *.iml
 out
+.settings
 
 // temporary generated files
 *.xtendbin

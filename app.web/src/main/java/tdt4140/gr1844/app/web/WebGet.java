@@ -1,13 +1,13 @@
 package tdt4140.gr1844.app.web;
 
 
-import javax.servlet.http.Cookie;
 import tdt4140.gr1844.app.core.Authentication;
 import tdt4140.gr1844.app.core.CookieValueGenerator;
 import tdt4140.gr1844.app.core.SqlConnect;
 
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,30 +16,28 @@ import java.io.PrintWriter;
 import java.lang.reflect.Array;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Enumeration;
 
 public class WebGet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        Enumeration<String> headerNames = request.getHeaderNames();
-
-
-        if (headerNames != null) {
-            while (headerNames.hasMoreElements()) {
-                System.out.println("Header: " + request.getHeader(headerNames.nextElement()));
-            }
-        }
-
-    	/**for (int i = 0; cookies.length) {
-    	    System.out.println("Adgl");
+    	/**Cookie[] cookies = request.getCookies();
+    	String sid = null;
+    	//Check if there is a session cookie provided
+    	for (Cookie cookie: cookies) {
     		if (cookie.getValue().equals("SID")) {
     			sid = cookie.getValue();
     		}
     	}**/
-    	
+    	Cookie[] r = request.getCookies();
+    	for (Cookie c: r){
+            System.out.println("CookieValue" + c.getValue());
+            System.out.println("CookieName" + c.getName());
+            System.out.println("CookieDomain" + c.getDomain());
+            System.out.println("CookiePath" + c.getPath());
+        }
+    	//Cookie f= new Cookie("adsf", "afd");
         if (Arrays.toString(request.getParameterValues("user")) != "null"){
+            System.out.println("sadfalsd");
         	SqlConnect conn = new SqlConnect();
             //Run sjekk om user og passord er i databasem
             String username = Arrays.toString(request.getParameterValues("user"));
@@ -55,41 +53,21 @@ public class WebGet extends HttpServlet {
             if (logCheck) {
                 System.out.println("Test");
             	String cookieValue = CookieValueGenerator.generateCookieValue(32);
-                //javax.servlet.http.Cookie myCookie = new Cookie("test", 123);
+            	Cookie myCookie = new Cookie("SID", cookieValue);
             	//TODO insert new cookie value into database, send cookie to user
                 System.out.println("Test1");
-                PreparedStatement statement = null;
-                try {
-                    statement = conn.connect(true).prepareStatement("update users set cookie = ? where email = ?");
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                } catch (NamingException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    statement.setString(1, cookieValue);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    statement.setString(2, username);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                String HeaderName = "Set-Cookie";
-                String Value = "cookie=" + CookieValueGenerator.generateCookieValue(32);
-                response.addHeader("Set-Cookie", Value);
-                // response.addCookie(myCookie);
+                //PreparedStatement statement = conn.connect(true).prepareStatement("update users set cookie = ? where email = ?");
+                //statement.setString(1, cookieValue);
+                //statement.setString(2, username);
+                response.addCookie(myCookie);
                 response.setStatus(200);
             }
             else {
                 System.out.println("test4");
-                response.addHeader("Set-Cookie", "cookie=123,cookie2=1234");
             	response.setStatus(401);
             }
         }
-        /**
-         * else if(Arrays.toString(request.getParameterValues("logout")) != "null"){
+        /**else if(Arrays.toString(request.getParameterValues("logout")) != "null"){
             if (sid != null) {
             	if (Authentication.logout(sid)) {
             		response.setStatus(200);
@@ -132,8 +110,8 @@ public class WebGet extends HttpServlet {
         else if(Arrays.toString(request.getParameterValues("getPatientData")) != "null"){
             System.out.println("Para PatientData: " + Arrays.toString(request.getParameterValues("getPatientData")));
         }
-        javax.servlet.http.Cookie[] r = request.getCookies();
-        System.out.println(r);
+        javax.servlet.http.Cookie[] rr = request.getCookies();
+        System.out.println(rr);
         /** System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
 
          BufferedReader rd = new BufferedReader(
@@ -146,10 +124,6 @@ public class WebGet extends HttpServlet {
          }
 
          System.out.println(result.toString());**/
-       // Cookie cookie = new Cookie("Cookie", "123");
-       // cookie.setDomain(".moholt.me");
-       // cookie.setPath("/");
-       // response.addCookie(cookie);
 
     }
 

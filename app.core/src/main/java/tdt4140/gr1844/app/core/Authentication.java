@@ -59,7 +59,6 @@ public class Authentication {
 			
 			saltRetrieval.close();
 			//Make a query that checks if the user and password is valid
-			System.out.println("Hang");
 			PreparedStatement authenticationQuery = conn.connect(onlineOrOffline).prepareStatement("select * from users where (email = ? and passwordHash = ?)");
 			authenticationQuery.setString(1, username);
 			authenticationQuery.setString(2, passwordHash);

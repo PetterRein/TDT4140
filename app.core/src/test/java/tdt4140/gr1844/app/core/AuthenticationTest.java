@@ -1,12 +1,12 @@
 package tdt4140.gr1844.app.core;
 
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mindrot.jbcrypt.BCrypt;
-
 
 import javax.naming.NamingException;
 
