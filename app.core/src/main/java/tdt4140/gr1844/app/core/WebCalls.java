@@ -27,7 +27,6 @@ public class WebCalls {
     public static void main(String[] args) throws Exception {
 
         WebCalls http = new WebCalls();
-
         System.out.println("Testing 1 - Send Http GET request");
         http.sendGet();
         System.out.println("\nTesting 2 - Send Http POST request");
@@ -72,6 +71,7 @@ public class WebCalls {
         String url = "http://localhost:8080/webapi";
         //Lager en cleint object og lagrer en cookie lagrings object til det
         CloseableHttpClient client;
+        // Cookie nedover fungerer ikke
         CookieStore httpCookieStore = new BasicCookieStore();
         BasicClientCookie cookie = new BasicClientCookie("JSESSIONID", "123");
         cookie.setDomain("moholt.me");
@@ -79,9 +79,13 @@ public class WebCalls {
         cookie.setAttribute(ClientCookie.PATH_ATTR, "/");
         cookie.setAttribute(ClientCookie.DOMAIN_ATTR, "moholt.me");
         httpCookieStore.addCookie(cookie);
+
         HttpClientBuilder builder = HttpClientBuilder.create().setDefaultCookieStore(httpCookieStore);
         client = builder.build();
         HttpPost httpPost = new HttpPost(url);
+
+        //men denne cookie'n gjør det
+        httpPost.addHeader("cookie", "123123jkkdfalskdjf");
 
         //Legger ved parameterene til Posten
         if(twoKeysOrNot) {
@@ -97,22 +101,16 @@ public class WebCalls {
         }
 
         //Sender og lagrer svaret
-        httpPost.setHeader("Cookie", "123");
-        httpPost.setHeader("Cookie", "1235");
         CloseableHttpResponse response = client.execute(httpPost);
-
-        Header s = response.getAllHeaders()[1];
-        System.out.println("Test " + s);
 
         //Luker clienten
         client.close();
 
         //Skriver ut informasjonen fra svaret
         System.out.println("\nSending 'POST' request to URL : " + url);
-        System.out.println("Post parameters : " + response.getAllHeaders());
         Header[] ws = response.getAllHeaders();
         for (Header header: ws){
-            System.out.println("g " + header);
+            System.out.println(header);
         }
         System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
         BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));

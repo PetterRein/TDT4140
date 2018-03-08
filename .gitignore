@@ -3,7 +3,9 @@ bin
 target
 .DS_Store
 *.iml
+.idea
 out
+.settings
 
 // temporary generated files
 *.xtendbin
