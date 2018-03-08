@@ -1,5 +1,6 @@
 package tdt4140.gr1844.app.core;
 
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.CookieStore;
@@ -8,9 +9,11 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.cookie.ClientCookie;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.BufferedReader;
@@ -67,10 +70,15 @@ public class WebCalls {
     public int sendPost(boolean twoKeysOrNot, String user, String password) throws Exception {
         //Setter urlen vi sender til
         String url = "http://localhost:8080/webapi";
-
         //Lager en cleint object og lagrer en cookie lagrings object til det
         CloseableHttpClient client;
         CookieStore httpCookieStore = new BasicCookieStore();
+        BasicClientCookie cookie = new BasicClientCookie("JSESSIONID", "123");
+        cookie.setDomain("moholt.me");
+        cookie.setPath("/");
+        cookie.setAttribute(ClientCookie.PATH_ATTR, "/");
+        cookie.setAttribute(ClientCookie.DOMAIN_ATTR, "moholt.me");
+        httpCookieStore.addCookie(cookie);
         HttpClientBuilder builder = HttpClientBuilder.create().setDefaultCookieStore(httpCookieStore);
         client = builder.build();
         HttpPost httpPost = new HttpPost(url);
@@ -89,15 +97,23 @@ public class WebCalls {
         }
 
         //Sender og lagrer svaret
+        httpPost.setHeader("Cookie", "123");
+        httpPost.setHeader("Cookie", "1235");
         CloseableHttpResponse response = client.execute(httpPost);
-        System.out.println("HER" + httpCookieStore.getCookies());
+
+        Header s = response.getAllHeaders()[1];
+        System.out.println("Test " + s);
 
         //Luker clienten
         client.close();
 
         //Skriver ut informasjonen fra svaret
         System.out.println("\nSending 'POST' request to URL : " + url);
-        System.out.println("Post parameters : " + httpPost.getEntity());
+        System.out.println("Post parameters : " + response.getAllHeaders());
+        Header[] ws = response.getAllHeaders();
+        for (Header header: ws){
+            System.out.println("g " + header);
+        }
         System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
         BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
         StringBuffer result = new StringBuffer();
@@ -106,6 +122,7 @@ public class WebCalls {
             result.append(line);
         }
         System.out.println(result.toString());
+        System.out.println(response.getEntity().getContent());
         return response.getStatusLine().getStatusCode();
     }
 }
