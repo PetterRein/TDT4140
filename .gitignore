@@ -2,7 +2,6 @@
 bin
 target
 .DS_Store
-*.iml
 out
 .settings
 
