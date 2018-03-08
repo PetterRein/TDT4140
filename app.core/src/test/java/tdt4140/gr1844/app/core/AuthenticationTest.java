@@ -20,14 +20,13 @@ public class AuthenticationTest {
 		try {
 			PreparedStatement statement1 = conn.connect(false).prepareStatement("drop table if exists users");
 			statement1.execute();
-			PreparedStatement statement2 = conn.connect(false).prepareStatement("create table users(id int, email varchar(64), passwordHash varchar(2000), salt varchar(256), primary key(id))");
-
+			PreparedStatement statement2 = conn.connect(false).prepareStatement("create table users(id int, email varchar(64), passwordHash varchar(2000), salt varchar(256), cookie varchar(32), primary key(id))");
 			statement2.execute();
 			String username = "correctEmail";
 			String password = "correctPassword";
 			salt = BCrypt.gensalt();
 			String passwordHash = BCrypt.hashpw(password, salt);
-			PreparedStatement statement3 = conn.connect(false).prepareStatement("insert into users values(1, ?, ?, ?)");
+			PreparedStatement statement3 = conn.connect(false).prepareStatement("insert into users values(1, ?, ?, ?, 'aaaa')");
 			statement3.setString(1, username);
 			statement3.setString(2, passwordHash);
 			statement3.setString(3, salt);
