@@ -1,0 +1,13 @@
+0000000000000000000000000000000000000000 f0b07985a319325bab7ee2697e44920fc402a238 Petter Grø Rein <pettegre@stud.ntnu.no> 1519637260 +0100	branch: Created from refs/remotes/origin/17-skrive-api-server
+f0b07985a319325bab7ee2697e44920fc402a238 185acc84cc034153628f5bb3ff47541b92ef9a58 Petter Grø Rein <pettegre@stud.ntnu.no> 1519937261 +0100	commit: Fikset webapi basics
+185acc84cc034153628f5bb3ff47541b92ef9a58 eb242ecab41e95e62c1a9f2fb528c1b263cc5a48 Petter Grø Rein <pettegre@stud.ntnu.no> 1519984216 +0100	commit: Skrev enkel kode for å ta ut user og password fra get call
+eb242ecab41e95e62c1a9f2fb528c1b263cc5a48 bf9d638807da4aa1856c82b4e5681b7a970563df Petter Grø Rein <pettegre@stud.ntnu.no> 1519991343 +0100	pull: Fast-forward
+bf9d638807da4aa1856c82b4e5681b7a970563df 8a9a7fdafacc8f10a2dc76ea413f4f9e9ce84544 Petter Grø Rein <pettegre@stud.ntnu.no> 1519991379 +0100	commit: La til Post #17
+8a9a7fdafacc8f10a2dc76ea413f4f9e9ce84544 71a00c16fe69dcae0d5a69ea815ff32218782340 Petter Grø Rein <pettegre@stud.ntnu.no> 1519994692 +0100	commit: La til noen ifer som gjør forskellige tin ut i fra POSTen den tar imot #17
+71a00c16fe69dcae0d5a69ea815ff32218782340 69f71af268b94a153a8478d9e0506f2ebc745785 Petter Grø Rein <pettegre@stud.ntnu.no> 1520241565 +0100	pull: Fast-forward
+69f71af268b94a153a8478d9e0506f2ebc745785 60f2f93a9d89f0a4cefb8bccba4d66191800995c Petter Grø Rein <pettegre@stud.ntnu.no> 1520246971 +0100	pull: Fast-forward
+60f2f93a9d89f0a4cefb8bccba4d66191800995c a0914314643f26bc66f6808fba36a4517aa1bb29 Petter Grø Rein <pettegre@stud.ntnu.no> 1520247246 +0100	commit: La til cookies #17
+a0914314643f26bc66f6808fba36a4517aa1bb29 44322f4fb19533540f076a9629bb25e82cd7942c Petter Grø Rein <pettegre@stud.ntnu.no> 1520249502 +0100	pull: Fast-forward
+44322f4fb19533540f076a9629bb25e82cd7942c 2803c9fe53d5cf122b74c7ffc43dcbb83c63ae6c Petter Grø Rein <pettegre@stud.ntnu.no> 1520251627 +0100	pull: Fast-forward
+2803c9fe53d5cf122b74c7ffc43dcbb83c63ae6c 24bcb9f288d26becb494bfa37f9147be2a2bf066 Petter Grø Rein <pettegre@stud.ntnu.no> 1520465968 +0100	commit: fikset sånn at det fungerer med tomcat #17
+24bcb9f288d26becb494bfa37f9147be2a2bf066 4255ed94e5ab98a8430503029c0ae02686f78a13 Petter Grø Rein <pettegre@stud.ntnu.no> 1520466101 +0100	commit: fikset sånn at det fungerer med tomcat #17

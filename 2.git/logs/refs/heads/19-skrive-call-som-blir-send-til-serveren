@@ -1,0 +1,10 @@
+0000000000000000000000000000000000000000 4ba9fddba7df001e5c99a7cf2487fcea24110cb7 Petter Grø Rein <pettegre@stud.ntnu.no> 1519985203 +0100	branch: Created from refs/remotes/origin/19-skrive-call-som-blir-send-til-serveren
+4ba9fddba7df001e5c99a7cf2487fcea24110cb7 76ac7c936bca68b21f4ac4e290f436bf28bd2a1c Petter Grø Rein <pettegre@stud.ntnu.no> 1519987131 +0100	commit: La til Get og Post calls
+76ac7c936bca68b21f4ac4e290f436bf28bd2a1c fc376dfd3ee6a033a1fd84d66a9787a4fdeea552 Petter Grø Rein <pettegre@stud.ntnu.no> 1519987262 +0100	commit: Fikset at out mappen blir med #19
+fc376dfd3ee6a033a1fd84d66a9787a4fdeea552 2212482ee64d51303b88f3047085d9fc86a59cd4 Petter Grø Rein <pettegre@stud.ntnu.no> 1519987283 +0100	commit: Fikset at out mappen blir med #19
+2212482ee64d51303b88f3047085d9fc86a59cd4 3972433d3f40ffac69345460b6047d736e891ace Petter Grø Rein <pettegre@stud.ntnu.no> 1519991625 +0100	pull: Fast-forward
+3972433d3f40ffac69345460b6047d736e891ace df2a3e920ef691acda5012aa0c127eb50bb7880c Petter Grø Rein <pettegre@stud.ntnu.no> 1519994616 +0100	commit: La til en Post, og og skiftet sånn at du har to POST calls en for login og en for å hente data #19
+df2a3e920ef691acda5012aa0c127eb50bb7880c 4917ca560a95e5fb08a00732afe246c7c362ba94 Petter Grø Rein <pettegre@stud.ntnu.no> 1520246955 +0100	commit: La til cookies #19
+4917ca560a95e5fb08a00732afe246c7c362ba94 927d448689bc614aaa09ab343b9cb2b4500cb169 Petter Grø Rein <pettegre@stud.ntnu.no> 1520249139 +0100	commit: La til test #19
+927d448689bc614aaa09ab343b9cb2b4500cb169 018e17d3297606c3f5b5bf0035173c713fc1e57b Petter Grø Rein <pettegre@stud.ntnu.no> 1520252434 +0100	commit: Test for loginUser #19 #1
+018e17d3297606c3f5b5bf0035173c713fc1e57b 1fd87c8e3e6e10b0d4bd86eed20b82e50ccb1b78 Petter Grø Rein <pettegre@stud.ntnu.no> 1520254032 +0100	commit: La til test for login #19 #1
