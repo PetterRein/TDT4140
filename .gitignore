@@ -1,7 +1,6 @@
 // output folders
 bin
 target
-.idea
 .DS_Store
 *.iml
 out
