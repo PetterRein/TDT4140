@@ -3,6 +3,9 @@ package tdt4140.gr1844.app.web;
 
 import tdt4140.gr1844.app.core.Authentication;
 import tdt4140.gr1844.app.core.CookieValueGenerator;
+import tdt4140.gr1844.app.core.SqlConnect;
+
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -10,12 +13,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Arrays;
 
 public class WebGet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	String sid = null;
+        SqlConnect conn = new SqlConnect();
+        String sid = null;
         Cookie[] r = request.getCookies();
+        //Check if there is a session cookie provided
     	for (Cookie c: r){
             System.out.println("CookieValue " + c.getName());
             sid = c.getName();
@@ -42,14 +50,38 @@ public class WebGet extends HttpServlet {
         else if(Arrays.toString(request.getParameterValues("logout")) != "null"){
             if (sid != null) {
             	if (Authentication.logout(sid)) {
+            	try {
+            	    String cookieValue = sid;
+            		PreparedStatement statement = conn.connect(false).prepareStatement("update users set cookie = ? where email = ?");
+            		//must find username fist
+                    String username = "correctEmail";
+            		statement.setString(1, cookieValue);
+            		statement.setString(2, username);
+            		statement.execute();
+            		response.setHeader("cookie", sid);
+            		//response.addCookie(myCookie);
             		response.setStatus(200);
-            	}
-            	else {
-            		response.setStatus(422);
-            	}
+            	} catch (SQLException e) {
+                    e.printStackTrace();
+                } catch (NamingException e) {
+                    e.printStackTrace();
+                }
             }
             else {
             	response.setStatus(422);
+            }
+        }
+        else if(Arrays.toString(request.getParameterValues("logout")) != "null"){
+            if (sid != null) {
+            	if (Authentication.logout(sid)) {
+            		//Send logout success response
+            	}
+            	else {
+            		//Send logout failure response
+            	}
+            }
+            else {
+            	//Send logout failure response
             }
         }
         else if(Arrays.toString(request.getParameterValues("userID")) != "null"){
@@ -82,7 +114,7 @@ public class WebGet extends HttpServlet {
         else if(Arrays.toString(request.getParameterValues("getPatientData")) != "null"){
             System.out.println("Para PatientData: " + Arrays.toString(request.getParameterValues("getPatientData")));
         }
-    }
+    }}
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("text/html;charset=UTF-8");
