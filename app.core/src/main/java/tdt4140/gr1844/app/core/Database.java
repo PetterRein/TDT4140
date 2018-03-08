@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.naming.NamingException;
+
 import org.mindrot.jbcrypt.BCrypt;
 
 public class Database {
@@ -12,7 +14,7 @@ public class Database {
 		String passwordHash = BCrypt.hashpw(password, salt);
 		try {
 			SqlConnect conn = new SqlConnect();
-			PreparedStatement statement1 = conn.connect().prepareStatement("insert into users(role, name, email, passwordHash, salt) values(?, ?, ?, ?, ?)");
+			PreparedStatement statement1 = conn.connect(false).prepareStatement("insert into users(role, name, email, passwordHash, salt) values(?, ?, ?, ?, ?)");
 			statement1.setString(1, role);
 			statement1.setString(2, name);
 			statement1.setString(3, email);
@@ -23,13 +25,16 @@ public class Database {
 		catch(SQLException e) {
 			System.err.println(e);
 		}
+		catch(NamingException e) {
+			
+		}
 	}
 	
 	public static String getRoleFromCookie(String cookie) {
 		String role = null;
 		try {
 			SqlConnect conn = new SqlConnect();
-			PreparedStatement statement1 = conn.connect().prepareStatement("select role from users where cookie = ?");
+			PreparedStatement statement1 = conn.connect(false).prepareStatement("select role from users where cookie = ?");
 			statement1.setString(1, cookie);
 			statement1.execute();
 			ResultSet rs = statement1.getResultSet();
@@ -38,6 +43,9 @@ public class Database {
 			conn.disconnect();
 		}
 		catch(SQLException e) {
+			
+		}
+		catch(NamingException e) {
 			
 		}
 		return role;

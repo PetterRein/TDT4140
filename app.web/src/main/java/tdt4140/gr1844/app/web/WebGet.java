@@ -4,6 +4,7 @@ package tdt4140.gr1844.app.web;
 import javax.servlet.http.Cookie;
 import tdt4140.gr1844.app.core.Authentication;
 import tdt4140.gr1844.app.core.CookieValueGenerator;
+import tdt4140.gr1844.app.core.Database;
 import tdt4140.gr1844.app.core.SqlConnect;
 
 import javax.naming.NamingException;
@@ -114,8 +115,29 @@ public class WebGet extends HttpServlet {
         else if(Arrays.toString(request.getParameterValues("delPatient")) != "null"){
             System.out.println("Para DelPatient: " + Arrays.toString(request.getParameterValues("delPatient")));
         }
-        else if(Arrays.toString(request.getParameterValues("addPatient")) != "null"){
+        else if(Arrays.toString(request.getParameterValues("addUser")) != "null"){
             System.out.println("Para AddPatient: " + Arrays.toString(request.getParameterValues("addPatient")));
+            if (Database.getRoleFromCookie(sid).equals("Admin")) {
+            	String role = Arrays.toString(request.getParameterValues("role"));
+            	role = role.replaceAll("[^a-zA-Z0-9@.]", "");
+            	if (role.equals("Doctor") || role.equals("Patient")) {
+	            	String userName = Arrays.toString(request.getParameterValues("userName"));
+	            	userName = userName.replaceAll("[^a-zA-Z0-9@.]", "");
+	            	String userEmail = Arrays.toString(request.getParameterValues("userEmail"));
+	            	userEmail = userEmail.replaceAll("[^a-zA-Z0-9@.]", "");
+	            	String userPassword = Arrays.toString(request.getParameterValues("userPassword"));
+	            	userPassword = userPassword.replaceAll("[^a-zA-Z0-9@.]", "");
+	            	Database.addUser("patient", userName, userEmail, userPassword);
+            	}
+            	else {
+            		//TODO response to illegal role
+            		response.setStatus(422);
+            	}
+            }
+            else {
+            	//TODO response to attempt from non-admin
+            	response.setStatus(401);
+            }
         }
         else if(Arrays.toString(request.getParameterValues("delDoctor")) != "null"){
             System.out.println("Para DelDoctor: " + Arrays.toString(request.getParameterValues("delDoctor")));
