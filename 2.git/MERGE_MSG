@@ -1,5 +1,0 @@
-Merge branch '17-skrive-api-server' of https://gitlab.stud.iie.ntnu.no/tdt4140-2018/44 into 17-skrive-api-server
-
-# Conflicts:
-#	app.core/src/test/java/tdt4140/gr1844/app/core/AuthenticationTest.java
-#	app.web/src/main/java/tdt4140/gr1844/app/web/WebGet.java

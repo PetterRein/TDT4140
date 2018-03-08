@@ -1,9 +1,0 @@
-0000000000000000000000000000000000000000 5eec0031e2502b3ed182c0469d555671afd5e9c4 Petter Rein <prein31@gmail.com> 1518784978 +0100	clone: from git@gitlab.stud.iie.ntnu.no:tdt4140-2018/44.git
-5eec0031e2502b3ed182c0469d555671afd5e9c4 dcefa008d2e414eb468bc0a55ddefcc5bbcb3069 Petter Grø Rein <prein31@gmail.com> 1518785381 +0100	commit: La til testplan, releaseplan, brukerhistorier
-dcefa008d2e414eb468bc0a55ddefcc5bbcb3069 5eec0031e2502b3ed182c0469d555671afd5e9c4 Petter Grø Rein <prein31@gmail.com> 1518785575 +0100	rebase -i (finish): refs/heads/master onto 5019ac42c4adc810994a627268b9080a22511a56
-5eec0031e2502b3ed182c0469d555671afd5e9c4 8ac49f8528ecadfc8b0c22c3bbe36def903e6853 Petter Grø Rein <pettegre@stud.ntnu.no> 1518785797 +0100	commit: La til testplan, releaseplan, brukerhsitorier
-8ac49f8528ecadfc8b0c22c3bbe36def903e6853 b4a5896e041fde29a401657a436dcf1bf521b01c Petter Grø Rein <pettegre@stud.ntnu.no> 1519637149 +0100	pull: Merge made by the 'recursive' strategy.
-b4a5896e041fde29a401657a436dcf1bf521b01c 7a4b93154ae3e17fc07eaed5b69a7193ae7c5e69 Petter Grø Rein <pettegre@stud.ntnu.no> 1519985147 +0100	pull: Merge made by the 'recursive' strategy.
-7a4b93154ae3e17fc07eaed5b69a7193ae7c5e69 46512e3f70520ac6219379681e7212bd55f5b33d Petter Grø Rein <pettegre@stud.ntnu.no> 1519987467 +0100	commit: La til out og sample.db i git.ignore
-46512e3f70520ac6219379681e7212bd55f5b33d 233a723b1a05a25d440057758edc1a2bf4fcd53c Petter Grø Rein <pettegre@stud.ntnu.no> 1519991600 +0100	commit (merge): Merge branch 'master' of https://gitlab.stud.iie.ntnu.no/tdt4140-2018/44
-233a723b1a05a25d440057758edc1a2bf4fcd53c a3968c8e4dcf6692f85c7c21c98f141da3bcb943 Petter Grø Rein <pettegre@stud.ntnu.no> 1520252868 +0100	pull: Merge made by the 'recursive' strategy.
