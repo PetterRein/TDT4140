@@ -1,11 +1,9 @@
 package tdt4140.gr1844.app.core;
 
 import org.mindrot.jbcrypt.BCrypt;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import javax.naming.NamingException;
 
 public class Authentication {
@@ -14,35 +12,24 @@ public class Authentication {
 	//It returns false if username and password is incorrect, or if the username doesn't exist in the database
 	public static boolean login(boolean onlineOrOffline, String username, String password) {
 		SqlConnect conn = new SqlConnect();
-		System.out.println("test5");
 		try {
 			if (onlineOrOffline){
-				System.out.println("Test5.1");
 				PreparedStatement statement1 = conn.connect(onlineOrOffline).prepareStatement("drop table if exists users");
 				statement1.execute();
-				System.out.println("test5.2");
 				PreparedStatement statement2 = conn.connect(onlineOrOffline).prepareStatement("create table users(id int, email varchar(64), passwordHash varchar(2000), salt varchar(256), primary key(id))");
 				statement2.execute();
-				System.out.println("2test5.2");
 				String username1 = "correctEmail";
 				String password1 = "correctPassword";
 				String salt1 = BCrypt.gensalt();
-				System.out.println("3test5.2");
 				String passwordHash1 = BCrypt.hashpw(password1, salt1);
 				PreparedStatement statement3 = conn.connect(onlineOrOffline).prepareStatement("insert into users values(1, ?, ?, ?)");
-				System.out.println("test5.2");
 				statement3.setString(1, username1);
 				statement3.setString(2, passwordHash1);
 				statement3.setString(3, salt1);
 				statement3.execute();
 			}
-
-
-		    System.out.println("test6");
 			//Retrieve the users salt from the database, if no salt is returned then the user doesn't exist
 			PreparedStatement saltRetrieval = conn.connect(onlineOrOffline).prepareStatement("select salt from users where email = ?");
-			System.out.println(saltRetrieval.getResultSet());
-			System.out.println("test6.2");
 			saltRetrieval.setString(1, username);
 			saltRetrieval.execute();
 			ResultSet retrievedSalt = saltRetrieval.getResultSet();
@@ -68,12 +55,10 @@ public class Authentication {
 			Boolean validLogin = authenticationResponse.isBeforeFirst();
 			authenticationQuery.close();
 			conn.disconnect();
-			System.out.println("test6.1");
 			return validLogin;
 		}
 		catch(SQLException e){
 			//conn.disconnect();
-			System.out.println("test7");
 			System.err.println(e);
 			return false;
 		} catch (NamingException e) {

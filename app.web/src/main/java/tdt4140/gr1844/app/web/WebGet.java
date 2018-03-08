@@ -3,9 +3,6 @@ package tdt4140.gr1844.app.web;
 
 import tdt4140.gr1844.app.core.Authentication;
 import tdt4140.gr1844.app.core.CookieValueGenerator;
-import tdt4140.gr1844.app.core.SqlConnect;
-
-import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -13,61 +10,36 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.lang.reflect.Array;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.Arrays;
 
 public class WebGet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	/**Cookie[] cookies = request.getCookies();
     	String sid = null;
-    	//Check if there is a session cookie provided
-    	for (Cookie cookie: cookies) {
-    		if (cookie.getValue().equals("SID")) {
-    			sid = cookie.getValue();
-    		}
-    	}**/
-    	Cookie[] r = request.getCookies();
+        Cookie[] r = request.getCookies();
     	for (Cookie c: r){
-            System.out.println("CookieValue" + c.getValue());
-            System.out.println("CookieName" + c.getName());
-            System.out.println("CookieDomain" + c.getDomain());
-            System.out.println("CookiePath" + c.getPath());
+            System.out.println("CookieValue " + c.getName());
+            sid = c.getName();
         }
-    	//Cookie f= new Cookie("adsf", "afd");
         if (Arrays.toString(request.getParameterValues("user")) != "null"){
-            System.out.println("sadfalsd");
-        	SqlConnect conn = new SqlConnect();
             //Run sjekk om user og passord er i databasem
-            String username = Arrays.toString(request.getParameterValues("user"));
-            username = username.replaceAll("[^a-zA-Z0-9@.]", "");
-            String password = Arrays.toString(request.getParameterValues("password"));
-            password = password.replaceAll("[^a-zA-Z0-9@.]", "");
-            System.out.println("Para: " + username + "1");
-            System.out.println("Para: " + password + "2");
-            System.out.println("L " + username.equals("correctEmail"));
-            System.out.println(password.equals("correctPassword"));
-            Boolean logCheck = Authentication.login(true,username, password) ;
-            System.out.println("Sjekker va Authentication retunerer: " + logCheck);
-            if (logCheck) {
-                System.out.println("Test");
+            String username = Arrays.toString(request.getParameterValues("user")).replaceAll("[\\[\\]]", "");
+            String password = Arrays.toString(request.getParameterValues("password")).replaceAll("[\\[\\]]", "");
+            Boolean loginCheck = Authentication.login(true,username, password) ;
+            System.out.println("Sjekker va Authentication retunerer: " + loginCheck);
+            if (loginCheck) {
             	String cookieValue = CookieValueGenerator.generateCookieValue(32);
             	Cookie myCookie = new Cookie("SID", cookieValue);
             	//TODO insert new cookie value into database, send cookie to user
-                System.out.println("Test1");
                 //PreparedStatement statement = conn.connect(true).prepareStatement("update users set cookie = ? where email = ?");
-                //statement.setString(1, cookieValue);
-                //statement.setString(2, username);
                 response.addCookie(myCookie);
                 response.setStatus(200);
             }
             else {
-                System.out.println("test4");
+                System.out.println("Login failed");
             	response.setStatus(401);
             }
         }
-        /**else if(Arrays.toString(request.getParameterValues("logout")) != "null"){
+        else if(Arrays.toString(request.getParameterValues("logout")) != "null"){
             if (sid != null) {
             	if (Authentication.logout(sid)) {
             		response.setStatus(200);
@@ -79,7 +51,7 @@ public class WebGet extends HttpServlet {
             else {
             	response.setStatus(422);
             }
-        }**/
+        }
         else if(Arrays.toString(request.getParameterValues("userID")) != "null"){
             System.out.println("Para UserID: " + Arrays.toString(request.getParameterValues("userID")));
         }
@@ -110,21 +82,6 @@ public class WebGet extends HttpServlet {
         else if(Arrays.toString(request.getParameterValues("getPatientData")) != "null"){
             System.out.println("Para PatientData: " + Arrays.toString(request.getParameterValues("getPatientData")));
         }
-        javax.servlet.http.Cookie[] rr = request.getCookies();
-        System.out.println(rr);
-        /** System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-
-         BufferedReader rd = new BufferedReader(
-         new InputStreamReader(response.getEntity().getContent()));
-
-         StringBuffer result = new StringBuffer();
-         String line = "";
-         while ((line = rd.readLine()) != null) {
-         result.append(line);
-         }
-
-         System.out.println(result.toString());**/
-
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
