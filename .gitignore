@@ -2,6 +2,8 @@
 bin
 target
 .DS_Store
+.idea
+*.iml
 out
 .settings
 
