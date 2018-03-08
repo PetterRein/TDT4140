@@ -24,7 +24,7 @@ public class WebCallsTest {
     @Test
     public void testLoginUser(){
         try {
-            Assert.assertTrue(http.loginUser("tom@doctor.com", "password"));
+            Assert.assertTrue(http.loginUser("correctEmail", "correctPassword"));
         } catch (Exception e) {
             e.printStackTrace();
         }
