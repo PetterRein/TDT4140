@@ -23,9 +23,8 @@ import java.util.Enumeration;
 
 public class WebGet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+    	String sid = null;
         Enumeration<String> headerNames = request.getHeaderNames();
-
 
         if (headerNames != null) {
             while (headerNames.hasMoreElements()) {
