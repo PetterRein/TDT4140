@@ -1,6 +1,7 @@
 package tdt4140.gr1844.app.core;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -22,5 +23,23 @@ public class Database {
 		catch(SQLException e) {
 			System.err.println(e);
 		}
+	}
+	
+	public static String getRoleFromCookie(String cookie) {
+		String role = null;
+		try {
+			SqlConnect conn = new SqlConnect();
+			PreparedStatement statement1 = conn.connect().prepareStatement("select role from users where cookie = ?");
+			statement1.setString(1, cookie);
+			statement1.execute();
+			ResultSet rs = statement1.getResultSet();
+			rs.next();
+			role = rs.getString("role");
+			conn.disconnect();
+		}
+		catch(SQLException e) {
+			
+		}
+		return role;
 	}
 }

@@ -14,8 +14,11 @@ public class DatabaseTest {
 		try {
 			PreparedStatement statement1 = conn.connect().prepareStatement("drop table if exists users");
 			statement1.execute();
-			PreparedStatement statement2 = conn.connect().prepareStatement("create table users(id int, role varchar(64), name varchar(64), email varchar(64), passwordHash varchar(2000), salt varchar(256), primary key(id))");
+			PreparedStatement statement2 = conn.connect().prepareStatement("create table users(id int, role varchar(64), name varchar(64), email varchar(64), passwordHash varchar(2000), salt varchar(256), cookie varchar(32), primary key(id))");
 			statement2.execute();
+			Database.addUser("Doctor", "s", "email", "password");
+			PreparedStatement statement3 = conn.connect().prepareStatement("update users set cookie='a' where email = 'email'");
+			statement3.executeUpdate();
 		}
 		catch(SQLException e){
 			System.err.println(e);
@@ -30,4 +33,15 @@ public class DatabaseTest {
 		Database.addUser("Doctor", "Tom", email, password);
 		Assert.assertTrue(Authentication.login(email, password));
 	}
+	
+	@Test
+	public void getRoleFromCookieWhenCookieExists() {
+		Assert.assertEquals("Doctor", Database.getRoleFromCookie("a"));
+	}
+	
+	@Test
+	public void getRoleFromCookieWhenCookieDoesNotExist() {
+		Assert.assertNull(Database.getRoleFromCookie("doesNotExist"));
+	}
+	
 }
