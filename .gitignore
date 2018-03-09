@@ -12,3 +12,5 @@ out
 *._trace
 
 sample.db
+
+*.xml
