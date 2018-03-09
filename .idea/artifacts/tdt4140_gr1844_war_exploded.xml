@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="tdt4140-gr1844:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/tdt4140_gr1844_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="tdt4140-gr1844/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="tdt4140-gr1844" />
+          <element id="extracted-dir" path="$MAVEN_REPOSITORY$/javax/servlet/servlet-api/2.5/servlet-api-2.5.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/mindrot/jbcrypt/0.4/jbcrypt-0.4.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/xerial/sqlite-jdbc/3.21.0.1/sqlite-jdbc-3.21.0.1.jar" path-in-jar="/" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
