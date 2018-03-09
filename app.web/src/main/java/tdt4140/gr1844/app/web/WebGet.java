@@ -92,13 +92,14 @@ public class WebGet extends HttpServlet {
             	String role = Arrays.toString(request.getParameterValues("role"));
             	role = role.replaceAll("[^a-zA-Z0-9@.]", "");
             	if (role.equals("Doctor") || role.equals("Patient")) {
+            	    System.out.println("We good? Code God?");
 	            	String userName = Arrays.toString(request.getParameterValues("userName"));
 	            	userName = userName.replaceAll("[^a-zA-Z0-9@.]", "");
 	            	String userEmail = Arrays.toString(request.getParameterValues("userEmail"));
 	            	userEmail = userEmail.replaceAll("[^a-zA-Z0-9@.]", "");
 	            	String userPassword = Arrays.toString(request.getParameterValues("userPassword"));
 	            	userPassword = userPassword.replaceAll("[^a-zA-Z0-9@.]", "");
-	            	Database.addUser(true,"patient", userName, userEmail, userPassword, null);
+	            	Database.addUser(true,role , userName, userEmail, userPassword, null);
             	}
             	else {
             		//TODO response to illegal role
