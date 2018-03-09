@@ -90,15 +90,15 @@ public class WebGet extends HttpServlet {
             System.out.println("Para AddUserRole: " + Arrays.toString(request.getParameterValues("role")));
             if (Database.getRoleFromCookie(true,sid).equals("Admin") && sid != null) {
             	String role = Arrays.toString(request.getParameterValues("role"));
-            	role = role.replaceAll("[^a-zA-Z0-9@.]", "");
-            	if (role.equals("Doctor") || role.equals("Patient")) {
+            	role = role.replaceAll("[\\[\\]]", "");
+            	if (role.equals("Doctor") || role.equals("Patient") || role.equals("Doktor") || role.equals("Pasient")) {
             	    System.out.println("We good? Code God?");
 	            	String userName = Arrays.toString(request.getParameterValues("userName"));
-	            	userName = userName.replaceAll("[^a-zA-Z0-9@.]", "");
+	            	userName = userName.replaceAll("[\\[\\]]", "");
 	            	String userEmail = Arrays.toString(request.getParameterValues("userEmail"));
-	            	userEmail = userEmail.replaceAll("[^a-zA-Z0-9@.]", "");
+	            	userEmail = userEmail.replaceAll("[\\[\\]]", "");
 	            	String userPassword = Arrays.toString(request.getParameterValues("userPassword"));
-	            	userPassword = userPassword.replaceAll("[^a-zA-Z0-9@.]", "");
+	            	userPassword = userPassword.replaceAll("[\\[\\]]", "");
 	            	Database.addUser(true,role , userName, userEmail, userPassword, null);
             	}
             	else {
