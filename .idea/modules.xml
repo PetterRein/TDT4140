@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/44.iml" filepath="$PROJECT_DIR$/44.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app.core/app.core.iml" filepath="$PROJECT_DIR$/app.core/app.core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app.ui/app.ui.iml" filepath="$PROJECT_DIR$/app.ui/app.ui.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app.web/tdt4140-gr1844.app.web.iml" filepath="$PROJECT_DIR$/app.web/tdt4140-gr1844.app.web.iml" />
+    </modules>
+  </component>
+</project>

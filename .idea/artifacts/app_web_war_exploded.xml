@@ -1,0 +1,49 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="app.web:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/app_web_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="app.web/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="app.web" />
+          <element id="module-output" name="app.core" />
+          <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/mindrot/jbcrypt/0.4/jbcrypt-0.4.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/xerial/sqlite-jdbc/3.21.0.1/sqlite-jdbc-3.21.0.1.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="$MAVEN_REPOSITORY$/javax/servlet/servlet-api/2.5/servlet-api-2.5.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="/opt/tomcat/lib/el-api.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="/opt/tomcat/lib/jasper.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="/opt/tomcat/lib/jsp-api.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="/opt/tomcat/lib/catalina.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="/opt/tomcat/lib/bootstrap.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="/opt/tomcat/lib/ecj-4.6.3.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="/opt/tomcat/lib/jasper-el.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="/opt/tomcat/lib/jaspic-api.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="/opt/tomcat/lib/tomcat-api.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="/opt/tomcat/lib/tomcat-jni.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="/opt/tomcat/lib/catalina-ha.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="/opt/tomcat/lib/servlet-api.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="/opt/tomcat/lib/tomcat-dbcp.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="/opt/tomcat/lib/tomcat-jdbc.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="/opt/tomcat/lib/tomcat-juli.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="/opt/tomcat/lib/tomcat-util.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="/opt/tomcat/lib/catalina-ant.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="/opt/tomcat/lib/tomcat-coyote.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="/opt/tomcat/lib/websocket-api.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="/opt/tomcat/lib/commons-daemon.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="/opt/tomcat/lib/tomcat-i18n-es.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="/opt/tomcat/lib/tomcat-i18n-fr.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="/opt/tomcat/lib/tomcat-i18n-ja.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="/opt/tomcat/lib/annotations-api.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="/opt/tomcat/lib/catalina-tribes.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="/opt/tomcat/lib/tomcat-util-scan.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="/opt/tomcat/lib/tomcat-websocket.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="/opt/tomcat/lib/catalina-storeconfig.jar" path-in-jar="/" />
+          <element id="extracted-dir" path="/opt/tomcat/lib/sqlite-jdbc-3.21.0.1.jar" path-in-jar="/" />
+          <element id="module-output" name="tdt4140-gr1844.app.web" />
+          <element id="module-output" name="44" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="tdt4140-gr1844.app.web/web/Web" />
+    </root>
+  </artifact>
+</component>

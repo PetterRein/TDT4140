@@ -1,5 +1,6 @@
 package tdt4140.gr1844.app.core;
 
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import org.junit.Assert;
@@ -7,13 +8,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mindrot.jbcrypt.BCrypt;
 
-
 import javax.naming.NamingException;
 
 
 public class AuthenticationTest {
 	private String salt;
-	
+
 	@Before
 	public void setUp() {
 		SqlConnect conn = new SqlConnect();
@@ -31,33 +31,34 @@ public class AuthenticationTest {
 			statement3.setString(2, passwordHash);
 			statement3.setString(3, salt);
 			statement3.execute();
-		}
-		catch(SQLException e){
+		} catch (SQLException e) {
 			System.err.println(e);
 			System.out.println("Setup failure");
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
-	public void loginTestCorrectCredentials() { Assert.assertTrue(Authentication.login(false,"correctEmail", "correctPassword")); }
-	
+	public void loginTestCorrectCredentials() {
+		Assert.assertTrue(Authentication.login(false, "correctEmail", "correctPassword"));
+	}
+
 	@Test
 	public void loginTestWrongUsername() {
-		Assert.assertFalse(Authentication.login(false,"wrongUsername", "correctPassword"));
+		Assert.assertFalse(Authentication.login(false, "wrongUsername", "correctPassword"));
 	}
-	
+
 	@Test
 	public void loginTestWrongPassword() {
-		Assert.assertFalse(Authentication.login(false,"correctUsername", "wrongPassword"));
+		Assert.assertFalse(Authentication.login(false, "correctUsername", "wrongPassword"));
 	}
-	
+
 	@Test
 	public void logoutCorrectCookie() {
 		Assert.assertTrue(Authentication.logout("aaaa"));
 	}
-	
+
 	@Test
 	public void logoutWrongCookie() {
 		Assert.assertFalse(Authentication.logout("b"));
