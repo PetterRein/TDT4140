@@ -9,7 +9,6 @@
         <module name="fx-map-control" />
         <module name="tdt4140-gr1844.app.core" />
         <module name="tdt4140-gr1844.app.ui" />
-        <module name="tdt4140-gr1844.app.web" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

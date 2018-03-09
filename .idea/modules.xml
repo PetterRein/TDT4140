@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/tdt4140-gr1844.iml" filepath="$PROJECT_DIR$/tdt4140-gr1844.iml" />
       <module fileurl="file://$PROJECT_DIR$/app.core/tdt4140-gr1844.app.core.iml" filepath="$PROJECT_DIR$/app.core/tdt4140-gr1844.app.core.iml" />
       <module fileurl="file://$PROJECT_DIR$/app.ui/tdt4140-gr1844.app.ui.iml" filepath="$PROJECT_DIR$/app.ui/tdt4140-gr1844.app.ui.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app.web/tdt4140-gr1844.app.web.iml" filepath="$PROJECT_DIR$/app.web/tdt4140-gr1844.app.web.iml" />
     </modules>
   </component>
 </project>
