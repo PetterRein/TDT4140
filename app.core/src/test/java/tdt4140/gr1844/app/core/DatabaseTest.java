@@ -7,14 +7,18 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.naming.NamingException;
+
 public class DatabaseTest {
+	boolean onlineOrOffline = false;
+	
 	@Before
-	public void setUp() {
+	public void setUp() throws NamingException {
 		SqlConnect conn = new SqlConnect();
 		try {
-			PreparedStatement statement1 = conn.connect().prepareStatement("drop table if exists users");
+			PreparedStatement statement1 = conn.connect(onlineOrOffline).prepareStatement("drop table if exists users");
 			statement1.execute();
-			PreparedStatement statement2 = conn.connect().prepareStatement("create table users(id int, role varchar(64), name varchar(64), email varchar(64), passwordHash varchar(2000), salt varchar(256), primary key(id))");
+			PreparedStatement statement2 = conn.connect(onlineOrOffline).prepareStatement("create table users(id int, role varchar(64), name varchar(64), email varchar(64), passwordHash varchar(2000), salt varchar(256), primary key(id))");
 			statement2.execute();
 		}
 		catch(SQLException e){
@@ -24,11 +28,11 @@ public class DatabaseTest {
 	}
 	
 	@Test
-	public void addUserTest() {
+	public void addUserTest() throws NamingException {
 		String email = "tom@doctor.com";
 		String password = "password";
-		Database.createUser("Doctor", "Tom", email, password);
-		Assert.assertTrue(Authentication.login(email, password));
+		Database.createUser("Doctor", "Tom", email, password, onlineOrOffline);
+		Assert.assertTrue(Authentication.login(onlineOrOffline, email, password));
 	}
 
 	/*@Test
