@@ -34,8 +34,8 @@ public class WebCalls {
         System.out.println("GAD:" + e);
     }
 
-    public boolean loginUser(String user, String password) throws Exception {
-        int response = sendPost(true, user, password);
+    public boolean loginUser(String userName, String userPassword) throws Exception {
+        int response = sendPost("user", userName, userPassword, null, null, null);
         if (response == 200){
             return true;
         }
@@ -43,6 +43,16 @@ public class WebCalls {
             return false;
         }
 
+    }
+
+    public boolean addUser(String userName, String userPassword, String userEmail, String role, String yourSID) throws Exception {
+        int response = sendPost("addUser", userName, userPassword, userEmail, role,yourSID);
+        if (response == 200){
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     // HTTP GET request
@@ -66,7 +76,7 @@ public class WebCalls {
     }
 
     // HTTP POST request
-    public int sendPost(boolean twoKeysOrNot, String user, String password) throws Exception {
+    public int sendPost(String whatPost, String userName, String userPassword, String userEmail, String userRole,  String yourSID) throws Exception {
         //Setter urlen vi sender til
         String url = "http://localhost:8080/webapi";
         //Lager en cleint object og lagrer en cookie lagrings object til det
@@ -85,18 +95,28 @@ public class WebCalls {
         HttpPost httpPost = new HttpPost(url);
 
         //men denne cookie'n gjør det
-        httpPost.addHeader("cookie", "123123jkkdfalskdjf");
+        httpPost.addHeader("cookie", yourSID);
 
         //Legger ved parameterene til Posten
-        if(twoKeysOrNot) {
+        if(whatPost.equals("user")) {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("user", user));
-            params.add(new BasicNameValuePair("password", password));
+            params.add(new BasicNameValuePair("user", userName));
+            params.add(new BasicNameValuePair("password", userPassword));
             httpPost.setEntity(new UrlEncodedFormEntity(params));
+        }
+        else if(whatPost.equals("addUser")){
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("addUser", userName));
+            params.add(new BasicNameValuePair("userName", userName));
+            params.add(new BasicNameValuePair("userPassword", userPassword));
+            params.add(new BasicNameValuePair("userEmail", userEmail));
+            params.add(new BasicNameValuePair("role", userRole));
+            httpPost.setEntity(new UrlEncodedFormEntity(params));
+
         }
         else {
             List<NameValuePair> urlParameters = new ArrayList<>();
-            urlParameters.add(new BasicNameValuePair(user, password));
+            urlParameters.add(new BasicNameValuePair(userName, userPassword));
             httpPost.setEntity(new UrlEncodedFormEntity(urlParameters));
         }
 

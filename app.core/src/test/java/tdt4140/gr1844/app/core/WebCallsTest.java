@@ -21,11 +21,20 @@ public class WebCallsTest {
         }
     }
 
-    @Test
+    /**@Test
     public void testLoginUser(){
         try {
             Assert.assertTrue(http.loginUser("correctEmail", "correctPassword"));
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }**/
+
+    @Test
+    public void testLogutUser() throws Exception {
+        try {
+            Assert.assertTrue(http.addUser("Pål", "Pal123", "pal@online.no", "Pasient", "41"));
+        }catch (Exception e){
             e.printStackTrace();
         }
     }
