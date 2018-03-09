@@ -9,17 +9,18 @@ import javax.naming.NamingException;
 import org.mindrot.jbcrypt.BCrypt;
 
 public class Database {
-	public static void addUser(String role, String name, String email, String password) {
+	public static void addUser(boolean onlineOrOffline, String role, String name, String email, String password, String cookie) {
 		String salt = BCrypt.gensalt();
 		String passwordHash = BCrypt.hashpw(password, salt);
 		try {
 			SqlConnect conn = new SqlConnect();
-			PreparedStatement statement1 = conn.connect(false).prepareStatement("insert into users(role, name, email, passwordHash, salt) values(?, ?, ?, ?, ?)");
+			PreparedStatement statement1 = conn.connect(onlineOrOffline).prepareStatement("insert into users(role, name, email, passwordHash, salt, cookie) values(?, ?, ?, ?, ?, ?)");
 			statement1.setString(1, role);
 			statement1.setString(2, name);
 			statement1.setString(3, email);
 			statement1.setString(4, passwordHash);
 			statement1.setString(5, salt);
+			statement1.setString(6,cookie);
 			statement1.executeUpdate();
 		}
 		catch(SQLException e) {
@@ -30,11 +31,11 @@ public class Database {
 		}
 	}
 	
-	public static String getRoleFromCookie(String cookie) {
+	public static String getRoleFromCookie(boolean onlineOrOffline, String cookie) {
 		String role = null;
 		try {
 			SqlConnect conn = new SqlConnect();
-			PreparedStatement statement1 = conn.connect(false).prepareStatement("select role from users where cookie = ?");
+			PreparedStatement statement1 = conn.connect(onlineOrOffline).prepareStatement("select role from users where cookie = ?");
 			statement1.setString(1, cookie);
 			statement1.execute();
 			ResultSet rs = statement1.getResultSet();

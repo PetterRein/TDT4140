@@ -87,8 +87,8 @@ public class WebGet extends HttpServlet {
             System.out.println("Para DelPatient: " + Arrays.toString(request.getParameterValues("delPatient")));
         }
         else if(Arrays.toString(request.getParameterValues("addUser")) != "null"){
-            System.out.println("Para AddPatient: " + Arrays.toString(request.getParameterValues("addPatient")));
-            if (Database.getRoleFromCookie(sid).equals("Admin") && sid != null) {
+            System.out.println("Para AddUserRole: " + Arrays.toString(request.getParameterValues("role")));
+            if (Database.getRoleFromCookie(true,sid).equals("Admin") && sid != null) {
             	String role = Arrays.toString(request.getParameterValues("role"));
             	role = role.replaceAll("[^a-zA-Z0-9@.]", "");
             	if (role.equals("Doctor") || role.equals("Patient")) {
@@ -98,7 +98,7 @@ public class WebGet extends HttpServlet {
 	            	userEmail = userEmail.replaceAll("[^a-zA-Z0-9@.]", "");
 	            	String userPassword = Arrays.toString(request.getParameterValues("userPassword"));
 	            	userPassword = userPassword.replaceAll("[^a-zA-Z0-9@.]", "");
-	            	Database.addUser("patient", userName, userEmail, userPassword);
+	            	Database.addUser(true,"patient", userName, userEmail, userPassword, null);
             	}
             	else {
             		//TODO response to illegal role

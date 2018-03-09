@@ -18,7 +18,8 @@ public class DatabaseTest {
 			statement1.execute();
 			PreparedStatement statement2 = conn.connect(false).prepareStatement("create table users(id int, role varchar(64), name varchar(64), email varchar(64), passwordHash varchar(2000), salt varchar(256), cookie varchar(32), primary key(id))");
 			statement2.execute();
-			Database.addUser("Doctor", "s", "email", "password");
+			Database.addUser(false,"Doctor", "s", "email", "password", null);
+			Database.addUser(false,"Admin","Per","admin@o.com","33", "41");
 			PreparedStatement statement3 = conn.connect(false).prepareStatement("update users set cookie='a' where email = 'email'");
 			statement3.executeUpdate();
 		}
@@ -32,21 +33,21 @@ public class DatabaseTest {
 	}
 	
 	@Test
-	public void addUserTest() {
+	public void loginUserTest() {
 		String email = "tom@doctor.com";
 		String password = "password";
-		Database.addUser("Doctor", "Tom", email, password);
+		Database.addUser(false,"Doctor", "Tom", email, password, "31");
 		Assert.assertTrue(Authentication.login(false, email, password));
 	}
 	
 	@Test
 	public void getRoleFromCookieWhenCookieExists() {
-		Assert.assertEquals("Doctor", Database.getRoleFromCookie("a"));
+		Assert.assertEquals("Doctor", Database.getRoleFromCookie(false,"a"));
 	}
 	
 	@Test
 	public void getRoleFromCookieWhenCookieDoesNotExist() {
-		Assert.assertNull(Database.getRoleFromCookie("doesNotExist"));
+		Assert.assertNull(Database.getRoleFromCookie(false,"doesNotExist"));
 	}
 	
 }
