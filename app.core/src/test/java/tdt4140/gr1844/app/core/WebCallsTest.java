@@ -25,7 +25,7 @@ public class WebCallsTest {
     /**@Test
     public void testLoginUser(){
         try {
-            Assert.assertTrue(http.loginUser("s", "password", "email"));
+            Assert.assertTrue(http.loginUser("Tom", "password", "tom@doctor.com"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -43,7 +43,7 @@ public class WebCallsTest {
     /**@Test
     public void testLogoutUser() throws Exception{
         try {
-            Assert.assertTrue(http.logoutUser("Doctor", "a"));
+            Assert.assertTrue(http.logoutUser("Doctor", "mFEMvsQIjQ7tiAy2qVJ4Wdq87zBWdy4V"));
         } catch (Exception e){
             e.printStackTrace();
         }
