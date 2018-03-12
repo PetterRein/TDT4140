@@ -99,8 +99,12 @@ public class WebGet extends HttpServlet {
 	            	userEmail = userEmail.replaceAll("[\\[\\]]", "");
 	            	String userPassword = Arrays.toString(request.getParameterValues("userPassword"));
 	            	userPassword = userPassword.replaceAll("[\\[\\]]", "");
-	            	Database.addUser(true,role , userName, userEmail, userPassword, null);
-            	}
+                    try {
+                        Database.createUser(true,role , userName, userEmail, userPassword);
+                    } catch (NamingException e) {
+                        e.printStackTrace();
+                    }
+                }
             	else {
             		//TODO response to illegal role
             		response.setStatus(422);
