@@ -3,6 +3,7 @@ package tdt4140.gr1844.app.web;
 
 import tdt4140.gr1844.app.core.Authentication;
 import tdt4140.gr1844.app.core.CookieValueGenerator;
+import tdt4140.gr1844.app.core.Database;
 import tdt4140.gr1844.app.core.SqlConnect;
 
 import javax.naming.NamingException;
@@ -38,9 +39,19 @@ public class WebGet extends HttpServlet {
             	String cookieValue = CookieValueGenerator.generateCookieValue(32);
             	Cookie myCookie = new Cookie("SID", cookieValue);
             	//TODO insert new cookie value into database, send cookie to user
-                //PreparedStatement statement = conn.connect(true).prepareStatement("update users set cookie = ? where email = ?");
-                response.addCookie(myCookie);
-                response.setStatus(200);
+            	try {
+            		PreparedStatement statement = conn.connect(true).prepareStatement("update users set cookie = ? where email = ?");
+                    statement.setString(1, cookieValue);
+                    statement.setString(2, username);
+                    response.addCookie(myCookie);
+                    response.setStatus(200);
+            	}
+            	catch(SQLException e) {
+            		
+            	}
+            	catch(NamingException e) {
+            		
+            	}
             }
             else {
                 System.out.println("Login failed");
@@ -50,38 +61,17 @@ public class WebGet extends HttpServlet {
         else if(Arrays.toString(request.getParameterValues("logout")) != "null"){
             if (sid != null) {
             	if (Authentication.logout(sid)) {
-            	try {
-            	    String cookieValue = sid;
-            		PreparedStatement statement = conn.connect(false).prepareStatement("update users set cookie = ? where email = ?");
-            		//must find username fist
-                    String username = "correctEmail";
-            		statement.setString(1, cookieValue);
-            		statement.setString(2, username);
-            		statement.execute();
-            		response.setHeader("cookie", sid);
-            		//response.addCookie(myCookie);
-            		response.setStatus(200);
-            	} catch (SQLException e) {
-                    e.printStackTrace();
-                } catch (NamingException e) {
-                    e.printStackTrace();
-                }
-            }
-            else {
-            	response.setStatus(422);
-            }
-        }
-        else if(Arrays.toString(request.getParameterValues("logout")) != "null"){
-            if (sid != null) {
-            	if (Authentication.logout(sid)) {
             		//Send logout success response
+            		response.setStatus(200);
             	}
             	else {
             		//Send logout failure response
+            		response.setStatus(422);
             	}
             }
             else {
             	//Send logout failure response
+            	response.setStatus(422);
             }
         }
         else if(Arrays.toString(request.getParameterValues("userID")) != "null"){
@@ -96,8 +86,30 @@ public class WebGet extends HttpServlet {
         else if(Arrays.toString(request.getParameterValues("delPatient")) != "null"){
             System.out.println("Para DelPatient: " + Arrays.toString(request.getParameterValues("delPatient")));
         }
-        else if(Arrays.toString(request.getParameterValues("addPatient")) != "null"){
-            System.out.println("Para AddPatient: " + Arrays.toString(request.getParameterValues("addPatient")));
+        else if(Arrays.toString(request.getParameterValues("addUser")) != "null"){
+            System.out.println("Para AddUserRole: " + Arrays.toString(request.getParameterValues("role")));
+            if (Database.getRoleFromCookie(true,sid).equals("Admin") && sid != null) {
+            	String role = Arrays.toString(request.getParameterValues("role"));
+            	role = role.replaceAll("[\\[\\]]", "");
+            	if (role.equals("Doctor") || role.equals("Patient") || role.equals("Doktor") || role.equals("Pasient")) {
+            	    System.out.println("We good? Code God?");
+	            	String userName = Arrays.toString(request.getParameterValues("userName"));
+	            	userName = userName.replaceAll("[\\[\\]]", "");
+	            	String userEmail = Arrays.toString(request.getParameterValues("userEmail"));
+	            	userEmail = userEmail.replaceAll("[\\[\\]]", "");
+	            	String userPassword = Arrays.toString(request.getParameterValues("userPassword"));
+	            	userPassword = userPassword.replaceAll("[\\[\\]]", "");
+	            	Database.addUser(true,role , userName, userEmail, userPassword, null);
+            	}
+            	else {
+            		//TODO response to illegal role
+            		response.setStatus(422);
+            	}
+            }
+            else {
+            	//TODO response to attempt from non-admin
+            	response.setStatus(401);
+            }
         }
         else if (Arrays.toString(request.getParameterValues("delUser")) != "null"){
                 
@@ -117,7 +129,7 @@ public class WebGet extends HttpServlet {
         else if(Arrays.toString(request.getParameterValues("getPatientData")) != "null"){
             System.out.println("Para PatientData: " + Arrays.toString(request.getParameterValues("getPatientData")));
         }
-    }}
+    }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("text/html;charset=UTF-8");
