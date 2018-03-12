@@ -47,11 +47,14 @@ public class Database {
 	public static void deleteUser(String email, boolean onlineOrOffline) throws NamingException {
         try {
             SqlConnect conn = new SqlConnect();
-            PreparedStatement statement = conn.connect(onlineOrOffline).prepareStatement("delete from users(email) where email='?'");
+            PreparedStatement statement = conn.connect(onlineOrOffline).prepareStatement("delete from users where email=?");
             statement.setString(1, email);
             statement.executeUpdate();
         }
         catch(SQLException e) {
+            System.err.println(e);
+        }
+        catch(NamingException e){
             System.err.println(e);
         }
 	}

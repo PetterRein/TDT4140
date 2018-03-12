@@ -99,6 +99,9 @@ public class WebGet extends HttpServlet {
         else if(Arrays.toString(request.getParameterValues("addPatient")) != "null"){
             System.out.println("Para AddPatient: " + Arrays.toString(request.getParameterValues("addPatient")));
         }
+        else if (Arrays.toString(request.getParameterValues("delUser")) != "null"){
+                
+        }
         else if(Arrays.toString(request.getParameterValues("delDoctor")) != "null"){
             System.out.println("Para DelDoctor: " + Arrays.toString(request.getParameterValues("delDoctor")));
         }

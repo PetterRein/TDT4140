@@ -1,6 +1,7 @@
 package tdt4140.gr1844.app.core;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.junit.Assert;
@@ -35,17 +36,24 @@ public class DatabaseTest {
 		Assert.assertTrue(Authentication.login(onlineOrOffline, email, password));
 	}
 
-	/*@Test
+	@Test
 	public void deleteUserTest() {
 		String email = "tom@doctor.com";
-		Database.deleteUser(email);
-		SqlConnect conn2 = new SqlConnect();
+		SqlConnect conn = new SqlConnect();
 		try {
-			PreparedStatement statement = conn2.connect().prepareStatement("exists (select email from users where email=" + email + ")");
-			Assert.assertTrue(statement.execute());
+			Database.createUser("role", "name", email, "password", false);
+			Database.deleteUser(email, false);
+			PreparedStatement statement = conn.connect(false).prepareStatement("select * from users where email = ?");
+			statement.setString(1, email);
+			statement.execute();
+			ResultSet rs = statement.getResultSet();
+			Assert.assertFalse(rs.isBeforeFirst());
+		}
+		catch(NamingException e){
+			System.err.println(e);
 		}
 		catch(SQLException e) {
 			System.err.println(e);
 		}
-	}*/
+	}
 }
