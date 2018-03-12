@@ -20,7 +20,7 @@ public class Authentication {
 	public static boolean login(boolean onlineOrOffline, String username, String password) {
 		SqlConnect conn = new SqlConnect();
 		try {
-			if (onlineOrOffline){
+			/**if (onlineOrOffline){
 				PreparedStatement statement1 = conn.connect(onlineOrOffline).prepareStatement("drop table if exists users");
 				statement1.execute();
 				PreparedStatement statement2 = conn.connect(onlineOrOffline).prepareStatement("create table users(id int, email varchar(64), passwordHash varchar(2000), salt varchar(256), primary key(id))");
@@ -34,7 +34,7 @@ public class Authentication {
 				statement3.setString(2, passwordHash1);
 				statement3.setString(3, salt1);
 				statement3.execute();
-			}
+			}**/
 			//Retrieve the users salt from the database, if no salt is returned then the user doesn't exist
 			PreparedStatement saltRetrieval = conn.connect(onlineOrOffline).prepareStatement("select salt from users where email = ?");
 			saltRetrieval.setString(1, username);

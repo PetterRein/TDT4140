@@ -38,7 +38,18 @@ public class WebGet extends HttpServlet {
             	String cookieValue = CookieValueGenerator.generateCookieValue(32);
             	Cookie myCookie = new Cookie("SID", cookieValue);
             	//TODO insert new cookie value into database, send cookie to user
-                //PreparedStatement statement = conn.connect(true).prepareStatement("update users set cookie = ? where email = ?");
+                try {
+                    PreparedStatement statement = conn.connect(true).prepareStatement("update users set cookie = ? where email = ?");
+                    statement.setString(1, cookieValue);
+                    statement.setString(2, username);
+                    statement.execute();
+                    response.addCookie(myCookie);
+                    response.setStatus(200);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } catch (NamingException e) {
+                    e.printStackTrace();
+                }
                 response.addCookie(myCookie);
                 response.setStatus(200);
             }
