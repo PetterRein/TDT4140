@@ -30,12 +30,12 @@ public class WebCalls {
         System.out.println("Testing 1 - Send Http GET request");
         http.sendGet();
         System.out.println("\nTesting 2 - Send Http POST request");
-        boolean e = http.loginUser("tom@doctor.com","password");
+        boolean e = http.loginUser("Tom","tom@doctor.com","password");
         System.out.println("GAD:" + e);
     }
 
-    public boolean loginUser(String userName, String userPassword) throws Exception {
-        int response = sendPost("user", userName, userPassword, null, null, null);
+    public boolean loginUser(String userName, String userPassword, String userEmail ) throws Exception {
+        int response = sendPost("user", userName, userPassword, userEmail, null, null);
         if (response == 200){
             return true;
         }
@@ -47,6 +47,16 @@ public class WebCalls {
 
     public boolean addUser(String userName, String userPassword, String userEmail, String role, String yourSID) throws Exception {
         int response = sendPost("addUser", userName, userPassword, userEmail, role,yourSID);
+        if (response == 200){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public boolean logoutUser(String userName, String yourSID) throws Exception {
+        int response = sendPost("logout", userName, null, null, null, yourSID);
         if (response == 200){
             return true;
         }
@@ -95,12 +105,18 @@ public class WebCalls {
         HttpPost httpPost = new HttpPost(url);
 
         //men denne cookie'n gjør det
-        httpPost.addHeader("cookie", yourSID);
+        if (yourSID != null){
+            httpPost.addHeader("cookie", yourSID);
+        }
+        else {
+            httpPost.addHeader("cookie", "12312309084214");
+        }
+
 
         //Legger ved parameterene til Posten
         if(whatPost.equals("user")) {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("user", userName));
+            params.add(new BasicNameValuePair("user", userEmail));
             params.add(new BasicNameValuePair("password", userPassword));
             httpPost.setEntity(new UrlEncodedFormEntity(params));
         }
@@ -113,6 +129,11 @@ public class WebCalls {
             params.add(new BasicNameValuePair("role", userRole));
             httpPost.setEntity(new UrlEncodedFormEntity(params));
 
+        }
+        else if (whatPost.equals("logout")){
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("logout", userName));
+            httpPost.setEntity(new UrlEncodedFormEntity(params));
         }
         else {
             List<NameValuePair> urlParameters = new ArrayList<>();
