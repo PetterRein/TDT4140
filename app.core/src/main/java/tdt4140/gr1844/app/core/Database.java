@@ -10,18 +10,11 @@ import javax.naming.NamingException;
 
 /**
  * Contains the methods for handling/mutating the database.
- */
-public class Database {
+ **/
+import java.sql.ResultSet;
 
-	/**
-	 * Adds a new user to the database.
-	 * @param role The user's role.
-	 * @param name The user's name.
-	 * @param email The user's email address.
-	 * @param password The user's password.
-	 * @param onlineOrOffline If the database is online or offline.
-	 */
-	public static void createUser(String role, String name, String email, String password, boolean onlineOrOffline) throws NamingException {
+public class Database {
+	public static void createUser(boolean onlineOrOffline, String role, String name, String email, String password) throws NamingException {
 		String salt = BCrypt.gensalt();
 		String passwordHash = BCrypt.hashpw(password, salt);
 		try {
@@ -47,12 +40,33 @@ public class Database {
 	public static void deleteUser(String email, boolean onlineOrOffline) throws NamingException {
         try {
             SqlConnect conn = new SqlConnect();
-            PreparedStatement statement = conn.connect(onlineOrOffline).prepareStatement("delete from users(email) where email='?'");
+            PreparedStatement statement = conn.connect(onlineOrOffline).prepareStatement("delete from users where email=?");
             statement.setString(1, email);
             statement.executeUpdate();
         }
         catch(SQLException e) {
             System.err.println(e);
         }
+	}
+	
+	public static String getRoleFromCookie(boolean onlineOrOffline, String cookie) {
+		String role = null;
+		try {
+			SqlConnect conn = new SqlConnect();
+			PreparedStatement statement1 = conn.connect(onlineOrOffline).prepareStatement("select role from users where cookie = ?");
+			statement1.setString(1, cookie);
+			statement1.execute();
+			ResultSet rs = statement1.getResultSet();
+			rs.next();
+			role = rs.getString("role");
+			conn.disconnect();
+		}
+		catch(SQLException e) {
+			
+		}
+		catch(NamingException e) {
+			
+		}
+		return role;
 	}
 }
