@@ -116,7 +116,18 @@ public class WebGet extends HttpServlet {
             }
         }
         else if (Arrays.toString(request.getParameterValues("delUser")) != "null"){
-                
+    	    if (Database.getRoleFromCookie(true, sid).equals("Admin") && sid != null){
+    	        String user = Arrays.toString(request.getParameterValues("user"));
+                try {
+                    Database.deleteUser(user, true);
+                } catch (NamingException e) {
+                    e.printStackTrace();
+                }
+                response.setStatus(200);
+            }
+            else{
+    	        response.setStatus(401);
+            }
         }
         else if(Arrays.toString(request.getParameterValues("delDoctor")) != "null"){
             System.out.println("Para DelDoctor: " + Arrays.toString(request.getParameterValues("delDoctor")));
