@@ -14,9 +14,11 @@ public class SqlConnect {
     private static final String DATABASE_URL = "jdbc:sqlite:sample.db"; //Denne er feil se print fra Workiing Directory
     // init connection object
     // connect database
-    public Connection connection = null;
-    public Connection connect1() throws ClassNotFoundException, SQLException {
-       /** //Class.forName("org.sqlite.JDBC");
+    Connection connection = null;
+    /**
+     * jdbc:sqlite:sample.db
+     * public Connection connect1() throws ClassNotFoundException, SQLException {
+        //Class.forName("org.sqlite.JDBC");
         System.out.println("TEst203");
         //DriverManager.registerDriver(new JDBC());
         java.nio.file.Path currentRelativePath = Paths.get("");
@@ -33,9 +35,9 @@ public class SqlConnect {
                 e.printStackTrace();
             }
         }
-        return connection;**/
+        return connection;
        return connection;
-    }
+    }**/
 
     // disconnect database
     public void disconnect() {
@@ -49,7 +51,7 @@ public class SqlConnect {
         }
     }
 
-    public Connection connect(boolean onlineOrOffline) throws NamingException, SQLException {
+    public Connection connect(boolean onlineOrOffline) throws NamingException, SQLException, ClassNotFoundException, IllegalAccessException, InstantiationException {
         if (onlineOrOffline){
             Context ctx = new InitialContext();
             DataSource ds = (DataSource)ctx.lookup("java:comp/env/jdbc/sample");
@@ -57,12 +59,12 @@ public class SqlConnect {
             return connection;
         }
         else{
-            //Class.forName("org.sqlite.JDBC");
+            Class.forName("org.sqlite.JDBC").newInstance();
             //DriverManager.registerDriver(new JDBC());
             java.nio.file.Path currentRelativePath = Paths.get("");
             String s = currentRelativePath.toAbsolutePath().toString();
-            System.out.println("Current relative path is: " + s);
-            System.out.println("Working Directory = " + System.getProperty("user.dir"));
+            //System.out.println("Current relative path is: " + s);
+            //System.out.println("Working Directory = " + System.getProperty("user.dir"));
             if (connection == null) {
                 try {
                     connection = DriverManager.getConnection(DATABASE_URL);

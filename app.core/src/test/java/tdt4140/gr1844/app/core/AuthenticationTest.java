@@ -15,7 +15,7 @@ public class AuthenticationTest {
 	private String salt;
 
 	@Before
-	public void setUp() {
+	public void setUp() throws IllegalAccessException, InstantiationException, ClassNotFoundException {
 		SqlConnect conn = new SqlConnect();
 		try {
 			PreparedStatement statement1 = conn.connect(false).prepareStatement("drop table if exists users");
@@ -40,27 +40,27 @@ public class AuthenticationTest {
 	}
 
 	@Test
-	public void loginTestCorrectCredentials() {
+	public void loginTestCorrectCredentials() throws IllegalAccessException, ClassNotFoundException, InstantiationException {
 		Assert.assertTrue(Authentication.login(false, "correctEmail", "correctPassword"));
 	}
 
 	@Test
-	public void loginTestWrongUsername() {
+	public void loginTestWrongUsername() throws IllegalAccessException, ClassNotFoundException, InstantiationException {
 		Assert.assertFalse(Authentication.login(false, "wrongUsername", "correctPassword"));
 	}
 
 	@Test
-	public void loginTestWrongPassword() {
+	public void loginTestWrongPassword() throws IllegalAccessException, ClassNotFoundException, InstantiationException {
 		Assert.assertFalse(Authentication.login(false, "correctUsername", "wrongPassword"));
 	}
 
 	@Test
-	public void logoutCorrectCookie() {
-		Assert.assertTrue(Authentication.logout("aaaa"));
+	public void logoutCorrectCookie() throws IllegalAccessException, ClassNotFoundException, InstantiationException {
+		Assert.assertTrue(Authentication.logout(false,"aaaa"));
 	}
 
 	@Test
-	public void logoutWrongCookie() {
-		Assert.assertFalse(Authentication.logout("b"));
+	public void logoutWrongCookie() throws IllegalAccessException, ClassNotFoundException, InstantiationException {
+		Assert.assertFalse(Authentication.logout(false,"b"));
 	}
 }

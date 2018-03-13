@@ -13,7 +13,7 @@ import static javax.swing.text.html.HTML.Tag.HEAD;
 public class DatabaseTest {
     boolean onlineOrOffline = false;
 	@Before
-	public void setUp() throws NamingException {
+	public void setUp() throws NamingException, IllegalAccessException, InstantiationException, ClassNotFoundException {
 		SqlConnect conn = new SqlConnect();
 		try {
 			PreparedStatement statement1 = conn.connect(false).prepareStatement("drop table if exists users");
@@ -32,7 +32,7 @@ public class DatabaseTest {
 	}
 	
 	@Test
-	public void addUserTest() throws NamingException {
+	public void addUserTest() throws NamingException, IllegalAccessException, ClassNotFoundException, InstantiationException {
 		String email = "tom@doctor.com";
 		String password = "password";
 		Database.createUser(onlineOrOffline,"Doctor", "Tom", email, password);
@@ -40,7 +40,7 @@ public class DatabaseTest {
 	}
 
 	@Test
-	public void deleteUserTest() {
+	public void deleteUserTest() throws IllegalAccessException, ClassNotFoundException, InstantiationException {
 		String email = "tom@doctor.com";
 		SqlConnect conn = new SqlConnect();
 		try {
@@ -62,7 +62,7 @@ public class DatabaseTest {
 
 	
 	@Test
-	public void loginUserTest() throws NamingException {
+	public void loginUserTest() throws NamingException, IllegalAccessException, ClassNotFoundException, InstantiationException {
 		String email = "tom@doctor.com";
 		String password = "password";
 		Database.createUser(false,"Doctor", "Tom", email, password);
@@ -70,12 +70,12 @@ public class DatabaseTest {
 	}
 	
 	@Test
-	public void getRoleFromCookieWhenCookieExists() {
+	public void getRoleFromCookieWhenCookieExists() throws IllegalAccessException, ClassNotFoundException, InstantiationException {
 		Assert.assertEquals("Doctor", Database.getRoleFromCookie(false,"a"));
 	}
 	
 	@Test
-	public void getRoleFromCookieWhenCookieDoesNotExist() {
+	public void getRoleFromCookieWhenCookieDoesNotExist() throws IllegalAccessException, ClassNotFoundException, InstantiationException {
 		Assert.assertNull(Database.getRoleFromCookie(false,"doesNotExist"));
 	}
 }

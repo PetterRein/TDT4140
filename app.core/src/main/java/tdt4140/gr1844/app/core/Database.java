@@ -14,7 +14,7 @@ import javax.naming.NamingException;
 import java.sql.ResultSet;
 
 public class Database {
-	public static void createUser(boolean onlineOrOffline, String role, String name, String email, String password) throws NamingException {
+	public static void createUser(boolean onlineOrOffline, String role, String name, String email, String password) throws NamingException, IllegalAccessException, InstantiationException, ClassNotFoundException {
 		String salt = BCrypt.gensalt();
 		String passwordHash = BCrypt.hashpw(password, salt);
 		try {
@@ -26,6 +26,7 @@ public class Database {
 			statement1.setString(4, passwordHash);
 			statement1.setString(5, salt);
 			statement1.executeUpdate();
+			conn.disconnect();
 		}
 		catch(SQLException e) {
 			System.err.println(e);
@@ -37,19 +38,20 @@ public class Database {
 	 * @param email The e-mail address of the user to be deleted.
 	 * @param onlineOrOffline If the database is online or offline.
 	 */
-	public static void deleteUser(String email, boolean onlineOrOffline) throws NamingException {
+	public static void deleteUser(String email, boolean onlineOrOffline) throws NamingException, IllegalAccessException, InstantiationException, ClassNotFoundException {
         try {
             SqlConnect conn = new SqlConnect();
             PreparedStatement statement = conn.connect(onlineOrOffline).prepareStatement("delete from users where email=?");
             statement.setString(1, email);
             statement.executeUpdate();
+            conn.disconnect();
         }
         catch(SQLException e) {
             System.err.println(e);
         }
 	}
 	
-	public static String getRoleFromCookie(boolean onlineOrOffline, String cookie) {
+	public static String getRoleFromCookie(boolean onlineOrOffline, String cookie) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
 		String role = null;
 		try {
 			SqlConnect conn = new SqlConnect();

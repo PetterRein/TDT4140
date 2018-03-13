@@ -17,9 +17,9 @@ public class Authentication {
 	* @param password The user's password.
 	* @return {@code true} if the login was successful, {@code false} otherwise.
 	*/
-	public static boolean login(boolean onlineOrOffline, String username, String password) {
-		SqlConnect conn = new SqlConnect();
+	public static boolean login(boolean onlineOrOffline, String username, String password) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
 		try {
+            SqlConnect conn = new SqlConnect();
 			/**if (onlineOrOffline){
 				PreparedStatement statement1 = conn.connect(onlineOrOffline).prepareStatement("drop table if exists users");
 				statement1.execute();
@@ -74,14 +74,14 @@ public class Authentication {
 		return false;
 	}
 	
-	public static Boolean logout(String cookie) {
-		SqlConnect conn = new SqlConnect();
+	public static Boolean logout(boolean onlineOrOffline, String cookie) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
 		try {
-			System.out.println(cookie);
-			PreparedStatement statement = conn.connect(false).prepareStatement("update users set cookie = null where cookie = ?");
+			SqlConnect conn = new SqlConnect();
+			PreparedStatement statement = conn.connect(onlineOrOffline).prepareStatement("update users set cookie = null where cookie = ?");
 			statement.setString(1, cookie);
 			int updateCheck = statement.executeUpdate();
 			//Returns true if something was updated
+			conn.disconnect();
 			return updateCheck > 0;
 		}
 		catch(SQLException e) {
