@@ -30,39 +30,50 @@ public class WebCalls {
         System.out.println("Testing 1 - Send Http GET request");
         http.sendGet();
         System.out.println("\nTesting 2 - Send Http POST request");
-        boolean e = http.loginUser("Tom","tom@doctor.com","password");
+        String[] e = http.loginUser("Tom","tom@doctor.com","password");
         System.out.println("GAD:" + e);
     }
 
-    public boolean loginUser(String userName, String userPassword, String userEmail ) throws Exception {
-        int response = sendPost("user", userName, userPassword, userEmail, null, null);
-        if (response == 200){
-            return true;
-        }
-        else{
-            return false;
-        }
-
-    }
-
-    public boolean addUser(String userName, String userPassword, String userEmail, String role, String yourSID) throws Exception {
-        int response = sendPost("addUser", userName, userPassword, userEmail, role,yourSID);
-        if (response == 200){
-            return true;
+    public String decodeResponseCode(int responseCode){
+        if (responseCode == 200){
+            return "1";
         }
         else {
-            return false;
+            return "-1";
         }
     }
 
-    public boolean logoutUser(String userName, String yourSID) throws Exception {
-        int response = sendPost("logout", userName, null, null, null, yourSID);
-        if (response == 200){
+    public boolean stringToBoolean(String trueFalse){
+        if (trueFalse.equals("1")){
             return true;
         }
-        else {
+        else if (trueFalse.equals("-1")){
             return false;
         }
+        else {
+            System.out.println("Someting wrong on trueFalseParse");
+            return false;
+        }
+    }
+
+    public String[] loginUser(String userName, String userPassword, String userEmail ) throws Exception {
+        String[] response = sendPost("loginUser", userName, userPassword, userEmail, null, null);
+        System.out.println(response[0]);
+        System.out.println(response[1]);
+        response[2] = decodeResponseCode(Integer.parseInt(response[0]));
+        return response;
+    }
+
+    public String[] addUser(String userName, String userPassword, String userEmail, String role, String yourSID) throws Exception {
+        String[] response = sendPost("addUser", userName, userPassword, userEmail, role,yourSID);
+        response[2] = decodeResponseCode(Integer.parseInt(response[0]));
+        return response;
+    }
+
+    public String[] logoutUser(String userName, String yourSID) throws Exception {
+        String[] response = sendPost("logout", userName, null, null, null, yourSID);
+        response[2] = decodeResponseCode(Integer.parseInt(response[0]));
+        return response;
     }
 
     // HTTP GET request
@@ -86,11 +97,12 @@ public class WebCalls {
     }
 
     // HTTP POST request
-    public int sendPost(String whatPost, String userName, String userPassword, String userEmail, String userRole,  String yourSID) throws Exception {
+    public String[] sendPost(String whatPost, String userName, String userPassword, String userEmail, String userRole,  String yourSID) throws Exception {
         //Setter urlen vi sender til
         String url = "http://localhost:8080/webapi";
         //Lager en cleint object og lagrer en cookie lagrings object til det
         CloseableHttpClient client;
+
         // Cookie nedover fungerer ikke
         CookieStore httpCookieStore = new BasicCookieStore();
         BasicClientCookie cookie = new BasicClientCookie("JSESSIONID", "123");
@@ -114,9 +126,9 @@ public class WebCalls {
 
 
         //Legger ved parameterene til Posten
-        if(whatPost.equals("user")) {
+        if(whatPost.equals("loginUser")) {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("user", userEmail));
+            params.add(new BasicNameValuePair("loginUser", userEmail));
             params.add(new BasicNameValuePair("password", userPassword));
             httpPost.setEntity(new UrlEncodedFormEntity(params));
         }
@@ -150,7 +162,11 @@ public class WebCalls {
         //Skriver ut informasjonen fra svaret
         System.out.println("\nSending 'POST' request to URL : " + url);
         Header[] ws = response.getAllHeaders();
+        String cookie1 = "non";
         for (Header header: ws){
+            if (header.getName().equals("cookie")){
+                cookie1 = header.getValue();
+            }
             System.out.println(header);
         }
         System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
@@ -160,8 +176,11 @@ public class WebCalls {
         while ((line = rd.readLine()) != null) {
             result.append(line);
         }
-        System.out.println(result.toString());
-        System.out.println(response.getEntity().getContent());
-        return response.getStatusLine().getStatusCode();
+        String a = "";
+        a = a + response.getStatusLine().getStatusCode();
+        String[] returnVars = new String[3];
+        returnVars[0] = a;
+        returnVars[1] = cookie1;
+        return returnVars;
     }
 }

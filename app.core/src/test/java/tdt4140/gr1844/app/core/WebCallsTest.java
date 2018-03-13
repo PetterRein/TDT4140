@@ -22,19 +22,26 @@ public class WebCallsTest {
         }
     }
 
-    /**@Test
+    @Test
     public void testLoginUser(){
         try {
-            Assert.assertTrue(http.loginUser("Tom", "password", "tom@doctor.com"));
+            for (int i = 0; i < 100; i++){
+                String[] response = http.loginUser("Per", "33", "admin@o.com");
+            }
+            String[] response = http.loginUser("Per", "33", "admin@o.com");
+            Boolean falseOrTrue = http.stringToBoolean(response[2]);
+            Assert.assertTrue(falseOrTrue);
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }**/
+    }
 
     /**@Test
     public void testAddUser() throws Exception {
         try {
-            Assert.assertTrue(http.addUser("Pål2", "Pal123", "pal@online.no", "Pasient", "41"));
+            String[] response = http.addUser("Pål2", "Pal123", "pal@online.no", "Pasient", "41");
+            Boolean falseOrTrue = http.stringToBoolean(response[2]);
+            Assert.assertTrue(falseOrTrue);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -43,8 +50,37 @@ public class WebCallsTest {
     /**@Test
     public void testLogoutUser() throws Exception{
         try {
-            Assert.assertTrue(http.logoutUser("Doctor", "mFEMvsQIjQ7tiAy2qVJ4Wdq87zBWdy4V"));
+            String[] response = http.logoutUser("Doctor", "mFEMvsQIjQ7tiAy2qVJ4Wdq87zBWdy4V");
+            Boolean falseOrTrue = http.stringToBoolean(response[2]);
+            Assert.assertTrue(falseOrTrue);
         } catch (Exception e){
+            e.printStackTrace();
+        }
+    }**/
+
+    /**@Test
+    public void testLoginLogoutUser() throws Exception{
+        try {
+            String[] response = http.loginUser("Per", "33", "admin@o.com");
+            String[] response1 = http.logoutUser("Doctor", response[1]);
+            Boolean falseOrTrue = http.stringToBoolean(response1[2]);
+            Assert.assertTrue(falseOrTrue);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }**/
+
+    /**@Test
+    public void testLoginAdminAddUserLogoutLoginUserLogoutUser() throws Exception{
+        try {
+            String[] response = http.loginUser("Per", "33", "admin@o.com");
+            String[] response1 = http.addUser("Pål2", "Pal123", "pal@online.no", "Pasient", response[1]);
+            String[] response2 = http.logoutUser("Doctor", response[1]);
+            String[] response3 = http.loginUser("Pål2", "Pal123", "pal@online.no");
+            String[] response4 = http.logoutUser("Doctor", response3[1]);
+            Boolean falseOrTrue = http.stringToBoolean(response4[2]);
+            Assert.assertTrue(falseOrTrue);
+        }catch (Exception e){
             e.printStackTrace();
         }
     }**/
