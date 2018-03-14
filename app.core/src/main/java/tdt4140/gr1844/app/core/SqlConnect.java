@@ -15,30 +15,6 @@ public class SqlConnect {
     // init connection object
     // connect database
     Connection connection = null;
-    /**
-     * jdbc:sqlite:sample.db
-     * public Connection connect1() throws ClassNotFoundException, SQLException {
-        //Class.forName("org.sqlite.JDBC");
-        System.out.println("TEst203");
-        //DriverManager.registerDriver(new JDBC());
-        java.nio.file.Path currentRelativePath = Paths.get("");
-        String s = currentRelativePath.toAbsolutePath().toString();
-        System.out.println("Current relative path is: " + s);
-        System.out.println("Working Directory = " + System.getProperty("user.dir"));
-        System.out.println("test89");
-        if (connection == null) {
-            try {
-                System.out.println("Test0123");
-                connection = DriverManager.getConnection(DATABASE_URL);
-                System.out.println("Test23124");
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return connection;
-       return connection;
-    }**/
-
     // disconnect database
     public void disconnect() {
         if (connection != null) {
@@ -52,13 +28,6 @@ public class SqlConnect {
     }
 
     public Connection connect(boolean onlineOrOffline) throws NamingException, SQLException, ClassNotFoundException, IllegalAccessException, InstantiationException {
-        if (onlineOrOffline){
-            Context ctx = new InitialContext();
-            DataSource ds = (DataSource)ctx.lookup("java:comp/env/jdbc/sample");
-            connection = ds.getConnection();
-            return connection;
-        }
-        else{
             Class.forName("org.sqlite.JDBC").newInstance();
             //DriverManager.registerDriver(new JDBC());
             java.nio.file.Path currentRelativePath = Paths.get("");
@@ -75,7 +44,6 @@ public class SqlConnect {
             return connection;
 
         }
-    }
 }
 /**
  /**

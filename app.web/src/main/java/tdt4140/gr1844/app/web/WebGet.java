@@ -12,6 +12,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -22,6 +23,13 @@ import java.util.Arrays;
 import java.util.Enumeration;
 
 public class WebGet extends HttpServlet {
+    /**
+     *
+     * @param request Forespørsel som kommer fra en client, inneholder en standart nettverks forespørsel
+     * @param response Svar som vi sender tilbake til client pga requesten vi fikk inn
+     * @throws ServletException
+     * @throws IOException
+     */
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         SqlConnect conn = new SqlConnect();
         Boolean onlineOrOffline = false;
@@ -122,9 +130,6 @@ public class WebGet extends HttpServlet {
         else if (Arrays.toString(request.getParameterValues("doctorID")) != "null"){
             System.out.println("Para DoctorID: " + Arrays.toString(request.getParameterValues("doctorID")));
         }
-        else if(Arrays.toString(request.getParameterValues("delPatient")) != "null"){
-            System.out.println("Para DelPatient: " + Arrays.toString(request.getParameterValues("delPatient")));
-        }
         else if(Arrays.toString(request.getParameterValues("addUser")) != "null"){
             System.out.println("Para AddUserRole: " + Arrays.toString(request.getParameterValues("role")));
             try {
@@ -165,7 +170,7 @@ public class WebGet extends HttpServlet {
         else if (Arrays.toString(request.getParameterValues("delUser")) != "null"){
             try {
                 if (Database.getRoleFromCookie(onlineOrOffline, sid).equals("Admin") && sid != null){
-                    String user = Arrays.toString(request.getParameterValues("user"));
+                    String user = Arrays.toString(request.getParameterValues("delUser"));
                     try {
                         Database.deleteUser(user, onlineOrOffline);
                     } catch (NamingException e) {
@@ -184,20 +189,55 @@ public class WebGet extends HttpServlet {
                 e.printStackTrace();
             }
         }
-        else if(Arrays.toString(request.getParameterValues("delDoctor")) != "null"){
-            System.out.println("Para DelDoctor: " + Arrays.toString(request.getParameterValues("delDoctor")));
-        }
-        else if(Arrays.toString(request.getParameterValues("addPatient")) != "null"){
-            System.out.println("Para AddPatient: " + Arrays.toString(request.getParameterValues("addPatient")));
-        }
         else if(Arrays.toString(request.getParameterValues("delDataPatient")) != "null"){
-            System.out.println("Para DelDataPatient: " + Arrays.toString(request.getParameterValues("delDataPatient")));
+            String username = Arrays.toString(request.getParameterValues("User")).replaceAll("[\\[\\]]", "");
+
+            if (Arrays.toString(request.getParameterValues("IntArray")) != "null"){
+                String[] intStringArray = request.getParameterValues("intArray");
+               /**
+                * convert to intStringArray to int[]
+                */
+           }
+           else if(Arrays.toString(request.getParameterValues("delAllData")) != "null"){
+               if (Database.delAllDataFromUser(onlineOrOffline, username)){
+                   response.setStatus(200);
+               }
+               else {
+                   response.setStatus(401);
+               }
+           }
+           else if(Arrays.toString(request.getParameterValues("delData")) != null){
+               String dataString = Arrays.toString(request.getParameterValues("dataKey")).replaceAll("[\\[\\]]", "");
+               int dataInt = Integer.parseInt(dataString);
+               if (Database.delDataFromUser(onlineOrOffline, dataInt, username)){
+                   response.setStatus(200);
+               }
+               else {
+                   response.setStatus(401);
+               }
+            }
+            response.setStatus(401);
         }
         else if(Arrays.toString(request.getParameterValues("addDataPatient")) != "null"){
+            String username = Arrays.toString(request.getParameterValues("User")).replaceAll("[\\[\\]]", "");
+            String data = Arrays.toString(request.getParameterValues("data")).replaceAll("[\\[\\]]", "");
+
             System.out.println("Para AddDataPatient: " + Arrays.toString(request.getParameterValues("addDataPatient")));
+            if(Database.addDataToUser(onlineOrOffline,data,username)){
+                response.setStatus(200);
+            }
+            else {
+                response.setStatus(401);
+            }
         }
         else if(Arrays.toString(request.getParameterValues("getPatientData")) != "null"){
+            String username = Arrays.toString(request.getParameterValues("User")).replaceAll("[\\[\\]]", "");
             System.out.println("Para PatientData: " + Arrays.toString(request.getParameterValues("getPatientData")));
+            ArrayList<String> data = Database.getAllDataOnUser(onlineOrOffline, username);
+            /**
+             * Lage payload av Data
+             */
+            response.setStatus(200);
         }
         else{
             System.out.println("Unown Parameter");

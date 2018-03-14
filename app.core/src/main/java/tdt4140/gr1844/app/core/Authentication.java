@@ -20,21 +20,6 @@ public class Authentication {
 	public static boolean login(boolean onlineOrOffline, String username, String password) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
 		try {
             SqlConnect conn = new SqlConnect();
-			/**if (onlineOrOffline){
-				PreparedStatement statement1 = conn.connect(onlineOrOffline).prepareStatement("drop table if exists users");
-				statement1.execute();
-				PreparedStatement statement2 = conn.connect(onlineOrOffline).prepareStatement("create table users(id int, email varchar(64), passwordHash varchar(2000), salt varchar(256), primary key(id))");
-				statement2.execute();
-				String username1 = "correctEmail";
-				String password1 = "correctPassword";
-				String salt1 = BCrypt.gensalt();
-				String passwordHash1 = BCrypt.hashpw(password1, salt1);
-				PreparedStatement statement3 = conn.connect(onlineOrOffline).prepareStatement("insert into users values(1, ?, ?, ?)");
-				statement3.setString(1, username1);
-				statement3.setString(2, passwordHash1);
-				statement3.setString(3, salt1);
-				statement3.execute();
-			}**/
 			//Retrieve the users salt from the database, if no salt is returned then the user doesn't exist
 			PreparedStatement saltRetrieval = conn.connect(onlineOrOffline).prepareStatement("select salt from users where email = ?");
 			saltRetrieval.setString(1, username);
@@ -73,7 +58,16 @@ public class Authentication {
 		}
 		return false;
 	}
-	
+
+	/**
+	 *
+	 * @param onlineOrOffline Check if the database is online or offline.
+	 * @param cookie Session Cookie for the user that we want to logout
+	 * @return {@code true} if the login was successful, {@code false} otherwise.
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
+	 * @throws ClassNotFoundException
+	 */
 	public static Boolean logout(boolean onlineOrOffline, String cookie) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
 		try {
 			SqlConnect conn = new SqlConnect();
