@@ -36,9 +36,18 @@ public class WebGet extends HttpServlet {
         String sid = null;
         Cookie[] r = request.getCookies();
         //Check if there is a session cookie provided
-    	for (Cookie c: r){
-            System.out.println("CookieValue " + c.getName());
-            sid = c.getName();
+        if(r != null){
+            for (Cookie c: r){
+                if (c.getName().equals("SID")){
+                    System.out.println("CookieValue " + c.getName());
+                    sid = c.getValue();
+                }
+                else {
+                    System.out.println("CookieValue " + c.getName());
+                    sid = c.getName();
+                    break;
+                }
+            }
         }
 
         ArrayList<String> parameterNames = new ArrayList<String>();
