@@ -142,7 +142,9 @@ public class WebGet extends HttpServlet {
         else if(Arrays.toString(request.getParameterValues("addUser")) != "null"){
             System.out.println("Para AddUserRole: " + Arrays.toString(request.getParameterValues("role")));
             try {
-                if (Database.getRoleFromCookie(onlineOrOffline,sid).equals("Admin") && sid != null) {
+                String eee = Database.getRoleFromCookie(onlineOrOffline,sid);
+                System.out.println(eee);
+                if (eee != null && Database.getRoleFromCookie(onlineOrOffline,sid).equals("Admin") && sid != null) {
                     String role = Arrays.toString(request.getParameterValues("role"));
                     role = role.replaceAll("[\\[\\]]", "");
                     if (role.equals("Doctor") || role.equals("Patient") || role.equals("Doktor") || role.equals("Pasient")) {
