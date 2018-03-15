@@ -6,6 +6,7 @@ target
 *.iml
 out
 .settings
+classes
 
 // temporary generated files
 *.xtendbin

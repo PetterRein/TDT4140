@@ -34,17 +34,17 @@ public class WebGet extends HttpServlet {
         SqlConnect conn = new SqlConnect();
         Boolean onlineOrOffline = false;
         String sid = null;
-        Cookie[] r = request.getCookies();
+        Cookie[] cookies = request.getCookies();
         //Check if there is a session cookie provided
-        if(r != null){
-            for (Cookie c: r){
-                if (c.getName().equals("SID")){
-                    System.out.println("CookieValue " + c.getName());
-                    sid = c.getValue();
+        if(cookies != null){
+            for (Cookie cookie: cookies){
+                if (cookie.getName().equals("SID")){
+                    System.out.println("CookieValue " + cookie.getName());
+                    sid = cookie.getValue();
                 }
                 else {
-                    System.out.println("CookieValue " + c.getName());
-                    sid = c.getName();
+                    System.out.println("CookieValue " + cookie.getName());
+                    sid = cookie.getName();
                     break;
                 }
             }
@@ -56,14 +56,16 @@ public class WebGet extends HttpServlet {
             String parameterName = (String) enumeration.nextElement();
             parameterNames.add(parameterName);
         }
-        for (String r3 : parameterNames){
-            System.out.println("Paramet: " + r3);
+        for (String parametere : parameterNames){
+            System.out.println("Paramet: " + parametere);
         }
 
         if (Arrays.toString(request.getParameterValues("loginUser")) != "null"){
             //Run sjekk om user og passord er i databasem
-            String username = Arrays.toString(request.getParameterValues("loginUser")).replaceAll("[\\[\\]]", "");
-            String password = Arrays.toString(request.getParameterValues("password")).replaceAll("[\\[\\]]", "");
+            String username = Arrays.toString(request.getParameterValues("loginUser"));
+            username = username.substring(1, username.length()-1);
+            String password = Arrays.toString(request.getParameterValues("password"));
+            password = password.substring(1, password.length()-1);
             Boolean loginCheck = null;
             try {
                 loginCheck = Authentication.login(onlineOrOffline,username, password);
@@ -146,15 +148,15 @@ public class WebGet extends HttpServlet {
                 System.out.println(eee);
                 if (eee != null && Database.getRoleFromCookie(onlineOrOffline,sid).equals("Admin") && sid != null) {
                     String role = Arrays.toString(request.getParameterValues("role"));
-                    role = role.replaceAll("[\\[\\]]", "");
+                    role = role.substring(1, role.length()-1);;
                     if (role.equals("Doctor") || role.equals("Patient") || role.equals("Doktor") || role.equals("Pasient")) {
                         System.out.println("We good? Code God?");
                         String userName = Arrays.toString(request.getParameterValues("userName"));
-                        userName = userName.replaceAll("[\\[\\]]", "");
+                        userName = userName.substring(1, userName.length()-1);
                         String userEmail = Arrays.toString(request.getParameterValues("userEmail"));
-                        userEmail = userEmail.replaceAll("[\\[\\]]", "");
+                        userEmail = userEmail.substring(1, userEmail.length()-1);
                         String userPassword = Arrays.toString(request.getParameterValues("userPassword"));
-                        userPassword = userPassword.replaceAll("[\\[\\]]", "");
+                        userPassword = userPassword.substring(1, userPassword.length()-1);;
                         try {
                             Database.createUser(onlineOrOffline,role , userName, userEmail, userPassword);
                         } catch (NamingException e) {
@@ -201,7 +203,8 @@ public class WebGet extends HttpServlet {
             }
         }
         else if(Arrays.toString(request.getParameterValues("delDataPatient")) != "null"){
-            String username = Arrays.toString(request.getParameterValues("User")).replaceAll("[\\[\\]]", "");
+            String username = Arrays.toString(request.getParameterValues("User"));
+            username = username.substring(1, username.length()-1);
 
             if (Arrays.toString(request.getParameterValues("IntArray")) != "null"){
                 String[] intStringArray = request.getParameterValues("intArray");
@@ -218,7 +221,8 @@ public class WebGet extends HttpServlet {
                }
            }
            else if(Arrays.toString(request.getParameterValues("delData")) != null){
-               String dataString = Arrays.toString(request.getParameterValues("dataKey")).replaceAll("[\\[\\]]", "");
+               String dataString = Arrays.toString(request.getParameterValues("dataKey"));
+               dataString = dataString.substring(1, dataString.length()-1);
                int dataInt = Integer.parseInt(dataString);
                if (Database.delDataFromUser(onlineOrOffline, dataInt, username)){
                    response.setStatus(200);
@@ -230,8 +234,10 @@ public class WebGet extends HttpServlet {
             response.setStatus(401);
         }
         else if(Arrays.toString(request.getParameterValues("addDataPatient")) != "null"){
-            String username = Arrays.toString(request.getParameterValues("User")).replaceAll("[\\[\\]]", "");
-            String data = Arrays.toString(request.getParameterValues("data")).replaceAll("[\\[\\]]", "");
+            String username = Arrays.toString(request.getParameterValues("User"));
+            username = username.substring(1, username.length()-1);
+            String data = Arrays.toString(request.getParameterValues("data"));
+            data = data.substring(1, data.length()-1);
 
             System.out.println("Para AddDataPatient: " + Arrays.toString(request.getParameterValues("addDataPatient")));
             if(Database.addDataToUser(onlineOrOffline,data,username)){
@@ -242,7 +248,8 @@ public class WebGet extends HttpServlet {
             }
         }
         else if(Arrays.toString(request.getParameterValues("getPatientData")) != "null"){
-            String username = Arrays.toString(request.getParameterValues("User")).replaceAll("[\\[\\]]", "");
+            String username = Arrays.toString(request.getParameterValues("User"));
+            username = username.substring(1, username.length()-1);
             System.out.println("Para PatientData: " + Arrays.toString(request.getParameterValues("getPatientData")));
             ArrayList<String> data = Database.getAllDataOnUser(onlineOrOffline, username);
             /**
@@ -251,8 +258,8 @@ public class WebGet extends HttpServlet {
             response.setStatus(200);
         }
         else{
-            System.out.println("Unown Parameter");
-            response.setStatus(9999);
+            System.out.println("Unknown Parameter");
+            response.setStatus(405);
         }
     }
 
