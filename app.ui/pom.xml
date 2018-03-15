@@ -27,6 +27,11 @@
             <artifactId>tdt4140-gr1844.app.core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>tdt4140-gr1844</groupId>
+            <artifactId>tdt4140-gr1844.app.client</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <parent>
         <groupId>tdt4140-gr1844</groupId>

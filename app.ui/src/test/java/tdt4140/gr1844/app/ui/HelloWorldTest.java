@@ -7,12 +7,12 @@ import java.net.URL;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import tdt4140.gr1844.app.core.HelloWorld;
+import tdt4140.gr1844.app.client.HelloWorld;
 
 
 public class HelloWorldTest {
 
-    private tdt4140.gr1844.app.core.HelloWorld app;
+    private tdt4140.gr1844.app.client.HelloWorld app;
 
     @Before
     public void setUp() {
