@@ -17,6 +17,7 @@
         <module>app.core</module>
         <module>app.ui</module>
         <module>app.web</module>
+        <module>app.client</module>
     </modules>
     <dependencies>
         <dependency>

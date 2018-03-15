@@ -7,6 +7,13 @@
     <groupId>tdt4140-gr1844</groupId>
     <artifactId>tdt4140-gr1844.app.web</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+
+    <parent>
+        <groupId>tdt4140-gr1844</groupId>
+        <artifactId>tdt4140-gr1844</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
     <dependencies>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -39,11 +46,7 @@
         </dependency>
 
     </dependencies>
-    <parent>
-        <groupId>tdt4140-gr1844</groupId>
-        <artifactId>tdt4140-gr1844</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
-    </parent>
+
 
     <profiles>
         <profile>
