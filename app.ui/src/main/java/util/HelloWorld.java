@@ -1,4 +1,4 @@
-package tdt4140.gr1844.app.client;
+package util;
 
 public class HelloWorld {
 
