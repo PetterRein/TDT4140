@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import util.WebCalls;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -37,6 +38,8 @@ public class LogginnController {
 
     @FXML
     ListView listViewTekniskeBehov;
+
+    String sessionCookie = "123";
 
     private boolean hasInitialized = false;
 
@@ -170,7 +173,10 @@ public class LogginnController {
 
 
     @FXML
-    private void goHome() {
+    private void goHome() throws Exception {
+        WebCalls webCalls = new WebCalls();
+
+        webCalls.logoutUser("Denne brukes ikke", sessionCookie);
         Main main = new Main();
         main.changeView(rootPane, "Main");
     }
