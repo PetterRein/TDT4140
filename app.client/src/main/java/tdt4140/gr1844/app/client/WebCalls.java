@@ -1,4 +1,4 @@
-package util;
+package tdt4140.gr1844.app.client;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;

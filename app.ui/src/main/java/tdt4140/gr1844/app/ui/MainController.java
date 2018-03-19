@@ -5,7 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import util.WebCalls;
+import tdt4140.gr1844.app.client.WebCalls;
 
 import java.util.ArrayList;
 
@@ -43,7 +43,7 @@ public class MainController {
     @FXML
     public void sendLogin() throws Exception {
         String role = "Lege";
-        WebCalls webCalls = new util.WebCalls();
+        WebCalls webCalls = new WebCalls();
         String epost = Brukernavn.getText();
         String passord = Passord.getText();
         String [] response = webCalls.loginUser("Dette gjør ingenting...", epost, passord);

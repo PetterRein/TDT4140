@@ -3,14 +3,12 @@ package tdt4140.gr1844.app.client;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import util.WebCalls;
 
 public class WebCallsTest {
     private WebCalls http;
 
     @Before
-    public void setUp() {
-        http = new WebCalls();
+    public void setUp() { http = new WebCalls();
     }
 
     @Test

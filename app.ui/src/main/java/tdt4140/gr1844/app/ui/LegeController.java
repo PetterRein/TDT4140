@@ -8,7 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import util.WebCalls;
+import tdt4140.gr1844.app.client.WebCalls;
 
 import java.util.ArrayList;
 import java.util.List;

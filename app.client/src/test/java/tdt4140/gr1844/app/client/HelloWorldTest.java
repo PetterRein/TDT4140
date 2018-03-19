@@ -9,9 +9,7 @@ public class HelloWorldTest {
     private HelloWorld app;
 
     @Before
-    public void setUp() {
-        app = new HelloWorld();
-    }
+    public void setUp() { app = new HelloWorld(); }
 
 
     @Test
