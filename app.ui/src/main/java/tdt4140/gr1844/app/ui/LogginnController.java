@@ -175,7 +175,7 @@ public class LogginnController {
     private void goHome() throws Exception {
         WebCalls webCalls = new WebCalls();
 
-        webCalls.logoutUser("Denne brukes ikke", sessionCookie);
+        //webCalls.logoutUser("Denne brukes ikke", sessionCookie);
         Main main = new Main();
         main.changeView(rootPane, "Main");
     }

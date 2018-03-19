@@ -87,7 +87,7 @@ public class LegeController {
     private void goHome() throws Exception {
         WebCalls webCalls = new WebCalls();
         String sessionCookie = "123";
-        webCalls.logoutUser("Denne brukes ikke", sessionCookie);
+        //webCalls.logoutUser("Denne brukes ikke", sessionCookie);
         Main main = new Main();
         main.changeView(rootPane, "Main");
     }
