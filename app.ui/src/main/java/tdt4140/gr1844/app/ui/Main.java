@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 public class Main extends Application {
     /**public static List<Festival> festivals;
@@ -17,6 +18,8 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
+    ArrayList<String> response = new ArrayList<>();
 
     @Override
     public void start(Stage primaryStage) throws Exception {

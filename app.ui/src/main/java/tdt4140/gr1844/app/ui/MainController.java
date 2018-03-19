@@ -23,11 +23,15 @@ public class MainController {
     @FXML
     private TextField Passord;
 
+    @FXML
+    private TextField faillogginn;
+
     Main a = new Main();
 
     @FXML
     public void initialize() {
         // Denne funksjonen blir kjørt automatisk når alt er loadet og du kan begynne å endre på ting.
+        faillogginn.setVisible(false); //Setter failed boksen til borte så lenge vi ikke skifter den
         addLoginElementsInList();
     }
 
@@ -38,15 +42,27 @@ public class MainController {
 
     @FXML
     public void sendLogin() throws Exception {
+        String role = "Lege";
         WebCalls webCalls = new util.WebCalls();
         String epost = Brukernavn.getText();
         String passord = Passord.getText();
         String [] response = webCalls.loginUser("Dette gjør ingenting...", epost, passord);
         if (response[1] == "200"){
-            a.changeView(rootPane, "Logginn");
+            if (role.equals("Lege")){
+                a.changeView(rootPane, "Lege");
+            }
+            else if (role.equals("Pasient")){
+                a.changeView(rootPane, "Logginn");
+            }
+
         }
         else {
-            a.changeView(rootPane, "Logginn");
+            if (role.equals("Lege")){
+                a.changeView(rootPane, "Lege");
+            }
+            else if (role.equals("Pasient")){
+                a.changeView(rootPane, "Logginn");
+            }
         }
 
     }

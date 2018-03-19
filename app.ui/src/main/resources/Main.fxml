@@ -11,7 +11,7 @@
     <children>
         <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <top>
-                <Label fx:id="titleLabel" text="Concert Management" textAlignment="CENTER" BorderPane.alignment="CENTER">
+                <Label fx:id="titleLabel" text="Hvordan føler du deg?" textAlignment="CENTER" BorderPane.alignment="CENTER">
                     <BorderPane.margin>
                         <Insets />
                     </BorderPane.margin>
@@ -25,9 +25,10 @@
                <children>
                   <TextField fx:id="Brukernavn" layoutX="565.0" layoutY="184.0" />
                   <TextField fx:id="Passord" layoutX="565.0" layoutY="222.0" />
-                  <Button layoutX="609.0" layoutY="303.0" mnemonicParsing="false" text="Logg inn" onAction="#sendLogin"/>
+                  <Button layoutX="609.0" layoutY="303.0" mnemonicParsing="false" onAction="#sendLogin" text="Logg inn" />
                   <Label layoutX="493.0" layoutY="187.0" text="Brukernavn:" />
                   <Label layoutX="510.0" layoutY="226.0" text="Passord:" />
+                  <TextField fx:id="faillogginn" layoutX="490.0" layoutY="337.0" prefHeight="23.0" prefWidth="308.0" text="Logg inn feil, enten feil epost eller passord" />
                </children>
             </AnchorPane>
          </center>
