@@ -6,9 +6,7 @@ import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.*;
 import org.apache.http.cookie.ClientCookie;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -33,12 +31,9 @@ public class WebCalls {
         WebCalls http = new WebCalls();
         System.out.println("Testing 1 - Send Http GET request");
         http.sendGet();
-        System.out.println("\nTesting 2 - Send Http POST request");
-        String[] e = http.loginUser("Tom","tom@doctor.com","password");
-        System.out.println("GAD:" + e);
     }
 
-    public String decodeResponseCode(int responseCode){
+    /**public String decodeResponseCode(int responseCode){
         if (responseCode == 200){
             return "1";
         }
@@ -78,7 +73,7 @@ public class WebCalls {
         String[] response = sendPost("logout", userName, null, null, null, yourSID);
         response[2] = decodeResponseCode(Integer.parseInt(response[0]));
         return response;
-    }
+    }**/
 
     // HTTP GET request
     public int sendGet() throws Exception {
@@ -118,7 +113,37 @@ public class WebCalls {
         }
     }
 
-    public String[] sendPost(String whatPost, String userName, String userPassword, String userEmail, String userRole,  String yourSID) throws Exception {
+    public CloseableHttpResponse sendGet(String endpoint) throws IOException {
+        String url = "http://localhost:8080/webapi/" + endpoint;
+        try (CloseableHttpClient httpclient = HttpClients.createDefault()){
+            HttpGet request = new HttpGet(url);
+            request.addHeader("User-Agent", USER_AGENT);
+            CloseableHttpResponse response = httpclient.execute(request);
+            return response;
+        }
+    }
+
+    public CloseableHttpResponse sendPut(String endpoint) throws IOException {
+        String url = "http://localhost:8080/webapi/" + endpoint;
+        try (CloseableHttpClient httpclient = HttpClients.createDefault()){
+            HttpPut request = new HttpPut(url);
+            request.addHeader("User-Agent", USER_AGENT);
+            CloseableHttpResponse response = httpclient.execute(request);
+            return response;
+        }
+    }
+
+    public CloseableHttpResponse sendDel(String endpoint) throws IOException {
+        String url = "http://localhost:8080/webapi/" + endpoint;
+        try (CloseableHttpClient httpclient = HttpClients.createDefault()){
+            HttpDelete request = new HttpDelete(url);
+            request.addHeader("User-Agent", USER_AGENT);
+            CloseableHttpResponse response = httpclient.execute(request);
+            return response;
+        }
+    }
+
+    /**public String[] sendPost(String whatPost, String userName, String userPassword, String userEmail, String userRole,  String yourSID) throws Exception {
         //Setter urlen vi sender til
         String url = "http://localhost:8080/webapi";
         //Lager en cleint object og lagrer en cookie lagrings object til det
@@ -203,5 +228,5 @@ public class WebCalls {
         returnVars[0] = a;
         returnVars[1] = cookie1;
         return returnVars;
-    }
+    }**/
 }
