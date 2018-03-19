@@ -11,26 +11,23 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name = "patientData")
+@Table(name = "user")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"createdAt", "updatedAt"},
         allowGetters = true)
-public class PatientData implements Serializable {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
-    private Long patientId;
-
-    @NotNull
-    private Long doctorId;
+    private Long role;
 
     @NotBlank
-    private String extraInfo;
+    private String name;
 
-    @NotNull
-    private Integer rating;
+    @NotBlank
+    private String email;
 
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -45,41 +42,30 @@ public class PatientData implements Serializable {
     // Getters and Setters ...
 
 
-    public Long getId() {
-        return id;
+    public Long getRole() {
+        return role;
     }
 
-    public Long getPatientId() {
-        return patientId;
+    public void setRole(Long role) {
+        this.role = role;
     }
 
-    public void setPatientId(Long patientId) {
-        this.patientId = patientId;
+    public String getName() {
+        return name;
     }
 
-    public Long getDoctorId() {
-        return doctorId;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setDoctorId(Long doctorId) {
-        this.doctorId = doctorId;
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
 
-    public String getExtraInfo() {
-        return extraInfo;
-    }
-
-    public void setExtraInfo(String extraInfo) {
-        this.extraInfo = extraInfo;
-    }
-
-    public Integer getRating() {
-        return rating;
-    }
-
-    public void setRating(Integer rating) {
-        this.rating = rating;
-    }
 
 }
