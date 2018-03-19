@@ -5,6 +5,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import tdt4140.gr1844.app.client.WebCalls;
 
 import java.util.ArrayList;
@@ -46,8 +48,9 @@ public class MainController {
         WebCalls webCalls = new WebCalls();
         String epost = Brukernavn.getText();
         String passord = Passord.getText();
-        String [] response = webCalls.loginUser("Dette gjør ingenting...", epost, passord);
-        if (response[1] == "200"){
+        CloseableHttpResponse response = webCalls.sendLoginPost(epost, passord);
+        int responseCode = response.getStatusLine().getStatusCode();
+        if (responseCode == 200){
             if (role.equals("Lege")){
                 a.changeView(rootPane, "Lege");
             }

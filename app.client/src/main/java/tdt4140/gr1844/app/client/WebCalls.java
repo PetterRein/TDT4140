@@ -1,10 +1,10 @@
 package tdt4140.gr1844.app.client;
 
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
+import org.apache.http.*;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -13,16 +13,20 @@ import org.apache.http.cookie.ClientCookie;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
 public class WebCalls {
     private final String USER_AGENT = "Mozilla/5.0";
+    private final String urlServer = "https://localhost:3000/api/";
 
     public static void main(String[] args) throws Exception {
 
@@ -96,7 +100,24 @@ public class WebCalls {
         return response.getStatusLine().getStatusCode();
     }
 
-    // HTTP POST request
+
+    public CloseableHttpResponse sendLoginPost(String userEmail, String userPassword) throws IOException {
+        try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
+            List<NameValuePair> form = new ArrayList<>();
+            form.add(new BasicNameValuePair("userEmail", userEmail));
+            form.add(new BasicNameValuePair("userPassword", userPassword));
+            UrlEncodedFormEntity entity = new UrlEncodedFormEntity(form, Consts.UTF_8);
+
+            HttpPost httpPost = new HttpPost(urlServer + "login");
+            httpPost.setEntity(entity);
+            System.out.println("Executing request " + httpPost.getRequestLine());
+
+            // Create a custom response handler
+            CloseableHttpResponse response = httpclient.execute(httpPost);
+            return response;
+        }
+    }
+
     public String[] sendPost(String whatPost, String userName, String userPassword, String userEmail, String userRole,  String yourSID) throws Exception {
         //Setter urlen vi sender til
         String url = "http://localhost:8080/webapi";
