@@ -6,10 +6,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import tdt4140.gr1844.app.client.WebCalls;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +38,10 @@ public class LegeController {
 
     @FXML
     private Label score;
+
+    @FXML
+    private TextArea Tilbakemedling;
+
 
     String pasientNameString = "artistName";
 
@@ -110,5 +116,12 @@ public class LegeController {
         pasientName.setText("Pasient: " + pasientName1);
         sisteFoling.setText("Siste føling: " + sisteFoling1);
         score.setText("Score: " + score1);
+    }
+
+    @FXML
+    private void sendTilbakeMedling() throws IOException {
+        WebCalls webCalls = new WebCalls();
+        ObservableList<CharSequence> tilbakemedling = Tilbakemedling.getParagraphs();
+        webCalls.sendPut("/tilbakemedling", "123");
     }
 }

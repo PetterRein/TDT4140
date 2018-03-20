@@ -5,6 +5,7 @@
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -80,6 +81,9 @@
                                         </HBox>
                                     </children>
                                 </VBox>
+                        <Label layoutX="174.0" layoutY="127.0" text="Skriv tilbakemedling til Administrator" />
+                        <Button layoutX="383.0" layoutY="342.0" mnemonicParsing="false" text="Send tilbakemedlingen" onAction="#sendTilbakeMedling"/>
+                        <TextArea id="Tilbakemedling" layoutX="381.0" layoutY="127.0" prefHeight="200.0" prefWidth="200.0" />
                             </children>
                             <BorderPane.margin>
                                 <Insets left="25.0" />
