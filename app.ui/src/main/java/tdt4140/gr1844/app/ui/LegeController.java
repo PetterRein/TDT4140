@@ -46,10 +46,12 @@ public class LegeController {
         pasient1.add("Per");
         pasient1.add("03.03.2018");
         pasient1.add("-10");
+        pasient1.add("5");
         ArrayList<String> pasient2 = new ArrayList<>();
         pasient2.add("Tor");
         pasient2.add("04.04.2018");
         pasient2.add("5");
+        pasient2.add("4");
         pasients.add(pasient1);
         pasients.add(pasient2);
         // Denne funksjonen blir kjørt automatisk når alt er loadet og du kan begynne å endre på ting.
@@ -70,7 +72,18 @@ public class LegeController {
 
     private Button createButton(ArrayList<String> pasient) {
         final Button button = new Button(pasient.get(0));
-        button.setId("offerButt");
+        if (pasient.size() > 1){
+            int scoreAverage = Integer.parseInt(pasient.get(3));
+            if(scoreAverage < 5){
+                button.setId("dangerPasient");
+            }
+            else {
+                button.setId("offerButt");
+            }
+        }
+        else {
+            button.setId("offerButt");
+        }
         button.setPrefSize(200, 20);
         button.setOnMouseClicked(event -> {
             try {
