@@ -96,7 +96,32 @@ public class WebCalls {
     }
 
 
-    public CloseableHttpResponse sendLoginPost(String userEmail, String userPassword) throws IOException {
+    public CloseableHttpResponse sendPostArray(String userEmail, String userPassword, String yourSID, ArrayList<ArrayList<String>> params) throws IOException {
+        try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
+            List<NameValuePair> form = new ArrayList<>();
+            form.add(new BasicNameValuePair("userEmail", userEmail));
+            form.add(new BasicNameValuePair("userPassword", userPassword));
+            for (int i = 0; i < params.size(); i++){
+                form.add(new BasicNameValuePair(params.get(i).get(0),params.get(i).get(1)));
+            }
+            UrlEncodedFormEntity entity = new UrlEncodedFormEntity(form, Consts.UTF_8);
+            HttpPost httpPost = new HttpPost(urlServer + "login");
+            if (yourSID != null){
+                httpPost.addHeader("cookie", yourSID);
+            }
+            else {
+                httpPost.addHeader("cookie", "12312309084214");
+            }
+            httpPost.setEntity(entity);
+            System.out.println("Executing request " + httpPost.getRequestLine());
+            // Create a custom response handler
+            CloseableHttpResponse response = httpclient.execute(httpPost);
+            return response;
+        }
+    }
+
+
+    public CloseableHttpResponse sendLoginPost(String userEmail, String userPassword, String yourSID) throws IOException {
         try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
             List<NameValuePair> form = new ArrayList<>();
             form.add(new BasicNameValuePair("userEmail", userEmail));
@@ -104,6 +129,13 @@ public class WebCalls {
             UrlEncodedFormEntity entity = new UrlEncodedFormEntity(form, Consts.UTF_8);
 
             HttpPost httpPost = new HttpPost(urlServer + "login");
+            if (yourSID != null){
+                httpPost.addHeader("cookie", yourSID);
+            }
+            else {
+                httpPost.addHeader("cookie", "12312309084214");
+            }
+
             httpPost.setEntity(entity);
             System.out.println("Executing request " + httpPost.getRequestLine());
 
@@ -113,31 +145,46 @@ public class WebCalls {
         }
     }
 
-    public CloseableHttpResponse sendGet(String endpoint) throws IOException {
-        String url = "http://localhost:8080/webapi/" + endpoint;
+    public CloseableHttpResponse sendGet(String endpoint, String yourSID) throws IOException {
         try (CloseableHttpClient httpclient = HttpClients.createDefault()){
-            HttpGet request = new HttpGet(url);
+            HttpGet request = new HttpGet(urlServer + endpoint);
             request.addHeader("User-Agent", USER_AGENT);
+            if (yourSID != null){
+                request.addHeader("cookie", yourSID);
+            }
+            else {
+                request.addHeader("cookie", "12312309084214");
+            }
             CloseableHttpResponse response = httpclient.execute(request);
             return response;
         }
     }
 
-    public CloseableHttpResponse sendPut(String endpoint) throws IOException {
-        String url = "http://localhost:8080/webapi/" + endpoint;
+    public CloseableHttpResponse sendPut(String endpoint, String yourSID) throws IOException {
         try (CloseableHttpClient httpclient = HttpClients.createDefault()){
-            HttpPut request = new HttpPut(url);
+            HttpPut request = new HttpPut(urlServer + endpoint);
             request.addHeader("User-Agent", USER_AGENT);
+            if (yourSID != null){
+                request.addHeader("cookie", yourSID);
+            }
+            else {
+                request.addHeader("cookie", "12312309084214");
+            }
             CloseableHttpResponse response = httpclient.execute(request);
             return response;
         }
     }
 
-    public CloseableHttpResponse sendDel(String endpoint) throws IOException {
-        String url = "http://localhost:8080/webapi/" + endpoint;
+    public CloseableHttpResponse sendDel(String endpoint, String yourSID) throws IOException {
         try (CloseableHttpClient httpclient = HttpClients.createDefault()){
-            HttpDelete request = new HttpDelete(url);
+            HttpDelete request = new HttpDelete(urlServer + endpoint);
             request.addHeader("User-Agent", USER_AGENT);
+            if (yourSID != null){
+                request.addHeader("cookie", yourSID);
+            }
+            else {
+                request.addHeader("cookie", "12312309084214");
+            }
             CloseableHttpResponse response = httpclient.execute(request);
             return response;
         }

@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LogginnController {
+public class PasientController {
     @FXML
     private CheckBox remove2017;
 

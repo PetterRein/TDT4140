@@ -8,6 +8,8 @@ import javafx.scene.layout.VBox;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import tdt4140.gr1844.app.client.WebCalls;
+import tdt4140.gr1844.app.ui.Main;
+
 
 import java.util.ArrayList;
 
@@ -48,7 +50,8 @@ public class MainController {
         WebCalls webCalls = new WebCalls();
         String epost = Brukernavn.getText();
         String passord = Passord.getText();
-        CloseableHttpResponse response = webCalls.sendLoginPost(epost, passord);
+        /**CloseableHttpResponse response = webCalls.sendLoginPost(epost, passord, a.SessionCookie);
+        a.updateCookie(response);
         int responseCode = response.getStatusLine().getStatusCode();
         if (responseCode == 200){
             if (role.equals("Lege")){
@@ -66,8 +69,8 @@ public class MainController {
             else if (role.equals("Pasient")){
                 a.changeView(rootPane, "Logginn");
             }
-        }
-
+        }**/
+        a.changeView(rootPane, "Lege");
     }
 
     public void addButtons(ArrayList<String> jobs, VBox jobsList) {
