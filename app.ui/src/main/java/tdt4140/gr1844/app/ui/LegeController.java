@@ -121,7 +121,7 @@ public class LegeController {
     @FXML
     private void sendTilbakeMedling() throws IOException {
         WebCalls webCalls = new WebCalls();
-        ObservableList<CharSequence> tilbakemedling = Tilbakemedling.getParagraphs();
-        webCalls.sendPut("/tilbakemedling", "123");
+        String tilbakemedling = Tilbakemedling.getText();
+        //webCalls.sendPut("/tilbakemedling", "123");
     }
 }
