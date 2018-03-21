@@ -91,6 +91,68 @@ public class Database {
 		return role;
 	}
 
+	public static ArrayList<String> getDoctorsPatients(boolean onlineOrOffline, String email)throws NamingException, IllegalAccessException, InstantiationException, ClassNotFoundException{
+        SqlConnect conn = new SqlConnect();
+        try {
+            PreparedStatement statement1 = conn.connect(onlineOrOffline).prepareStatement("select id from users where email = ?");
+            statement1.setString(1, email);
+            statement1.execute();
+            ResultSet rs1 = statement1.getResultSet();
+            rs1.next();
+            int doctorId = rs1.getInt("id");
+
+            PreparedStatement statement2 = conn.connect(onlineOrOffline).prepareStatement("select distinct name, email from PatientData\n" +
+                    "inner join users on id = patientID\n" +
+                    "where doctorID = ?");
+            statement2.setInt(1, doctorId);
+            statement2.execute();
+            ResultSet rs2 = statement2.getResultSet();
+            ArrayList<String> result = new ArrayList<String>();
+            while(rs2.next()) {
+                result.add(rs2.getString("name") + " " + rs2.getString("email"));
+            }
+            return result;
+        }
+        catch(SQLException e) {
+
+        }
+        catch(NamingException e) {
+
+        }
+        return null;
+    }
+
+    public static ArrayList<String> getNLastPatientData(boolean onlineOrOffline, String email, int n)throws NamingException, IllegalAccessException, InstantiationException, ClassNotFoundException{
+        SqlConnect conn = new SqlConnect();
+        try {
+            PreparedStatement statement1 = conn.connect(onlineOrOffline).prepareStatement("select id from users where email = ?");
+            statement1.setString(1, email);
+            statement1.execute();
+            ResultSet rs1 = statement1.getResultSet();
+            rs1.next();
+            int patientId = rs1.getInt("id");
+
+            PreparedStatement statement2 = conn.connect(onlineOrOffline).prepareStatement("select rating, extraInfo, timestamp from PatientData\n" +
+                    "where patientId = ? limit ?");
+            statement2.setInt(1, patientId);
+            statement2.setInt(2, n);
+            statement2.execute();
+            ResultSet rs2 = statement2.getResultSet();
+            ArrayList<String> result = new ArrayList<String>();
+            while(rs2.next()) {
+                result.add(rs2.getString("rating") + " " + rs2.getString("extraInfo") + " " + rs2.getTimestamp("timeStamp").toString());
+            }
+            return result;
+        }
+        catch(SQLException e) {
+
+        }
+        catch(NamingException e) {
+
+        }
+        return null;
+    }
+
 	/**
 	 *
 	 * @param onlineOrOffline Check if database is online or offline
