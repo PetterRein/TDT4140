@@ -39,7 +39,7 @@ public class PasientController {
     ListView listViewTekniskeBehov;
 
     @FXML
-    private  TextField føleFelt;
+    private  TextField foleFelt;
 
 
 
@@ -120,7 +120,7 @@ public class PasientController {
 
     @FXML
     private void sendFoling() throws Exception {
-        String data = føleFelt.getText();
+        String data = foleFelt.getText();
         main.client.sendUserData(data);
     }
 
