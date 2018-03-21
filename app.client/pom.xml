@@ -55,4 +55,21 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>gitlab-ci</id>
+            <activation>
+                <property>
+                    <name>gitlab-ci</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <!--
+            <properties>
+                <skip-ui-tests>true</skip-ui-tests>
+            </properties>
+             -->
+        </profile>
+    </profiles>
 </project>

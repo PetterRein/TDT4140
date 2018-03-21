@@ -1,7 +1,7 @@
 package com.HAYF.validator;
 
 
-import com.HAYF.model.User;
+/**import com.HAYF.model.User;
 import com.HAYF.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -40,4 +40,4 @@ public class UserValidator implements Validator {
             errors.rejectValue("passwordConfirm", "Diff.userForm.passwordConfirm");
         }
     }
-}
+}**/

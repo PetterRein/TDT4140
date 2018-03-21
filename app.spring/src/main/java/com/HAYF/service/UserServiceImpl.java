@@ -1,6 +1,6 @@
 package com.HAYF.service;
 
-import com.HAYF.model.User;
+/**import com.HAYF.model.User;
 import com.HAYF.repository.RoleRepository;
 import com.HAYF.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,4 +29,4 @@ public class UserServiceImpl implements UserService {
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
-}
+}**/

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+<AnchorPane fx:id="rootPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="720.0" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0" styleClass="background" stylesheets="@MainTheme.css" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tdt4140.gr1844.app.ui.MainController">
+    <children>
+        <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <top>
+                <Label fx:id="titleLabel" text="Hvordan føler du deg?" textAlignment="CENTER" BorderPane.alignment="CENTER">
+                    <BorderPane.margin>
+                        <Insets />
+                    </BorderPane.margin>
+                    <padding>
+                        <Insets top="50.0" />
+                    </padding>
+                </Label>
+            </top>
+         <center>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <TextField fx:id="Brukernavn" layoutX="565.0" layoutY="184.0" />
+                  <TextField fx:id="Passord" layoutX="565.0" layoutY="222.0" />
+                  <Button layoutX="609.0" layoutY="303.0" mnemonicParsing="false" onAction="#sendLogin" text="Logg inn" />
+                  <Label layoutX="493.0" layoutY="187.0" text="Brukernavn:" />
+                  <Label layoutX="510.0" layoutY="226.0" text="Passord:" />
+                  <TextField fx:id="faillogginn" layoutX="490.0" layoutY="337.0" prefHeight="23.0" prefWidth="308.0" text="Logg inn feil, enten feil epost eller passord" />
+               </children>
+            </AnchorPane>
+         </center>
+        </BorderPane>
+    </children>
+</AnchorPane>

@@ -1,5 +1,5 @@
 package com.HAYF.controller;
-
+/**
 import com.HAYF.exception.ResourceNotFoundException;
 import com.HAYF.model.User;
 import com.HAYF.repository.UserRepository;
@@ -115,4 +115,4 @@ public class UserController {
 
         return ResponseEntity.ok().build();
     }
-}
+}**/

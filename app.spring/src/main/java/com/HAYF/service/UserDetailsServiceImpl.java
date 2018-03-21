@@ -1,6 +1,6 @@
 package com.HAYF.service;
 
-
+/**
 import com.HAYF.model.Role;
 import com.HAYF.model.User;
 import com.HAYF.repository.UserRepository;
@@ -34,4 +34,4 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);
     }
-}
+}**/

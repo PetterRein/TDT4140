@@ -1,6 +1,6 @@
 package com.HAYF.service;
 
-import org.slf4j.Logger;
+/**import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -42,4 +42,4 @@ public class SecurityServiceImpl implements SecurityService{
             logger.debug(String.format("Auto login %s successfully!", username));
         }
     }
-}
+}**/
