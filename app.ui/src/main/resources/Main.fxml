@@ -23,8 +23,8 @@
          <center>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <TextField fx:id="Brukernavn" layoutX="565.0" layoutY="184.0" />
-                  <TextField fx:id="Passord" layoutX="565.0" layoutY="222.0" />
+                  <TextField fx:id="Brukernavn" layoutX="565.0" layoutY="184.0" text="admin@o.com" />
+                  <TextField fx:id="Passord" layoutX="565.0" layoutY="222.0" text="33" />
                   <Button layoutX="609.0" layoutY="303.0" mnemonicParsing="false" onAction="#sendLogin" text="Logg inn" />
                   <Label layoutX="493.0" layoutY="187.0" text="Brukernavn:" />
                   <Label layoutX="510.0" layoutY="226.0" text="Passord:" />

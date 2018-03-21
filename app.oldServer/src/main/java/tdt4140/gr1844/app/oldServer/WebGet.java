@@ -89,6 +89,8 @@ public class WebGet extends HttpServlet {
                     conn.disconnect();
                     response.addCookie(myCookie);
                     response.setHeader("cookie", cookieValue);
+                    String role = Database.getRoleFromCookie(onlineOrOffline,cookieValue);
+                    response.setHeader("role",role);
                     response.setStatus(200);
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -109,6 +111,7 @@ public class WebGet extends HttpServlet {
         }
         else if(Arrays.toString(request.getParameterValues("logout")) != "null"){
             System.out.println("Logout: ");
+            System.out.println("SID: " + sid);
             if (sid != null) {
                 try {
                     if (Authentication.logout(onlineOrOffline, sid)) {
@@ -146,9 +149,9 @@ public class WebGet extends HttpServlet {
             try {
                 String eee = Database.getRoleFromCookie(onlineOrOffline,sid);
                 System.out.println(eee);
-                if (eee != null && Database.getRoleFromCookie(onlineOrOffline,sid).equals("Admin") && sid != null) {
+                if (eee != null && sid != null && (Database.getRoleFromCookie(onlineOrOffline,sid).equals("Admin") || Database.getRoleFromCookie(onlineOrOffline,sid).equals("Doctor"))) {
                     String role = Arrays.toString(request.getParameterValues("role"));
-                    role = role.substring(1, role.length()-1);;
+                    role = role.substring(1, role.length()-1);
                     if (role.equals("Doctor") || role.equals("Patient") || role.equals("Doktor") || role.equals("Pasient")) {
                         System.out.println("We good? Code God?");
                         String userName = Arrays.toString(request.getParameterValues("userName"));
@@ -181,9 +184,12 @@ public class WebGet extends HttpServlet {
             }
         }
         else if (Arrays.toString(request.getParameterValues("delUser")) != "null"){
+            System.out.println("Vi sletter bruker=?");
             try {
-                if (Database.getRoleFromCookie(onlineOrOffline, sid).equals("Admin") && sid != null){
+                if (Database.getRoleFromCookie(onlineOrOffline, sid).equals("Admin") || Database.getRoleFromCookie(onlineOrOffline, sid).equals("Doctor")&& sid != null){
+                    System.out.println("Admin eller Lege sletter Pasient");
                     String user = Arrays.toString(request.getParameterValues("delUser"));
+                    user = user.substring(1, user.length()-1);
                     try {
                         Database.deleteUser(user, onlineOrOffline);
                     } catch (NamingException e) {
@@ -238,7 +244,6 @@ public class WebGet extends HttpServlet {
             username = username.substring(1, username.length()-1);
             String data = Arrays.toString(request.getParameterValues("data"));
             data = data.substring(1, data.length()-1);
-
             System.out.println("Para AddDataPatient: " + Arrays.toString(request.getParameterValues("addDataPatient")));
             if(Database.addDataToUser(onlineOrOffline,data,username)){
                 response.setStatus(200);

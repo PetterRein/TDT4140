@@ -25,6 +25,9 @@ import java.util.List;
 public class WebCalls {
     private final String USER_AGENT = "Mozilla/5.0";
     private final String urlServer = "https://localhost:3000/api/";
+    private String sessionCookie = "123";
+    private String userEmail = "per";
+    private String userRole = "pasient";
 
     public static void main(String[] args) throws Exception {
 
@@ -33,46 +36,91 @@ public class WebCalls {
         http.sendGet();
     }
 
-    public String decodeResponseCode(int responseCode){
-     if (responseCode == 200){
-     return "1";
-     }
-     else {
-     return "-1";
-     }
+    private void updateSessionCookie(String cookie){
+        if (!cookie.equals(null)){
+            sessionCookie = cookie;
+            System.out.println(sessionCookie);
+        }
+        else {
+            System.out.println("Something worng with sessionCookie");
+        }
+    }
+
+    private void updateUserRole(String role){
+        if (!userRole.equals(null)){
+            userRole = role;
+        }
+        else {
+            System.out.println("Something worng with userRole");
+        }
+    }
+
+    private void updateUserEmailSession(String email){
+        if (!email.equals(null)){
+            userEmail = email;
+        }
+        else {
+            System.out.println("Something worng with userEmail");
+        }
+    }
+
+    public String decodeResponseCode(int responseCode){ 
+        if (responseCode == 200){
+            return "1";
+        }
+        else {
+            return "-1";
+        }
      }
 
      public boolean stringToBoolean(String trueFalse){
-     if (trueFalse.equals("1")){
-     return true;
-     }
-     else if (trueFalse.equals("-1")){
-     return false;
-     }
-     else {
-     System.out.println("Someting wrong on trueFalseParse");
-     return false;
-     }
-     }
+         if (trueFalse.equals("1")){
+            return true;
+         } 
+         else if (trueFalse.equals("-1")){ 
+             return false; 
+         } 
+         else { 
+             System.out.println("Someting wrong on trueFalseParse");
+             return false; 
+         } 
+    }
 
      public String[] loginUser(String userName, String userPassword, String userEmail ) throws Exception {
-     String[] response = sendPost("loginUser", userName, userPassword, userEmail, null, null);
-     System.out.println(response[0]);
-     System.out.println(response[1]);
-     response[2] = decodeResponseCode(Integer.parseInt(response[0]));
-     return response;
+         String[] response = sendPost("loginUser", userName, userPassword, userEmail, null);
+         for (int i = 0; i < response.length; i++){
+             System.out.println(response[i]);
+         }
+         System.out.println(response[0]);
+         System.out.println(response[1]);
+         updateUserEmailSession(userEmail);
+         updateSessionCookie(response[1]);
+         response[2] = decodeResponseCode(Integer.parseInt(response[0]));
+         return response;
      }
 
-     public String[] addUser(String userName, String userPassword, String userEmail, String role, String yourSID) throws Exception {
-     String[] response = sendPost("addUser", userName, userPassword, userEmail, role,yourSID);
-     response[2] = decodeResponseCode(Integer.parseInt(response[0]));
-     return response;
+     public String[] addUser(String userName, String userPassword, String userEmail, String role) throws Exception {
+         String[] response = sendPost("addUser", userName, userPassword, userEmail, role);
+         response[2] = decodeResponseCode(Integer.parseInt(response[0]));
+         return response;
      }
 
-     public String[] logoutUser(String userName, String yourSID) throws Exception {
-     String[] response = sendPost("logout", userName, null, null, null, yourSID);
-     response[2] = decodeResponseCode(Integer.parseInt(response[0]));
-     return response;
+     public String[] logoutUser() throws Exception {
+        String[] response = sendPost("logout", userEmail, null, null, null);
+        response[2] = decodeResponseCode(Integer.parseInt(response[0]));
+        return response;
+     }
+
+     public String[] sendUserData(String data) throws Exception{
+         String[] response = sendPost("addDataPatient", data,null,userEmail,null);
+         response[2] = decodeResponseCode(Integer.parseInt(response[0]));
+         return response;
+     }
+
+     public String[] delUser(String userEmail) throws Exception{
+         String[] response = sendPost("delUser", null,null,userEmail,null);
+         response[2] = decodeResponseCode(Integer.parseInt(response[0]));
+         return response;
      }
 
     // HTTP GET request
@@ -96,7 +144,7 @@ public class WebCalls {
     }
 
 
-    public CloseableHttpResponse sendPostArray(String userEmail, String userPassword, String yourSID, ArrayList<ArrayList<String>> params) throws IOException {
+    public CloseableHttpResponse sendPostArray(String userEmail, String userPassword, ArrayList<ArrayList<String>> params) throws IOException {
         try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
             List<NameValuePair> form = new ArrayList<>();
             form.add(new BasicNameValuePair("userEmail", userEmail));
@@ -106,8 +154,8 @@ public class WebCalls {
             }
             UrlEncodedFormEntity entity = new UrlEncodedFormEntity(form, Consts.UTF_8);
             HttpPost httpPost = new HttpPost(urlServer + "login");
-            if (yourSID != null){
-                httpPost.addHeader("cookie", yourSID);
+            if (sessionCookie != null){
+                httpPost.addHeader("cookie", sessionCookie);
             }
             else {
                 httpPost.addHeader("cookie", "12312309084214");
@@ -121,7 +169,7 @@ public class WebCalls {
     }
 
 
-    public CloseableHttpResponse sendLoginPost(String userEmail, String userPassword, String yourSID) throws IOException {
+    public CloseableHttpResponse sendLoginPost(String userEmail, String userPassword) throws IOException {
         try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
             List<NameValuePair> form = new ArrayList<>();
             form.add(new BasicNameValuePair("userEmail", userEmail));
@@ -129,8 +177,8 @@ public class WebCalls {
             UrlEncodedFormEntity entity = new UrlEncodedFormEntity(form, Consts.UTF_8);
 
             HttpPost httpPost = new HttpPost(urlServer + "login");
-            if (yourSID != null){
-                httpPost.addHeader("cookie", yourSID);
+            if (sessionCookie != null){
+                httpPost.addHeader("cookie", sessionCookie);
             }
             else {
                 httpPost.addHeader("cookie", "12312309084214");
@@ -145,12 +193,12 @@ public class WebCalls {
         }
     }
 
-    public CloseableHttpResponse sendGet(String endpoint, String yourSID) throws IOException {
+    public CloseableHttpResponse sendGet(String endpoint) throws IOException {
         try (CloseableHttpClient httpclient = HttpClients.createDefault()){
             HttpGet request = new HttpGet(urlServer + endpoint);
             request.addHeader("User-Agent", USER_AGENT);
-            if (yourSID != null){
-                request.addHeader("cookie", yourSID);
+            if (sessionCookie != null){
+                request.addHeader("cookie", sessionCookie);
             }
             else {
                 request.addHeader("cookie", "12312309084214");
@@ -160,12 +208,12 @@ public class WebCalls {
         }
     }
 
-    public CloseableHttpResponse sendPut(String endpoint, String yourSID) throws IOException {
+    public CloseableHttpResponse sendPut(String endpoint) throws IOException {
         try (CloseableHttpClient httpclient = HttpClients.createDefault()){
             HttpPut request = new HttpPut(urlServer + endpoint);
             request.addHeader("User-Agent", USER_AGENT);
-            if (yourSID != null){
-                request.addHeader("cookie", yourSID);
+            if (sessionCookie != null){
+                request.addHeader("cookie", sessionCookie);
             }
             else {
                 request.addHeader("cookie", "12312309084214");
@@ -175,12 +223,12 @@ public class WebCalls {
         }
     }
 
-    public CloseableHttpResponse sendDel(String endpoint, String yourSID) throws IOException {
+    public CloseableHttpResponse sendDel(String endpoint) throws IOException {
         try (CloseableHttpClient httpclient = HttpClients.createDefault()){
             HttpDelete request = new HttpDelete(urlServer + endpoint);
             request.addHeader("User-Agent", USER_AGENT);
-            if (yourSID != null){
-                request.addHeader("cookie", yourSID);
+            if (sessionCookie != null){
+                request.addHeader("cookie", sessionCookie);
             }
             else {
                 request.addHeader("cookie", "12312309084214");
@@ -190,7 +238,7 @@ public class WebCalls {
         }
     }
 
-    public String[] sendPost(String whatPost, String userName, String userPassword, String userEmail, String userRole,  String yourSID) throws Exception {
+    public String[] sendPost(String whatPost, String userName, String userPassword, String userEmail, String userRole) throws Exception {
      //Setter urlen vi sender til
      String url = "http://localhost:8080/webapi";
      //Lager en cleint object og lagrer en cookie lagrings object til det
@@ -198,7 +246,7 @@ public class WebCalls {
 
      // Cookie nedover fungerer ikke
      CookieStore httpCookieStore = new BasicCookieStore();
-     BasicClientCookie cookie = new BasicClientCookie("JSESSIONID", "123");
+     BasicClientCookie cookie = new BasicClientCookie("JSESSIONID", sessionCookie);
      cookie.setDomain("moholt.me");
      cookie.setPath("/");
      cookie.setAttribute(ClientCookie.PATH_ATTR, "/");
@@ -210,40 +258,51 @@ public class WebCalls {
      HttpPost httpPost = new HttpPost(url);
 
      //men denne cookie'n gjør det
-     if (yourSID != null){
-     httpPost.addHeader("cookie", yourSID);
+     if (sessionCookie != null){
+         httpPost.addHeader("cookie", sessionCookie);
      }
      else {
-     httpPost.addHeader("cookie", "12312309084214");
+        httpPost.addHeader("cookie", "12312309084214");
      }
 
 
      //Legger ved parameterene til Posten
      if(whatPost.equals("loginUser")) {
-     List<NameValuePair> params = new ArrayList<NameValuePair>();
-     params.add(new BasicNameValuePair("loginUser", userEmail));
-     params.add(new BasicNameValuePair("password", userPassword));
-     httpPost.setEntity(new UrlEncodedFormEntity(params));
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("loginUser", userEmail));
+        params.add(new BasicNameValuePair("password", userPassword));
+        httpPost.setEntity(new UrlEncodedFormEntity(params));
      }
      else if(whatPost.equals("addUser")){
-     List<NameValuePair> params = new ArrayList<NameValuePair>();
-     params.add(new BasicNameValuePair("addUser", userName));
-     params.add(new BasicNameValuePair("userName", userName));
-     params.add(new BasicNameValuePair("userPassword", userPassword));
-     params.add(new BasicNameValuePair("userEmail", userEmail));
-     params.add(new BasicNameValuePair("role", userRole));
-     httpPost.setEntity(new UrlEncodedFormEntity(params));
-
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("addUser", userName));
+        params.add(new BasicNameValuePair("userName", userName));
+        params.add(new BasicNameValuePair("userPassword", userPassword));
+        params.add(new BasicNameValuePair("userEmail", userEmail));
+        params.add(new BasicNameValuePair("role", userRole));
+        httpPost.setEntity(new UrlEncodedFormEntity(params));
      }
      else if (whatPost.equals("logout")){
-     List<NameValuePair> params = new ArrayList<NameValuePair>();
-     params.add(new BasicNameValuePair("logout", userName));
-     httpPost.setEntity(new UrlEncodedFormEntity(params));
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("logout", userName));
+        httpPost.setEntity(new UrlEncodedFormEntity(params));
+     }
+     else if(whatPost.equals("addDataPatient")){
+         List<NameValuePair> params = new ArrayList<NameValuePair>();
+         params.add(new BasicNameValuePair("addDataPatient", userName));
+         params.add(new BasicNameValuePair("User", userEmail));
+         params.add(new BasicNameValuePair("data", userName));
+         httpPost.setEntity(new UrlEncodedFormEntity(params));
+     }
+     else if (whatPost.equals("delUser")){
+         List<NameValuePair> params = new ArrayList<NameValuePair>();
+         params.add(new BasicNameValuePair("delUser", userEmail));
+         httpPost.setEntity(new UrlEncodedFormEntity(params));
      }
      else {
-     List<NameValuePair> urlParameters = new ArrayList<>();
-     urlParameters.add(new BasicNameValuePair(userName, userPassword));
-     httpPost.setEntity(new UrlEncodedFormEntity(urlParameters));
+        List<NameValuePair> urlParameters = new ArrayList<>();
+        urlParameters.add(new BasicNameValuePair(userName, userPassword));
+        httpPost.setEntity(new UrlEncodedFormEntity(urlParameters));
      }
 
      //Sender og lagrer svaret
@@ -256,24 +315,29 @@ public class WebCalls {
      System.out.println("\nSending 'POST' request to URL : " + url);
      Header[] ws = response.getAllHeaders();
      String cookie1 = "non";
+     String role1 = "non";
      for (Header header: ws){
-     if (header.getName().equals("cookie")){
-     cookie1 = header.getValue();
-     }
-     System.out.println(header);
+        if (header.getName().equals("cookie")){
+            cookie1 = header.getValue();
+        }
+        if (header.getName().equals("role")){
+            role1 = header.getValue();
+        }
+        System.out.println(header);
      }
      System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
      BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
      StringBuffer result = new StringBuffer();
      String line = "";
      while ((line = rd.readLine()) != null) {
-     result.append(line);
+        result.append(line);
      }
      String a = "";
      a = a + response.getStatusLine().getStatusCode();
-     String[] returnVars = new String[3];
-     returnVars[0] = a;
-     returnVars[1] = cookie1;
-     return returnVars;
+        String[] returnVars = new String[4];
+        returnVars[0] = a;
+        returnVars[1] = cookie1;
+        returnVars[3] = role1;
+        return returnVars;
      }
 }

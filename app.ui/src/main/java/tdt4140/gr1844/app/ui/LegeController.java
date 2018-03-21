@@ -3,10 +3,7 @@ package tdt4140.gr1844.app.ui;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import tdt4140.gr1844.app.client.WebCalls;
@@ -41,12 +38,31 @@ public class LegeController {
 
     @FXML
     private TextArea Tilbakemedling;
+	
+	@FXML
+	private TextField nyBrukerNavn;
+	
+	@FXML
+	private TextField nyBrukerEpost;
+	
+	@FXML
+	private TextField nyBrukerPassord;
+	
+	@FXML
+	private TextField slettBrukerEpost;
 
+    Main main = new Main();
 
     String pasientNameString = "artistName";
 
     @FXML
     public void initialize() {
+
+        /**TODO
+         * Finne alle pasienter til en lege og legge de i pasients
+         * Regne ut gjennomsnittet til hver bruker for å sette det også
+         * Gjør sånn at index 0 er Navn på Pasient, index 1 er siste rapport, index 2 er gjennomsnitt og index 3 til n er følinger så kan jeg fikse resten
+         */
         ArrayList<ArrayList<String>> pasients = new ArrayList<>();
         ArrayList<String> pasient1 = new ArrayList<>();
         pasient1.add("Per");
@@ -104,10 +120,7 @@ public class LegeController {
 
     @FXML
     private void goHome() throws Exception {
-        WebCalls webCalls = new WebCalls();
-        String sessionCookie = "123";
-        //webCalls.logoutUser("Denne brukes ikke", sessionCookie);
-        Main main = new Main();
+        main.client.logoutUser();
         main.changeView(rootPane, "Main");
     }
 
@@ -119,8 +132,24 @@ public class LegeController {
     }
 
     @FXML
+    private void addNewPasient() throws Exception {
+        String userEmail = nyBrukerEpost.getText();
+        String userName = nyBrukerNavn.getText();
+        String userPassword = nyBrukerPassord.getText();
+        System.out.println(userEmail);
+        System.out.println(userName);
+        System.out.println(userPassword);
+        main.client.addUser(userName,userPassword,userEmail, "Patient");
+    }
+
+    @FXML
+    private void delPasient() throws Exception {
+        String userEmail = slettBrukerEpost.getText();
+        main.client.delUser(userEmail);
+    }
+
+    @FXML
     private void sendTilbakeMedling() throws IOException {
-        WebCalls webCalls = new WebCalls();
         String tilbakemedling = Tilbakemedling.getText();
         //webCalls.sendPut("/tilbakemedling", "123");
     }
