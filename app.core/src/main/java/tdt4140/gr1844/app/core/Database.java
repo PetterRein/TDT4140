@@ -133,7 +133,7 @@ public class Database {
             int patientId = rs1.getInt("id");
 
             PreparedStatement statement2 = conn.connect(onlineOrOffline).prepareStatement("select rating, extraInfo, timestamp from PatientData\n" +
-                    "where patientId = ? limit ?");
+                    "where patientId = ? order by timestamp desc limit ?");
             statement2.setInt(1, patientId);
             statement2.setInt(2, n);
             statement2.execute();
