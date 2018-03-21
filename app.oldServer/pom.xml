@@ -33,10 +33,9 @@
             <artifactId>jbcrypt</artifactId>
             <version>0.4</version>
         </dependency>
-
         <dependency>
-            <groupId>com.44</groupId>
-            <artifactId>HAYF</artifactId>
+            <groupId>tdt4140-gr1844</groupId>
+            <artifactId>tdt4140-gr1844.app.core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 

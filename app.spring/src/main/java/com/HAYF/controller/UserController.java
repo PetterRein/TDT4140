@@ -1,6 +1,6 @@
 package com.HAYF.controller;
 
-/**import com.HAYF.exception.ResourceNotFoundException;
+import com.HAYF.exception.ResourceNotFoundException;
 import com.HAYF.model.User;
 import com.HAYF.repository.UserRepository;
 import com.HAYF.service.SecurityService;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-/**@RestController
+@RestController
 @RequestMapping("/api")
 public class UserController {
 
@@ -38,7 +38,7 @@ public class UserController {
         return "registration";
     }
 
-    /**@RequestMapping(value = "/registration", method = RequestMethod.POST)
+    @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
         userValidator.validate(userForm, bindingResult);
 
@@ -51,8 +51,8 @@ public class UserController {
         securityService.autologin(userForm.getUsername(), userForm.getPasswordConfirm());
 
         return "redirect:/welcome";
-    }**/
-/**
+    }
+
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(Model model, String error, String logout) {
         if (error != null)
@@ -115,4 +115,4 @@ public class UserController {
 
         return ResponseEntity.ok().build();
     }
-}**/
+}

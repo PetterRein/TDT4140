@@ -17,6 +17,8 @@
         <module>app.core</module>
         <module>app.ui</module>
         <module>app.client</module>
+	    <module>app.oldServer</module>
+        <module>app.spring</module>
     </modules>
     <dependencies>
         <dependency>

@@ -10,9 +10,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
-/**@Service
-public class SecurityServiceImpl implements SecurityService{**/
-    /**@Autowired
+@Service
+public class SecurityServiceImpl implements SecurityService{
+    @Autowired
     private AuthenticationManager authenticationManager;
 
     @Autowired
@@ -42,4 +42,4 @@ public class SecurityServiceImpl implements SecurityService{**/
             logger.debug(String.format("Auto login %s successfully!", username));
         }
     }
-}**/
+}
