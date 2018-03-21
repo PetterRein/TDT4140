@@ -8,10 +8,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.apache.http.Header;
 import org.apache.http.client.methods.CloseableHttpResponse;
-
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.io.IOException;
+import java.nio.file.Paths;
 
 public class Main extends Application {
     /**public static List<Festival> festivals;

@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import tdt4140.gr1844.app.client.WebCalls;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import tdt4140.gr1844.app.client.WebCalls;
@@ -46,31 +47,16 @@ public class MainController {
 
     @FXML
     public void sendLogin() throws Exception {
-        String role = "Lege";
-        WebCalls webCalls = new WebCalls();
         String epost = Brukernavn.getText();
         String passord = Passord.getText();
-        /**CloseableHttpResponse response = webCalls.sendLoginPost(epost, passord, a.SessionCookie);
-        a.updateCookie(response);
-        int responseCode = response.getStatusLine().getStatusCode();
-        if (responseCode == 200){
-            if (role.equals("Lege")){
-                a.changeView(rootPane, "Lege");
-            }
-            else if (role.equals("Pasient")){
-                a.changeView(rootPane, "Logginn");
-            }
-
+        String [] response = new String[2];
+        response[1] = "200";
+        if (response[1] == "200"){
+            a.changeView(rootPane, "Lege");
         }
         else {
-            if (role.equals("Lege")){
-                a.changeView(rootPane, "Lege");
-            }
-            else if (role.equals("Pasient")){
-                a.changeView(rootPane, "Logginn");
-            }
-        }**/
-        a.changeView(rootPane, "Lege");
+            a.changeView(rootPane, "Pasient");
+        }
     }
 
     public void addButtons(ArrayList<String> jobs, VBox jobsList) {
