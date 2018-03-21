@@ -31,7 +31,7 @@ public class MainController {
     @FXML
     private TextField faillogginn;
 
-    Main a = new Main();
+    Main main = new Main();
 
     @FXML
     public void initialize() {
@@ -49,13 +49,24 @@ public class MainController {
     public void sendLogin() throws Exception {
         String epost = Brukernavn.getText();
         String passord = Passord.getText();
-        String [] response = new String[2];
-        response[1] = "200";
-        if (response[1] == "200"){
-            a.changeView(rootPane, "Lege");
+        String [] response = main.client.loginUser(epost,passord,epost);
+        response[0] = "200";
+        if (response[0] == "200"){
+            if (response[3].equals("Admin")){
+                main.changeView(rootPane, "Lege");
+            }
+            else if (response[3].equals("Patient")){
+                main.changeView(rootPane, "Pasient");
+            }
+            else if (response[3].equals("Doctor")){
+                main.changeView(rootPane, "Lege");
+            }
+            else {
+                System.out.println("Du har en role som ikke finnes");
+            }
         }
         else {
-            a.changeView(rootPane, "Pasient");
+            System.out.println("Du har ikke lov");
         }
     }
 

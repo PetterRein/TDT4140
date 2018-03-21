@@ -41,6 +41,8 @@ public class LogginnController {
 
     String sessionCookie = "123";
 
+    WebCalls client = new WebCalls();
+
     private boolean hasInitialized = false;
 
     public void initialize() {
@@ -174,9 +176,7 @@ public class LogginnController {
 
     @FXML
     private void goHome() throws Exception {
-        WebCalls webCalls = new WebCalls();
-
-        webCalls.logoutUser("Denne brukes ikke", sessionCookie);
+        client.logoutUser();
         Main main = new Main();
         main.changeView(rootPane, "Main");
     }

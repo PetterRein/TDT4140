@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -81,9 +82,17 @@
                                         </HBox>
                                     </children>
                                 </VBox>
-                        <Label layoutX="174.0" layoutY="127.0" text="Skriv tilbakemedling til Administrator" />
-                        <Button layoutX="383.0" layoutY="342.0" mnemonicParsing="false" text="Send tilbakemedlingen" onAction="#sendTilbakeMedling"/>
+                        <Label layoutX="381.0" layoutY="110.0" text="Skriv tilbakemedling til Administrator" />
+                        <Button layoutX="383.0" layoutY="342.0" mnemonicParsing="false" onAction="#sendTilbakeMedling" text="Send tilbakemedlingen" />
                         <TextArea id="Tilbakemedling" layoutX="381.0" layoutY="127.0" prefHeight="200.0" prefWidth="200.0" />
+                        <TextField layoutX="50.0" layoutY="125.0" promptText="Navn på Bruker"  fx:id="nyBrukerNavn"/>
+                        <TextField layoutX="50.0" layoutY="148.0" promptText="Brukerepost" fx:id="nyBrukerEpost"/>
+                        <TextField layoutX="50.0" layoutY="171.0" promptText="Passord" fx:id="nyBrukerPassord"/>
+                        <Label layoutX="50.0" layoutY="110.0" text="Legg til en ny bruker" />
+                        <Button layoutX="50.0" layoutY="194.0" mnemonicParsing="false" text="Send bruker" id="buttonSendBruker" onAction="#addNewPasient"/>
+                        <Label layoutX="50.0" layoutY="227.0" text="Slett bruker" />
+                        <TextField layoutX="50.0" layoutY="242.0" promptText="Brukerepsot" fx:id="slettBrukerEpost"/>
+                        <Button layoutX="50.0" layoutY="265.0" mnemonicParsing="false" text="Slett bruker" fx:id="buttonSlettBruker" onAction="#delPasient"/>
                             </children>
                             <BorderPane.margin>
                                 <Insets left="25.0" />

@@ -38,7 +38,12 @@ public class PasientController {
     @FXML
     ListView listViewTekniskeBehov;
 
-    String sessionCookie = "123";
+    @FXML
+    private  TextField føleFelt;
+
+
+
+    Main main = new Main();
 
     private boolean hasInitialized = false;
 
@@ -61,39 +66,6 @@ public class PasientController {
             putBandInfoInLists("Lorde");
         }
     }
-
-    @FXML
-    private void focusTabThree() {
-        repeatFocus(vBoxGenre.getChildren().get(0));
-        putGenreInfoInLists("Pop");
-    }
-
-    public Button createButtonTab(String buttonInput, String tab) {
-        // Denne lager og returnerer en Button.
-        final Button button = new Button(buttonInput);
-        button.setId("arrScenes");
-        button.setPrefSize(200,20);
-        button.setOnMouseClicked(event -> {
-            if (tab.equals("tab1")) {
-                // Når du trykker på knappen så kjøres putBandInfoInLists med bandets navn som argument.
-                putBandInfoInLists(buttonInput);
-            } else if (tab.equals("tab2")) {
-                textFieldArtist.setText(buttonInput);
-            }
-            else if (tab.equals("tab3")) {
-                putGenreInfoInLists(buttonInput);
-            } else {
-                textFieldArtist.setText(buttonInput);
-            }
-        });
-        return button;
-    }
-
-    private void putGenreInList() {
-        //Legger til alle sjangere i listen i tab3
-
-    }
-
 
     @FXML
     private void onKeyPressSearchBar() {
@@ -147,36 +119,14 @@ public class PasientController {
     }
 
     @FXML
-    private void sendOffer() {
-        // Jeg formaterer datoer til dag - måned - år.
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        try {
-            String date = datePicker.getValue().format(formatter);
-            int[] dateSplitted = new int[3];
-            int[] festivalStart = new int[3];
-            int[] festivalSlutt = new int[3];
-
-
-
-            String artist = textFieldArtist.getText();
-            int pris = Integer.valueOf(textFieldPris.getText());
-        } catch (Exception e) {
-            //System.out.println("Velg dato.");
-        }
-        textFieldArtist.setText("");
-        textFieldPris.setText("");
-        // Fjerner informasjon i textfieldene etter den har blitt lagret.
+    private void sendFoling() throws Exception {
+        String data = føleFelt.getText();
+        main.client.sendUserData(data);
     }
-
-
-
 
     @FXML
     private void goHome() throws Exception {
-        WebCalls webCalls = new WebCalls();
-
-        //webCalls.logoutUser("Denne brukes ikke", sessionCookie);
-        Main main = new Main();
+        main.client.logoutUser();
         main.changeView(rootPane, "Main");
     }
 }
