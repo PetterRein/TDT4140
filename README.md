@@ -1,3 +1,7 @@
+#Melding til studass
+
+Det som er i app.spring er en backend vi tenker å gå overtil hvis vi får tid, akkurat nå er ikke noe kode der i bruk
+
 # How Are You Feeling
 
 Vi skal lage et program for helsepersonell som har mulighet til å samle data om hvordan en pasient føler seg, og som analyserer og presenterer dette for relevant helsepersonell. Dette kan brukes i mange ulike deler av helsesektoren hvor det er behov for å spore en pasients behandlingsprosess. 
