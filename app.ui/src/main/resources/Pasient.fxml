@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@MainTheme.css" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tdt4140.gr1844.app.ui.PasientController">
+    <children>
+        <BorderPane prefHeight="720.0" prefWidth="1280.0">
+            <left>
+                <VBox fx:id="vboxBorderLeft" layoutX="200.0" layoutY="326.0" prefHeight="200.0" prefWidth="300.0" BorderPane.alignment="CENTER">
+                    <BorderPane.margin>
+                        <Insets />
+                    </BorderPane.margin>
+                    <children>
+                        <ScrollPane fx:id="scrollPane" prefWidth="180.0">
+                            <content>
+                                <AnchorPane fx:id="scrollPaneAnchor" minHeight="0.0" minWidth="0.0">
+                                    <children>
+                                        <VBox fx:id="needsNotSent1" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <padding>
+                                                <Insets bottom="10.0" left="25.0" right="5.0" top="20.0" />
+                                            </padding>
+                                        </VBox>
+                                    </children>
+                                    <padding>
+                                        <Insets bottom="10.0" left="5.0" />
+                                    </padding>
+                                </AnchorPane>
+                            </content>
+                            <VBox.margin>
+                                <Insets />
+                            </VBox.margin>
+                        </ScrollPane>
+                    </children>
+                </VBox>
+            </left>
+            <top>
+                <ButtonBar fx:id="buttonBar" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                    <buttons>
+                        <Label />
+                        <Label fx:id="labelArrTitle" alignment="CENTER" text="Pasient" />
+                        <Button fx:id="goHome" mnemonicParsing="false" onAction="#goHome" prefHeight="37.0" prefWidth="1290.0" text="Logg ut" />
+                    </buttons>
+                    <BorderPane.margin>
+                        <Insets />
+                    </BorderPane.margin>
+                    <padding>
+                        <Insets bottom="5.0" right="20.0" top="5.0" />
+                    </padding>
+                </ButtonBar>
+            </top>
+            <center>
+                <BorderPane fx:id="borderCenter" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                    <center>
+                        <AnchorPane BorderPane.alignment="CENTER">
+                            <children>
+                                <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <children>
+                                        <HBox>
+                                            <children>
+                                                <TextField fx:id="føleFelt" prefWidth="250.0" promptText="Skriv inn hvordan du føler deg">
+                                                    <HBox.margin>
+                                                        <Insets right="25.0" />
+                                                    </HBox.margin>
+                                                </TextField>
+                                              <Button fx:id="sendButton" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#sendFoling" prefHeight="23.0" prefWidth="158.0" text="Send følinger til Lege" />
+                                            </children>
+                                        </HBox>
+                                        <HBox>
+                                            <children>
+                                                <ListView fx:id="needListAdded" prefWidth="250.0">
+                                                    <HBox.margin>
+                                                        <Insets right="25.0" />
+                                                    </HBox.margin>
+                                                </ListView>
+                                                <Button fx:id="deleteButton" mnemonicParsing="false" prefWidth="160.0" text="Slett følinger">
+                                                    <HBox.margin>
+                                                        <Insets />
+                                                    </HBox.margin>
+                                                </Button>
+                                            </children>
+                                            <VBox.margin>
+                                                <Insets top="10.0" />
+                                            </VBox.margin>
+                                        </HBox>
+                                    </children>
+                                </VBox>
+                            </children>
+                            <BorderPane.margin>
+                                <Insets left="25.0" />
+                            </BorderPane.margin>
+                        </AnchorPane>
+                    </center>
+                    <left>
+                        <VBox fx:id="1" prefWidth="300.0" spacing="5.0" BorderPane.alignment="CENTER">
+                            <children>
+                                <VBox prefWidth="100.0">
+                                    <VBox.margin>
+                                        <Insets top="2.0" />
+                                    </VBox.margin>
+                                </VBox>
+                                <VBox prefWidth="100.0" spacing="5.0">
+                                    <VBox.margin>
+                                        <Insets top="25.0" />
+                                    </VBox.margin>
+                                </VBox>
+                              <Label fx:id="labelBandInfo1" prefHeight="47.0" prefWidth="304.0" text="Dine siste data">
+                                  <VBox.margin>
+                                      <Insets />
+                                  </VBox.margin>
+                                  <font>
+                                      <Font size="18.0" />
+                                  </font>
+                              </Label>
+                            </children>
+                        </VBox>
+                    </left>
+                    <BorderPane.margin>
+                        <Insets />
+                    </BorderPane.margin>
+                </BorderPane>
+            </center>
+        </BorderPane>
+    </children>
+</AnchorPane>

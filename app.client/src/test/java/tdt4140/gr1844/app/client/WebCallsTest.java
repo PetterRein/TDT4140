@@ -8,8 +8,7 @@ public class WebCallsTest {
     private WebCalls http;
 
     @Before
-    public void setUp() {
-        http = new WebCalls();
+    public void setUp() { http = new WebCalls();
     }
 
     @Test
@@ -21,7 +20,7 @@ public class WebCallsTest {
         }
     }
 
-    @Test
+    /**@Test
     public void testLoginUser(){
         try {
             for (int i = 0; i < 10; i++){
@@ -33,7 +32,7 @@ public class WebCallsTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }**/
 
     /**@Test
     public void testAddUser() throws Exception {

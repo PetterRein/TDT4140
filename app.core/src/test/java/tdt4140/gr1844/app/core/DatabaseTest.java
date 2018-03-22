@@ -18,10 +18,10 @@ public class DatabaseTest {
 		try {
 			PreparedStatement statement1 = conn.connect(false).prepareStatement("drop table if exists users");
 			statement1.execute();
-			PreparedStatement statement2 = conn.connect(onlineOrOffline).prepareStatement("create table users(id int, role varchar(64), name varchar(64), email varchar(64), passwordHash varchar(2000), salt varchar(256), cookie varchar(256), primary key(id))");
+			PreparedStatement statement2 = conn.connect(onlineOrOffline).prepareStatement("create table users(id int, role varchar(64), name varchar(64), email varchar(64), passwordHash varchar(2000), salt varchar(256), cookie varchar(256), doctorID int, primary key(id))");
 			statement2.execute();
-			Database.createUser(false,"Doctor", "s", "email", "password");
-			Database.createUser(false,"Admin","Per","admin@o.com","33");
+			Database.createUser(false,"Doctor", "s", "email", "password", null);
+			Database.createUser(false,"Admin","Per","admin@o.com","33", null);
 			PreparedStatement statement3 = conn.connect(false).prepareStatement("update users set cookie='a' where email = 'email'");
 			statement3.executeUpdate();
 		}
@@ -35,7 +35,7 @@ public class DatabaseTest {
 	public void addUserTest() throws NamingException, IllegalAccessException, ClassNotFoundException, InstantiationException {
 		String email = "tom@doctor.com";
 		String password = "password";
-		Database.createUser(onlineOrOffline,"Doctor", "Tom", email, password);
+		Database.createUser(onlineOrOffline,"Doctor", "Tom", email, password, null);
 		Assert.assertTrue(Authentication.login(onlineOrOffline, email, password));
 	}
 
@@ -44,7 +44,7 @@ public class DatabaseTest {
 		String email = "tom@doctor.com";
 		SqlConnect conn = new SqlConnect();
 		try {
-			Database.createUser(false,"role", "name", email, "password");
+			Database.createUser(false,"role", "name", email, "password", null);
 			Database.deleteUser(email, false);
 			PreparedStatement statement = conn.connect(false).prepareStatement("select * from users where email = ?");
 			statement.setString(1, email);
@@ -65,7 +65,7 @@ public class DatabaseTest {
 	public void loginUserTest() throws NamingException, IllegalAccessException, ClassNotFoundException, InstantiationException {
 		String email = "tom@doctor.com";
 		String password = "password";
-		Database.createUser(false,"Doctor", "Tom", email, password);
+		Database.createUser(false,"Doctor", "Tom", email, password, null);
 		Assert.assertTrue(Authentication.login(false, email, password));
 	}
 	
