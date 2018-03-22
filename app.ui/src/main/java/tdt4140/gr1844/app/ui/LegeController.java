@@ -57,7 +57,7 @@ public class LegeController {
 
     @FXML
     public void initialize() throws Exception {
-
+        sisteFoling.setVisible(false);
         /**TODO
          * Finne alle pasienter til en lege og legge de i pasients
          * Regne ut gjennomsnittet til hver bruker for å sette det også
@@ -65,14 +65,20 @@ public class LegeController {
          *
          */
         String[] response = Main.client.getDoctorsPatients();
+        System.out.println(response[4]);
         String[] pasients  = response[4].split("/");
         ArrayList<ArrayList<String>> pasientsName = new ArrayList<>();
         int numbersOfPasients = 0;
-        if (pasientsName.size() > 0){
+        if (pasients.length > 1){
+            System.out.println("#");
             for (int i = 0; i < pasients.length; i = i + 2){
-                pasientsName.get(numbersOfPasients).add(pasients[i]);
-                pasientsName.get(numbersOfPasients).add(pasients[i+1]);
-                numbersOfPasients++;
+                ArrayList<String> pasient = new ArrayList<>();
+                pasient.add(pasients[i]);
+                //String[] response1 = Main.client.getPatientData(pasients[i+1]);
+                String rating = "3"; //Hard Coder inn noe ikke vi egenltig skal gjøre
+                pasient.add(pasients[i+1]);
+                pasient.add(rating);
+                pasientsName.add(pasient);
 
             }
         }
@@ -110,7 +116,7 @@ public class LegeController {
     private Button createButton(ArrayList<String> pasient) {
         final Button button = new Button(pasient.get(0));
         if (pasient.size() > 1){
-            int scoreAverage = Integer.parseInt(pasient.get(3));
+            int scoreAverage = Integer.parseInt(pasient.get(2));
             if(scoreAverage < 5){
                 button.setId("dangerPasient");
             }
@@ -164,8 +170,9 @@ public class LegeController {
     }
 
     @FXML
-    private void sendTilbakeMedling() throws IOException {
+    private void sendTilbakeMedling() throws Exception {
         String tilbakemedling = Tilbakemedling.getText();
-        //webCalls.sendPut("/tilbakemedling", "123");
+        main.client.sendFeedback(tilbakemedling);
     }
+
 }

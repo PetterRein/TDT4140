@@ -14,15 +14,14 @@ public class dbExample {
             System.out.println("Dropping all tables...");
             PreparedStatement drops = conn.connect(false).prepareStatement("DROP TABLE IF EXISTS users");
             PreparedStatement drops2 = conn.connect(false).prepareStatement("DROP TABLE IF EXISTS patientData");
-            drops.executeUpdate();
-            drops2.executeUpdate();
+            drops.execute();
+            drops2.execute();
 
             // create table users
             PreparedStatement statement1 = conn.connect(false).prepareStatement("CREATE TABLE IF NOT EXISTS users" +
-                    "(_id INTEGER PRIMARY KEY , role varchar(64), name varchar(64), email varchar(64), passwordHash varchar(2000), salt varchar(256)," +
-                    "cookie varchar(256), doctorID, FOREIGN KEY (doctorID) REFERENCES  users(id))");
-            statement1.executeUpdate();
-            conn.disconnect();
+                    "(id INTEGER PRIMARY KEY, role varchar(64), name varchar(64), email varchar(64), passwordHash varchar(2000), salt varchar(256)," +
+                    "cookie varchar(256), doctorID int, FOREIGN KEY (doctorID) REFERENCES users(id))");
+            statement1.execute();
             // echo table users
             System.out.println("CREATE TABLE IF NOT EXISTS users\" +\n" +
                     "                    \"(_id INTEGER PRIMARY KEY , role varchar(64), name varchar(64), email varchar(64), passwordHash varchar(2000), salt varchar(256),\" +\n" +
@@ -30,10 +29,13 @@ public class dbExample {
 
             // create table patientData
             PreparedStatement statement2 = conn.connect(false).prepareStatement("CREATE TABLE IF NOT EXISTS patientData" +
-                    "(_id INTEGER PRIMARY KEY, patientID int not null, doctorID int, rating int, extrainfo text," +
+                    "(id INTEGER PRIMARY KEY, patientID int not null, rating int, extrainfo text," +
                     "times TIMESTAMP DEFAULT CURRENT_TIMESTAMP not null," +
-                    "FOREIGN KEY (patientID) REFERENCES users(id), FOREIGN KEY  (doctorID) REFERENCES users(id))");
-            statement2.executeUpdate();
+                    "FOREIGN KEY (patientID) REFERENCES users(id))");
+            statement2.execute();
+            PreparedStatement statement3 = conn.connect(false).prepareStatement("CREATE TABLE IF NOT EXISTS feedBack" +
+                    "(id INTEGER PRIMARY KEY, message VARCHAR (20000000))");
+            statement3.execute();
             conn.disconnect();
             // echo table patientData
             System.out.println("CREATE TABLE IF NOT EXISTS patientData" +
@@ -41,9 +43,11 @@ public class dbExample {
                     "times TIMESTAMP DEFAULT CURRENT_TIMESTAMP not null," +
                     "FOREIGN KEY (patientID) REFERENCES users(id), FOREIGN KEY  (doctorID) REFERENCES users(id))");
 
-            Database.createUser(false, "pasient", "Haavard", "syking@mail.co","123", null);
-            Database.createUser(false, "lege", "Lars", "lege@mail.co","321", null);
-            Database.addDataToUser(false, "DAtatat", "Haavard");
+            Database.createUser(false, "Doctor", "Lars", "lege@mail.co","321", null);
+            String legeId = "lege@mail.co";
+            Database.createUser(false, "Patient", "Haavard", "syking@mail.co","123", legeId);
+            Database.createUser(false,"Admin", "Admin", "admin@o.com", "33", null);
+            Database.addDataToUser(false, "5", "Haavard");
         }
         catch(SQLException e)
         {

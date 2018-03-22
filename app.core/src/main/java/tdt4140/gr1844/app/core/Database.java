@@ -18,18 +18,32 @@ public class Database {
 	public static void createUser(boolean onlineOrOffline, String role, String name, String email, String password, String usersDoctor) throws NamingException, IllegalAccessException, InstantiationException, ClassNotFoundException {
 		String salt = BCrypt.gensalt();
 		String passwordHash = BCrypt.hashpw(password, salt);
+        SqlConnect conn = new SqlConnect();
+        int doctorId;
 		try {
 			/**
 			 * Todo legg inn sjekk på bruker allerede er lagt til
 			 */
-			SqlConnect conn = new SqlConnect();
-			PreparedStatement statement1 = conn.connect(onlineOrOffline).prepareStatement("insert into users(role, name, email, passwordHash, salt, pasientDoctor) values(?, ?, ?, ?, ?, ?)");
+			if (usersDoctor == null){
+                doctorId = -1;
+            }
+            else {
+                System.out.println("Her1");
+                PreparedStatement statement = conn.connect(onlineOrOffline).prepareStatement("select id from users where email = ?");
+                statement.setString(1, usersDoctor);
+                statement.execute();
+                ResultSet rs1 = statement.getResultSet();
+                rs1.next();
+                doctorId = rs1.getInt("id");
+            }
+            System.out.println("ger1");
+			PreparedStatement statement1 = conn.connect(onlineOrOffline).prepareStatement("insert into users(role, name, email, passwordHash, salt, doctorID) values(?, ?, ?, ?, ?, ?)");
 			statement1.setString(1, role);
 			statement1.setString(2, name);
 			statement1.setString(3, email);
 			statement1.setString(4, passwordHash);
 			statement1.setString(5, salt);
-			statement1.setString(6,usersDoctor);
+			statement1.setInt(6, doctorId);
 			statement1.executeUpdate();
 			conn.disconnect();
 		}
@@ -37,6 +51,14 @@ public class Database {
 			System.err.println(e);
 		}
 	}
+
+	public static void createFeedback(boolean onlineOrOffline, String feedback) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, NamingException {
+        SqlConnect conn = new SqlConnect();
+        PreparedStatement statement1 = conn.connect(onlineOrOffline).prepareStatement("insert into feedBack(message) values(?)");
+        statement1.setString(1, feedback);
+        statement1.executeUpdate();
+        conn.disconnect();
+    }
 
 	/**
 	 * Deletes a user from the database by their e-mail address.
@@ -96,7 +118,7 @@ public class Database {
 	    return "lege@lege.com";
     }
 
-	public static ArrayList<String> getDoctorsPatients(boolean onlineOrOffline, String email)throws NamingException, IllegalAccessException, InstantiationException, ClassNotFoundException{
+	public static String getDoctorsPatients(boolean onlineOrOffline, String email)throws NamingException, IllegalAccessException, InstantiationException, ClassNotFoundException{
         SqlConnect conn = new SqlConnect();
         try {
             PreparedStatement statement1 = conn.connect(onlineOrOffline).prepareStatement("select id from users where email = ?");
@@ -104,19 +126,22 @@ public class Database {
             statement1.execute();
             ResultSet rs1 = statement1.getResultSet();
             rs1.next();
-            int doctorId = rs1.getInt("id");
-
-            PreparedStatement statement2 = conn.connect(onlineOrOffline).prepareStatement("select distinct name, email from PatientData\n" +
-                    "inner join users on id = patientID\n" +
-                    "where doctorID = ?");
+            int doctorId =  (Integer) rs1.getObject("id");
+            PreparedStatement statement2 = conn.connect(onlineOrOffline).prepareStatement("select name, email from users where doctorID = ?");
             statement2.setInt(1, doctorId);
             statement2.execute();
             ResultSet rs2 = statement2.getResultSet();
-            ArrayList<String> result = new ArrayList<String>();
-            while(rs2.next()) {
-                result.add(rs2.getString("name") + "/" + rs2.getString("email"));
+            String result1 = "";
+            while (rs2.next()){
+                if (result1.equals("")){
+                    result1 = result1 + rs2.getString(1) + "/" + rs2.getString(2);
+                }
+                else {
+                    result1 = "/" + result1 + rs2.getString(1) + rs2.getString(2);
+                }
             }
-            return result;
+            conn.disconnect();
+            return result1;
         }
         catch(SQLException e) {
 
@@ -135,17 +160,17 @@ public class Database {
             statement1.execute();
             ResultSet rs1 = statement1.getResultSet();
             rs1.next();
-            int patientId = rs1.getInt("id");
-
-            PreparedStatement statement2 = conn.connect(onlineOrOffline).prepareStatement("select rating, extraInfo, timestamp from PatientData\n" +
-                    "where patientId = ? order by timestamp desc limit ?");
+            int patientId = (Integer) rs1.getObject("id");
+            PreparedStatement statement2 = conn.connect(onlineOrOffline).prepareStatement("select rating, extrainfo from patientData where patientID = ? LIMIT ?");
             statement2.setInt(1, patientId);
-            statement2.setInt(2, n);
+            statement2.setInt(2, n+1);
             statement2.execute();
             ResultSet rs2 = statement2.getResultSet();
-            ArrayList<String> result = new ArrayList<String>();
+            conn.disconnect();
+            ArrayList<String> result = new ArrayList<>();
+            rs2.next();
             while(rs2.next()) {
-                result.add(rs2.getString("rating") + " " + rs2.getString("extraInfo") + " " + rs2.getTimestamp("timeStamp").toString());
+                result.add(rs2.getInt(1) + "/" + rs2.getString(2));
             }
             return result;
         }
@@ -167,6 +192,7 @@ public class Database {
 	public static ArrayList<String> getAllDataOnUser(boolean onlineOrOffline, String userName){
 		SqlConnect conn = new SqlConnect();
         ArrayList<String> arrayWithData = null;
+        conn.disconnect();
         return arrayWithData;
 	}
 
@@ -178,15 +204,12 @@ public class Database {
          */
         try {
             SqlConnect conn = new SqlConnect();
-            int doctorID = 1;
             int rating = 1;
             int patientID = getIdByUsername(false, userName);
-            PreparedStatement preparedStatement2 = conn.connect(false).prepareStatement("INSERT INTO patientData" +
-                    "(patientID, doctorID, rating, extrainfo) VALUES (?, ?, ?, ?) ");
+            PreparedStatement preparedStatement2 = conn.connect(false).prepareStatement("INSERT INTO patientData (patientID, rating, extrainfo) VALUES (?, ?, ?) ");
             preparedStatement2.setInt(1, patientID);
-            preparedStatement2.setInt(2, doctorID);
-            preparedStatement2.setInt(3, rating);
-            preparedStatement2.setString(4, data);
+            preparedStatement2.setInt(2, rating);
+            preparedStatement2.setString(3, data);
             preparedStatement2.executeUpdate();
             conn.disconnect();
             return true;
@@ -203,7 +226,9 @@ public class Database {
             preparedStatement1.setString(1,userName);
             ResultSet rs1 = preparedStatement1.executeQuery();
             rs1.next();
-            return rs1.getInt("id");
+            int e = (Integer) rs1.getObject("id");
+            conn.disconnect();
+            return e;
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (NamingException e) {

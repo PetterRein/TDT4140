@@ -22,14 +22,6 @@
                         <Insets />
                     </BorderPane.margin>
                     <children>
-                        <Label fx:id="labelBandInfo1" text="Dine siste data">
-                            <VBox.margin>
-                                <Insets />
-                            </VBox.margin>
-                            <font>
-                                <Font size="18.0" />
-                            </font>
-                        </Label>
                         <ScrollPane fx:id="scrollPane" prefWidth="180.0">
                             <content>
                                 <AnchorPane fx:id="scrollPaneAnchor" minHeight="0.0" minWidth="0.0">
@@ -122,6 +114,14 @@
                                         <Insets top="25.0" />
                                     </VBox.margin>
                                 </VBox>
+                              <Label fx:id="labelBandInfo1" prefHeight="47.0" prefWidth="304.0" text="Dine siste data">
+                                  <VBox.margin>
+                                      <Insets />
+                                  </VBox.margin>
+                                  <font>
+                                      <Font size="18.0" />
+                                  </font>
+                              </Label>
                             </children>
                         </VBox>
                     </left>

@@ -84,7 +84,7 @@
                                 </VBox>
                         <Label layoutX="381.0" layoutY="110.0" text="Skriv tilbakemedling til Administrator" />
                         <Button layoutX="383.0" layoutY="342.0" mnemonicParsing="false" onAction="#sendTilbakeMedling" text="Send tilbakemedlingen" />
-                        <TextArea id="Tilbakemedling" layoutX="381.0" layoutY="127.0" prefHeight="200.0" prefWidth="200.0" />
+                        <TextArea fx:id="Tilbakemedling" layoutX="381.0" layoutY="127.0" prefHeight="200.0" prefWidth="200.0" />
                         <TextField layoutX="50.0" layoutY="125.0" promptText="Navn på Bruker"  fx:id="nyBrukerNavn"/>
                         <TextField layoutX="50.0" layoutY="148.0" promptText="Brukerepost" fx:id="nyBrukerEpost"/>
                         <TextField layoutX="50.0" layoutY="171.0" promptText="Passord" fx:id="nyBrukerPassord"/>

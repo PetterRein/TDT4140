@@ -129,6 +129,18 @@ public class WebCalls {
          return response;
      }
 
+     public String[] getPatientData(String userEmail) throws Exception{
+         String[] response = sendPost("getPatientData", null,null,userEmail,null);
+         response[2] = decodeResponseCode(Integer.parseInt(response[0]));
+         return response;
+     }
+
+     public String[] sendFeedback(String feedback) throws Exception{
+         String[] response = sendPost("feedback", null,null,feedback,null);
+         response[2] = decodeResponseCode(Integer.parseInt(response[0]));
+         return response;
+     }
+
     // HTTP GET request
     public int sendGet() throws Exception {
         String url = "http://www.google.com/search?q=developer";
@@ -310,6 +322,16 @@ public class WebCalls {
          params.add(new BasicNameValuePair("getDoctorsPatients", userEmail));
          httpPost.setEntity(new UrlEncodedFormEntity(params));
      }
+     else if (whatPost.equals("getPatientData")){
+         List<NameValuePair> params = new ArrayList<NameValuePair>();
+         params.add(new BasicNameValuePair("getPatientData", userEmail));
+         httpPost.setEntity(new UrlEncodedFormEntity(params));
+     }
+     else if(whatPost.equals("feedback")){
+         List<NameValuePair> params = new ArrayList<NameValuePair>();
+         params.add(new BasicNameValuePair("feedback", userEmail));
+         httpPost.setEntity(new UrlEncodedFormEntity(params));
+     }
      else {
         List<NameValuePair> urlParameters = new ArrayList<>();
         urlParameters.add(new BasicNameValuePair(userName, userPassword));
@@ -328,6 +350,7 @@ public class WebCalls {
      String cookie1 = "non";
      String role1 = "non";
      String patients = "non";
+     String data = "non";
      for (Header header: ws){
         if (header.getName().equals("cookie")){
             cookie1 = header.getValue();
@@ -338,22 +361,31 @@ public class WebCalls {
         if (header.getName().equals("doctorPatients")){
             patients = header.getValue();
         }
+         if (header.getName().equals("data")){
+             data = header.getValue();
+             String[] datas = data.split("/");
+             data = datas[1];
+             if (data == null){
+                 data = "-1";
+             }
+         }
         System.out.println(header);
      }
      System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
      BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
      StringBuffer result = new StringBuffer();
      String line = "";
-     while ((line = rd.readLine()) != null) {
+     /**while ((line = rd.readLine()) != null) {
         result.append(line);
-     }
+     }**/
      String a = "";
      a = a + response.getStatusLine().getStatusCode();
-        String[] returnVars = new String[5];
+        String[] returnVars = new String[6];
         returnVars[0] = a;
         returnVars[1] = cookie1;
         returnVars[3] = role1;
         returnVars[4] = patients;
+        returnVars[5] = data;
         return returnVars;
      }
 }

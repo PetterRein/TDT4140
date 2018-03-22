@@ -149,7 +149,8 @@ public class WebGet extends HttpServlet {
             try {
                 String eee = Database.getRoleFromCookie(onlineOrOffline,sid);
                 System.out.println(eee);
-                if (eee != null && sid != null && (Database.getRoleFromCookie(onlineOrOffline,sid).equals("Admin") || Database.getRoleFromCookie(onlineOrOffline,sid).equals("Doctor"))) {
+                boolean userRole = Database.getRoleFromCookie(onlineOrOffline,sid).equals("Admin");
+                if (eee != null && sid != null && (userRole || Database.getRoleFromCookie(onlineOrOffline,sid).equals("Doctor"))) {
                     String role = Arrays.toString(request.getParameterValues("role"));
                     role = role.substring(1, role.length()-1);
                     if (role.equals("Doctor") || role.equals("Patient") || role.equals("Doktor") || role.equals("Pasient")) {
@@ -161,8 +162,17 @@ public class WebGet extends HttpServlet {
                         String userPassword = Arrays.toString(request.getParameterValues("userPassword"));
                         userPassword = userPassword.substring(1, userPassword.length()-1);;
                         try {
-                            String doctorEmail = Database.getEmailFromCookie(onlineOrOffline,sid);
-                            Database.createUser(onlineOrOffline,role , userName, userEmail, userPassword, doctorEmail);
+                            if (!userRole){
+                                String doctorEmail = Database.getEmailFromCookie(onlineOrOffline,sid);
+                                Database.createUser(onlineOrOffline,role , userName, userEmail, userPassword, doctorEmail);
+                                response.setStatus(200);
+                            }
+                            else {
+                                System.out.println("Here");
+                                Database.createUser(onlineOrOffline,role , userName, userEmail, userPassword, null);
+                                response.setStatus(200);
+                            }
+
                         } catch (NamingException e) {
                             e.printStackTrace();
                         }
@@ -274,33 +284,57 @@ public class WebGet extends HttpServlet {
             }
         }
         else if(Arrays.toString(request.getParameterValues("getPatientData")) != "null"){
-            String username = Arrays.toString(request.getParameterValues("User"));
-            username = username.substring(1, username.length()-1);
+            String email = Arrays.toString(request.getParameterValues("getPatientData"));
+            email = email.substring(1, email.length()-1);
             System.out.println("Para PatientData: " + Arrays.toString(request.getParameterValues("getPatientData")));
-            ArrayList<String> data = Database.getAllDataOnUser(onlineOrOffline, username);
+            String payLoad = null;
+            try {
+                ArrayList<String> data = Database.getNLastPatientData(onlineOrOffline, email, 1);
+                payLoad = data.get(1);
+            } catch (NamingException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
             /**
              * Lage payload av Data
              */
+            System.out.println(payLoad);
+            response.addHeader("data", payLoad);
+            response.setStatus(200);
+        }
+        else if(Arrays.toString(request.getParameterValues("feedback")) != "null"){
+            String feedback = Arrays.toString(request.getParameterValues("feedback"));
+            feedback = feedback.substring(1, feedback.length()-1);
+            try {
+                Database.createFeedback(false, feedback);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (NamingException e) {
+                e.printStackTrace();
+            }
             response.setStatus(200);
         }
         else if(Arrays.toString(request.getParameterValues("getDoctorsPatients")) != "null"){
             try {
-                if (Database.getRoleFromCookie(onlineOrOffline, sid).equals("Lege")) {
+                if (Database.getRoleFromCookie(onlineOrOffline, sid).equals("Doctor")) {
                     String userEmail = Arrays.toString(request.getParameterValues("getDoctorsPatients"));
                     userEmail = userEmail.substring(1, userEmail.length() - 1);
                     System.out.println("Para getDocotrsPatients: " + userEmail);
                     try {
-                        ArrayList<String> data = Database.getDoctorsPatients(onlineOrOffline, userEmail);
-                        String patients = "";
-                        for (int i = 0; i < data.size(); i++) {
-                            String patient = data.get(i);
-                            if (patients.equals("")) {
-                                patients = patient;
-                            } else {
-                                patients = patients + "/" + patient;
-                            }
-                        }
-                        response.addHeader("doctorPatients", patients);
+                        String data = Database.getDoctorsPatients(onlineOrOffline, userEmail);
+                        System.out.println(data);
+                        response.addHeader("doctorPatients", data);
                         response.setStatus(200);
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
