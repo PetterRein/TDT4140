@@ -34,11 +34,8 @@ Run script in tomcat\bin catalina.bat or catalina.sh
 ```
 Run 44.jar
 ```
-You should now server running and see the login page
+You should now have server running and see the login page
 
-```
-until finished
-```
 ## Built With
 
 * [Tomcat](http://tomcat.apache.org/) - Web Deployment Service
