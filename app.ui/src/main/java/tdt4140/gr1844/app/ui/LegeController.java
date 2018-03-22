@@ -56,14 +56,28 @@ public class LegeController {
     String pasientNameString = "artistName";
 
     @FXML
-    public void initialize() {
+    public void initialize() throws Exception {
 
         /**TODO
          * Finne alle pasienter til en lege og legge de i pasients
          * Regne ut gjennomsnittet til hver bruker for å sette det også
          * Gjør sånn at index 0 er Navn på Pasient, index 1 er siste rapport, index 2 er gjennomsnitt og index 3 til n er følinger så kan jeg fikse resten
+         *
          */
-        ArrayList<ArrayList<String>> pasients = new ArrayList<>();
+        String[] response = Main.client.getDoctorsPatients();
+        String[] pasients  = response[4].split("/");
+        ArrayList<ArrayList<String>> pasientsName = new ArrayList<>();
+        int numbersOfPasients = 0;
+        if (pasientsName.size() > 0){
+            for (int i = 0; i < pasients.length; i = i + 2){
+                pasientsName.get(numbersOfPasients).add(pasients[i]);
+                pasientsName.get(numbersOfPasients).add(pasients[i+1]);
+                numbersOfPasients++;
+
+            }
+        }
+
+        /**ArrayList<ArrayList<String>> pasients = new ArrayList<>();
         ArrayList<String> pasient1 = new ArrayList<>();
         pasient1.add("Per");
         pasient1.add("03.03.2018");
@@ -75,9 +89,10 @@ public class LegeController {
         pasient2.add("5");
         pasient2.add("4");
         pasients.add(pasient1);
-        pasients.add(pasient2);
+        pasients.add(pasient2);**/
+
         // Denne funksjonen blir kjørt automatisk når alt er loadet og du kan begynne å endre på ting.
-        addButtons(pasients, needsNotSent1);
+        addButtons(pasientsName, needsNotSent1);
     }
 
     private void popListView(List<String> needList, ListView listArea) {

@@ -123,6 +123,12 @@ public class WebCalls {
          return response;
      }
 
+     public String[] getDoctorsPatients() throws Exception {
+         String[] response = sendPost("getDoctorsPatients", null,null,userEmail,null);
+         response[2] = decodeResponseCode(Integer.parseInt(response[0]));
+         return response;
+     }
+
     // HTTP GET request
     public int sendGet() throws Exception {
         String url = "http://www.google.com/search?q=developer";
@@ -299,6 +305,11 @@ public class WebCalls {
          params.add(new BasicNameValuePair("delUser", userEmail));
          httpPost.setEntity(new UrlEncodedFormEntity(params));
      }
+     else if(whatPost.equals("getDoctorsPatients")){
+         List<NameValuePair> params = new ArrayList<NameValuePair>();
+         params.add(new BasicNameValuePair("getDoctorsPatients", userEmail));
+         httpPost.setEntity(new UrlEncodedFormEntity(params));
+     }
      else {
         List<NameValuePair> urlParameters = new ArrayList<>();
         urlParameters.add(new BasicNameValuePair(userName, userPassword));
@@ -316,12 +327,16 @@ public class WebCalls {
      Header[] ws = response.getAllHeaders();
      String cookie1 = "non";
      String role1 = "non";
+     String patients = "non";
      for (Header header: ws){
         if (header.getName().equals("cookie")){
             cookie1 = header.getValue();
         }
         if (header.getName().equals("role")){
             role1 = header.getValue();
+        }
+        if (header.getName().equals("doctorPatients")){
+            patients = header.getValue();
         }
         System.out.println(header);
      }
@@ -334,10 +349,11 @@ public class WebCalls {
      }
      String a = "";
      a = a + response.getStatusLine().getStatusCode();
-        String[] returnVars = new String[4];
+        String[] returnVars = new String[5];
         returnVars[0] = a;
         returnVars[1] = cookie1;
         returnVars[3] = role1;
+        returnVars[4] = patients;
         return returnVars;
      }
 }

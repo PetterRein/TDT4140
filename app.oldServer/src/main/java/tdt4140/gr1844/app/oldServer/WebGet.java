@@ -161,7 +161,8 @@ public class WebGet extends HttpServlet {
                         String userPassword = Arrays.toString(request.getParameterValues("userPassword"));
                         userPassword = userPassword.substring(1, userPassword.length()-1);;
                         try {
-                            Database.createUser(onlineOrOffline,role , userName, userEmail, userPassword);
+                            String doctorEmail = Database.getEmailFromCookie(onlineOrOffline,sid);
+                            Database.createUser(onlineOrOffline,role , userName, userEmail, userPassword, doctorEmail);
                         } catch (NamingException e) {
                             e.printStackTrace();
                         }
@@ -261,6 +262,48 @@ public class WebGet extends HttpServlet {
              * Lage payload av Data
              */
             response.setStatus(200);
+        }
+        else if(Arrays.toString(request.getParameterValues("getDoctorsPatients")) != "null"){
+            try {
+                if (Database.getRoleFromCookie(onlineOrOffline, sid).equals("Lege")) {
+                    String userEmail = Arrays.toString(request.getParameterValues("getDoctorsPatients"));
+                    userEmail = userEmail.substring(1, userEmail.length() - 1);
+                    System.out.println("Para getDocotrsPatients: " + userEmail);
+                    try {
+                        ArrayList<String> data = Database.getDoctorsPatients(onlineOrOffline, userEmail);
+                        String patients = "";
+                        for (int i = 0; i < data.size(); i++) {
+                            String patient = data.get(i);
+                            if (patients.equals("")) {
+                                patients = patient;
+                            } else {
+                                patients = patients + "/" + patient;
+                            }
+                        }
+                        response.addHeader("doctorPatients", patients);
+                        response.setStatus(200);
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (InstantiationException e) {
+                        e.printStackTrace();
+                    } catch (NamingException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+                else {
+                    response.addHeader("doctorPatients", "non");
+                    response.setStatus(401);
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
         }
         else{
             System.out.println("Unknown Parameter");
