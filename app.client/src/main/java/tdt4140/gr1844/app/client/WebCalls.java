@@ -246,7 +246,7 @@ public class WebCalls {
 
     public String[] sendPost(String whatPost, String userName, String userPassword, String userEmail, String userRole) throws Exception {
      //Setter urlen vi sender til
-     String url = "http://localhost:8080/webapi";
+     String url = "http://localhost:8080/java/webapi";
      //Lager en cleint object og lagrer en cookie lagrings object til det
      CloseableHttpClient client;
 

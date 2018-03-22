@@ -41,9 +41,9 @@ public class dbExample {
                     "times TIMESTAMP DEFAULT CURRENT_TIMESTAMP not null," +
                     "FOREIGN KEY (patientID) REFERENCES users(id), FOREIGN KEY  (doctorID) REFERENCES users(id))");
 
-            Database.createUser(false, "pasient", "Haavard", "syking@mail.co","123");
-            Database.createUser(false, "lege", "Lars", "lege@mail.co","321");
-            Database.addDataToUser(false, "DAtatat",6,"Haavard");
+            Database.createUser(false, "pasient", "Haavard", "syking@mail.co","123", null);
+            Database.createUser(false, "lege", "Lars", "lege@mail.co","321", null);
+            Database.addDataToUser(false, "DAtatat", "Haavard");
         }
         catch(SQLException e)
         {

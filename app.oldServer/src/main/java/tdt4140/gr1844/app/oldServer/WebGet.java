@@ -231,12 +231,22 @@ public class WebGet extends HttpServlet {
                String dataString = Arrays.toString(request.getParameterValues("dataKey"));
                dataString = dataString.substring(1, dataString.length()-1);
                int dataInt = Integer.parseInt(dataString);
-               if (Database.delDataFromUser(onlineOrOffline, dataInt, username)){
-                   response.setStatus(200);
-               }
-               else {
-                   response.setStatus(401);
-               }
+                try {
+                    if (Database.delDataFromUser(onlineOrOffline, dataInt, username)){
+                        response.setStatus(200);
+                    }
+                    else {
+                        response.setStatus(401);
+                    }
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (NamingException e) {
+                    e.printStackTrace();
+                }
             }
             response.setStatus(401);
         }
@@ -246,11 +256,21 @@ public class WebGet extends HttpServlet {
             String data = Arrays.toString(request.getParameterValues("data"));
             data = data.substring(1, data.length()-1);
             System.out.println("Para AddDataPatient: " + Arrays.toString(request.getParameterValues("addDataPatient")));
-            if(Database.addDataToUser(onlineOrOffline,data,username)){
-                response.setStatus(200);
-            }
-            else {
-                response.setStatus(401);
+            try {
+                if(Database.addDataToUser(onlineOrOffline,data,username)){
+                    response.setStatus(200);
+                }
+                else {
+                    response.setStatus(401);
+                }
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (NamingException e) {
+                e.printStackTrace();
             }
         }
         else if(Arrays.toString(request.getParameterValues("getPatientData")) != "null"){

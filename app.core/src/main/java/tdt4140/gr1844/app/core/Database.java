@@ -170,7 +170,7 @@ public class Database {
         return arrayWithData;
 	}
 
-	public static boolean addDataToUser(boolean onlineOrOffline, String data, int rating, String userName) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NamingException {
+	public static boolean addDataToUser(boolean onlineOrOffline, String data, String userName) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NamingException {
         /**
          * Create timestap
          * Add data to right place
@@ -178,6 +178,8 @@ public class Database {
          */
         try {
             SqlConnect conn = new SqlConnect();
+            int doctorID = 1;
+            int rating = 1;
             int patientID = getIdByUsername(false, userName);
             PreparedStatement preparedStatement2 = conn.connect(false).prepareStatement("INSERT INTO patientData" +
                     "(patientID, doctorID, rating, extrainfo) VALUES (?, ?, ?, ?) ");

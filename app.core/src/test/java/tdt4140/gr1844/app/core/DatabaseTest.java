@@ -18,7 +18,7 @@ public class DatabaseTest {
 		try {
 			PreparedStatement statement1 = conn.connect(false).prepareStatement("drop table if exists users");
 			statement1.execute();
-			PreparedStatement statement2 = conn.connect(onlineOrOffline).prepareStatement("create table users(id int, role varchar(64), name varchar(64), email varchar(64), passwordHash varchar(2000), salt varchar(256), cookie varchar(256), primary key(id), pasientDoctor int),");
+			PreparedStatement statement2 = conn.connect(onlineOrOffline).prepareStatement("create table users(id int, role varchar(64), name varchar(64), email varchar(64), passwordHash varchar(2000), salt varchar(256), cookie varchar(256), pasientDoctor int, primary key(id))");
 			statement2.execute();
 			Database.createUser(false,"Doctor", "s", "email", "password", null);
 			Database.createUser(false,"Admin","Per","admin@o.com","33", null);
