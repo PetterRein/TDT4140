@@ -1,4 +1,4 @@
-#Melding til studass
+## Melding til studass
 
 Det som er i app.spring er en backend vi tenker å gå overtil hvis vi får tid, akkurat nå er ikke noe kode der i bruk
 
