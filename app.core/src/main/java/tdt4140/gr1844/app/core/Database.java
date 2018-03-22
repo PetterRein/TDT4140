@@ -15,7 +15,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 public class Database {
-	public static void createUser(boolean onlineOrOffline, String role, String name, String email, String password) throws NamingException, IllegalAccessException, InstantiationException, ClassNotFoundException {
+	public static void createUser(boolean onlineOrOffline, String role, String name, String email, String password, String usersDoctor) throws NamingException, IllegalAccessException, InstantiationException, ClassNotFoundException {
 		String salt = BCrypt.gensalt();
 		String passwordHash = BCrypt.hashpw(password, salt);
 		try {
@@ -23,12 +23,13 @@ public class Database {
 			 * Todo legg inn sjekk på bruker allerede er lagt til
 			 */
 			SqlConnect conn = new SqlConnect();
-			PreparedStatement statement1 = conn.connect(onlineOrOffline).prepareStatement("insert into users(role, name, email, passwordHash, salt) values(?, ?, ?, ?, ?)");
+			PreparedStatement statement1 = conn.connect(onlineOrOffline).prepareStatement("insert into users(role, name, email, passwordHash, salt, pasientDoctor) values(?, ?, ?, ?, ?, ?)");
 			statement1.setString(1, role);
 			statement1.setString(2, name);
 			statement1.setString(3, email);
 			statement1.setString(4, passwordHash);
 			statement1.setString(5, salt);
+			statement1.setString(6,usersDoctor);
 			statement1.executeUpdate();
 			conn.disconnect();
 		}
@@ -91,6 +92,10 @@ public class Database {
 		return role;
 	}
 
+	public static String getEmailFromCookie(boolean onlineOrOffline, String sid){
+	    return "lege@lege.com";
+    }
+
 	public static ArrayList<String> getDoctorsPatients(boolean onlineOrOffline, String email)throws NamingException, IllegalAccessException, InstantiationException, ClassNotFoundException{
         SqlConnect conn = new SqlConnect();
         try {
@@ -109,7 +114,7 @@ public class Database {
             ResultSet rs2 = statement2.getResultSet();
             ArrayList<String> result = new ArrayList<String>();
             while(rs2.next()) {
-                result.add(rs2.getString("name") + " " + rs2.getString("email"));
+                result.add(rs2.getString("name") + "/" + rs2.getString("email"));
             }
             return result;
         }
