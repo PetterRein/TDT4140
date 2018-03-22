@@ -165,24 +165,70 @@ public class Database {
         return arrayWithData;
 	}
 
-	public static boolean addDataToUser(boolean onlineOrOffline, String Data, String userName){
+	public static boolean addDataToUser(boolean onlineOrOffline, String data, int rating, String userName) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NamingException {
         /**
          * Create timestap
          * Add data to right place
          * Create a primarykey
          */
+        try {
+            SqlConnect conn = new SqlConnect();
+            int patientID = getIdByUsername(false, userName);
+            PreparedStatement preparedStatement2 = conn.connect(false).prepareStatement("INSERT INTO patientData" +
+                    "(patientID, doctorID, rating, extrainfo) VALUES (?, ?, ?, ?) ");
+            preparedStatement2.setInt(1, patientID);
+            preparedStatement2.setInt(2, doctorID);
+            preparedStatement2.setInt(3, rating);
+            preparedStatement2.setString(4, data);
+            preparedStatement2.executeUpdate();
+            conn.disconnect();
+            return true;
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
         return false;
+
+    }
+    public static int getIdByUsername(boolean onlineOrOffline, String userName) {
+	    try {
+            SqlConnect conn = new SqlConnect();
+            PreparedStatement preparedStatement1 = conn.connect(false).prepareStatement("SELECT id FROM users WHERE name = ?");
+            preparedStatement1.setString(1,userName);
+            ResultSet rs1 = preparedStatement1.executeQuery();
+            rs1.next();
+            return rs1.getInt("id");
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
-    public static boolean delDataFromUser(boolean onlineOrOffline, int primaryKey, String userName){
+    public static boolean delDataFromUser(boolean onlineOrOffline, int primaryKey, String userName) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NamingException {
         /**
          * Del the data from the primarykey on that user from userName
          */
-
+        try {
+            SqlConnect conn = new SqlConnect();
+            PreparedStatement preparedStatement = conn.connect(false).prepareStatement("DELETE FROM patientData WHERE id = ?");
+            preparedStatement.setInt(1, primaryKey);
+            preparedStatement.executeUpdate();
+            conn.disconnect();
+            return true;
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
         return false;
     }
 
-    public static boolean delDataInArray(boolean onlineOrOffline, int[] primaryKeys, String userName){
+    public static boolean delDataInArray(boolean onlineOrOffline, int[] primaryKeys, String userName) throws ClassNotFoundException, NamingException, InstantiationException, IllegalAccessException {
 	    boolean doneOrNot = false;
 	    for (int i = 0; i < primaryKeys.length; i++){
 	        doneOrNot = delDataFromUser(onlineOrOffline, primaryKeys[i], userName);
