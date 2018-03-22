@@ -361,14 +361,18 @@ public class WebCalls {
         if (header.getName().equals("doctorPatients")){
             patients = header.getValue();
         }
-         if (header.getName().equals("data")){
+        if (header.getName().equals("data")){
              data = header.getValue();
              String[] datas = data.split("/");
-             data = datas[1];
+             data = datas[0];
+             System.out.println("data " + data);
              if (data == null){
                  data = "-1";
              }
-         }
+             if (data.equals("non")){
+                 data = "-1";
+             }
+        }
         System.out.println(header);
      }
      System.out.println("Response Code : " + response.getStatusLine().getStatusCode());

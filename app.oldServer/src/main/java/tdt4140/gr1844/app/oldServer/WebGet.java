@@ -31,7 +31,6 @@ public class WebGet extends HttpServlet {
      * @throws IOException
      */
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        SqlConnect conn = new SqlConnect();
         Boolean onlineOrOffline = false;
         String sid = null;
         Cookie[] cookies = request.getCookies();
@@ -82,6 +81,7 @@ public class WebGet extends HttpServlet {
             	Cookie myCookie = new Cookie("SID", cookieValue);
             	//TODO insert new cookie value into database, send cookie to user
                 try {
+                    SqlConnect conn = new SqlConnect();
                     PreparedStatement statement = conn.connect(onlineOrOffline).prepareStatement("update users set cookie = ? where email = ?");
                     statement.setString(1, cookieValue);
                     statement.setString(2, username);
@@ -160,10 +160,16 @@ public class WebGet extends HttpServlet {
                         String userEmail = Arrays.toString(request.getParameterValues("userEmail"));
                         userEmail = userEmail.substring(1, userEmail.length()-1);
                         String userPassword = Arrays.toString(request.getParameterValues("userPassword"));
-                        userPassword = userPassword.substring(1, userPassword.length()-1);;
+                        userPassword = userPassword.substring(1, userPassword.length()-1);
                         try {
                             if (!userRole){
-                                String doctorEmail = Database.getEmailFromCookie(onlineOrOffline,sid);
+                                String doctorEmail = null;
+                                try {
+                                    doctorEmail = Database.getEmailFromCookie(onlineOrOffline,sid);
+                                } catch (SQLException e) {
+                                    e.printStackTrace();
+                                }
+                                System.out.println("docotr email " + doctorEmail);
                                 Database.createUser(onlineOrOffline,role , userName, userEmail, userPassword, doctorEmail);
                                 response.setStatus(200);
                             }

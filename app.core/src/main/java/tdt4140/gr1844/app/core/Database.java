@@ -18,7 +18,6 @@ public class Database {
 	public static void createUser(boolean onlineOrOffline, String role, String name, String email, String password, String usersDoctor) throws NamingException, IllegalAccessException, InstantiationException, ClassNotFoundException {
 		String salt = BCrypt.gensalt();
 		String passwordHash = BCrypt.hashpw(password, salt);
-        SqlConnect conn = new SqlConnect();
         int doctorId;
 		try {
 			/**
@@ -28,14 +27,9 @@ public class Database {
                 doctorId = -1;
             }
             else {
-                System.out.println("Her1");
-                PreparedStatement statement = conn.connect(onlineOrOffline).prepareStatement("select id from users where email = ?");
-                statement.setString(1, usersDoctor);
-                statement.execute();
-                ResultSet rs1 = statement.getResultSet();
-                rs1.next();
-                doctorId = rs1.getInt("id");
+                doctorId = getIdByUserEmail(onlineOrOffline,usersDoctor);
             }
+            SqlConnect conn = new SqlConnect();
             System.out.println("ger1");
 			PreparedStatement statement1 = conn.connect(onlineOrOffline).prepareStatement("insert into users(role, name, email, passwordHash, salt, doctorID) values(?, ?, ?, ?, ?, ?)");
 			statement1.setString(1, role);
@@ -114,13 +108,21 @@ public class Database {
 		return role;
 	}
 
-	public static String getEmailFromCookie(boolean onlineOrOffline, String sid){
-	    return "lege@lege.com";
+	public static String getEmailFromCookie(boolean onlineOrOffline, String sid) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, NamingException {
+        SqlConnect conn = new SqlConnect();
+        PreparedStatement statement1 = conn.connect(onlineOrOffline).prepareStatement("select email from users where cookie = ?");
+        statement1.setString(1, sid);
+        statement1.execute();
+        ResultSet rs1 = statement1.getResultSet();
+        rs1.next();
+        String userEmail = rs1.getString(1);
+        conn.disconnect();
+        return userEmail;
     }
 
 	public static String getDoctorsPatients(boolean onlineOrOffline, String email)throws NamingException, IllegalAccessException, InstantiationException, ClassNotFoundException{
-        SqlConnect conn = new SqlConnect();
         try {
+            SqlConnect conn = new SqlConnect();
             PreparedStatement statement1 = conn.connect(onlineOrOffline).prepareStatement("select id from users where email = ?");
             statement1.setString(1, email);
             statement1.execute();
@@ -137,7 +139,7 @@ public class Database {
                     result1 = result1 + rs2.getString(1) + "/" + rs2.getString(2);
                 }
                 else {
-                    result1 = "/" + result1 + rs2.getString(1) + rs2.getString(2);
+                    result1 = result1 + "/" + rs2.getString(1)+ "/" + rs2.getString(2);
                 }
             }
             conn.disconnect();
@@ -153,8 +155,8 @@ public class Database {
     }
 
     public static ArrayList<String> getNLastPatientData(boolean onlineOrOffline, String email, int n)throws NamingException, IllegalAccessException, InstantiationException, ClassNotFoundException{
-        SqlConnect conn = new SqlConnect();
         try {
+            SqlConnect conn = new SqlConnect();
             PreparedStatement statement1 = conn.connect(onlineOrOffline).prepareStatement("select id from users where email = ?");
             statement1.setString(1, email);
             statement1.execute();
@@ -172,6 +174,7 @@ public class Database {
             while(rs2.next()) {
                 result.add(rs2.getInt(1) + "/" + rs2.getString(2));
             }
+            System.out.println("resultData " + result);
             return result;
         }
         catch(SQLException e) {
@@ -220,15 +223,43 @@ public class Database {
 
     }
     public static int getIdByUsername(boolean onlineOrOffline, String userName) {
+	    int userId;
 	    try {
             SqlConnect conn = new SqlConnect();
             PreparedStatement preparedStatement1 = conn.connect(false).prepareStatement("SELECT id FROM users WHERE name = ?");
             preparedStatement1.setString(1,userName);
-            ResultSet rs1 = preparedStatement1.executeQuery();
+            preparedStatement1.execute();
+            ResultSet rs1 = preparedStatement1.getResultSet();
             rs1.next();
-            int e = (Integer) rs1.getObject("id");
+            userId = (Integer) rs1.getObject("id");
             conn.disconnect();
-            return e;
+            return userId;
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (NamingException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public static int getIdByUserEmail(boolean onlineOrOffline, String userEmail){
+	    int userId;
+        try {
+            SqlConnect conn = new SqlConnect();
+            PreparedStatement preparedStatement1 = conn.connect(false).prepareStatement("SELECT id FROM users WHERE email = ?");
+            preparedStatement1.setString(1,userEmail);
+            preparedStatement1.execute();
+            ResultSet rs1 = preparedStatement1.getResultSet();
+            rs1.next();
+            userId = (Integer) rs1.getObject("id");
+            conn.disconnect();
+            return userId;
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (NamingException e) {

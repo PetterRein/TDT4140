@@ -75,6 +75,7 @@ public class LegeController {
                 ArrayList<String> pasient = new ArrayList<>();
                 pasient.add(pasients[i]);
                 //String[] response1 = Main.client.getPatientData(pasients[i+1]);
+                //System.out.println(response1[5]);
                 String rating = "3"; //Hard Coder inn noe ikke vi egenltig skal gjøre
                 pasient.add(pasients[i+1]);
                 pasient.add(rating);
