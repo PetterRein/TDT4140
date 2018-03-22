@@ -20,7 +20,7 @@ Install Tomcat 8 or 9.
 
 A step by step guide to run the server and UI
 ```
-Download release and extract.
+Download release and extract see releasev2.0gr44.zip inn root of master.
 ```
 ```
 Move sample.db to tomcat\bin
@@ -34,7 +34,11 @@ Run script in tomcat\bin catalina.bat or catalina.sh
 ```
 Run 44.jar
 ```
-You should now have server running and see the login page
+You should now have server running and see the login page.
+Available users in sample.db is:
+syking@mail.co with password 123
+admin@o.com with password 33
+lege@mail.co with password 321
 
 ## Built With
 
