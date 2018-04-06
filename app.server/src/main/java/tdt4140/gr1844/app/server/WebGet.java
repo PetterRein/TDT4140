@@ -1,4 +1,4 @@
-package tdt4140.gr1844.app.oldServer;
+package tdt4140.gr1844.app.server;
 
 
 import tdt4140.gr1844.app.core.Authentication;
@@ -61,7 +61,7 @@ public class WebGet extends HttpServlet {
             password = password.substring(1, password.length()-1);
             Boolean loginCheck = null;
             try {
-                loginCheck = Authentication.login(false,username, password);
+                loginCheck = Authentication.login(username, password);
             } catch (IllegalAccessException | InstantiationException | ClassNotFoundException | SQLException | NamingException e) {
                 e.printStackTrace();
             }
@@ -72,14 +72,14 @@ public class WebGet extends HttpServlet {
             	//TODO insert new cookie value into database, send cookie to user
                 try {
                     SqlConnect conn = new SqlConnect();
-                    PreparedStatement statement = conn.connect(false).prepareStatement("update users set cookie = ? where email = ?");
+                    PreparedStatement statement = conn.connect().prepareStatement("update users set cookie = ? where email = ?");
                     statement.setString(1, cookieValue);
                     statement.setString(2, username);
                     statement.execute();
                     conn.disconnect();
                     response.addCookie(myCookie);
                     response.setHeader("cookie", cookieValue);
-                    String role = Database.getRoleFromCookie(false,cookieValue);
+                    String role = Database.getRoleFromCookie(cookieValue);
                     response.setHeader("role",role);
                     response.setStatus(200);
                 } catch (SQLException | NamingException | ClassNotFoundException | IllegalAccessException | InstantiationException e) {
@@ -96,7 +96,7 @@ public class WebGet extends HttpServlet {
             System.out.println("SID: " + sid);
             if (sid != null) {
                 try {
-                    if (Authentication.logout(false, sid)) {
+                    if (Authentication.logout(sid)) {
                         //Send logout success response
                         response.setStatus(200);
                     }
@@ -125,10 +125,10 @@ public class WebGet extends HttpServlet {
         else if(!Arrays.toString(request.getParameterValues("addUser")).equals("null")){
             System.out.println("Para AddUserRole: " + Arrays.toString(request.getParameterValues("role")));
             try {
-                String eee = Database.getRoleFromCookie(false, sid);
+                String eee = Database.getRoleFromCookie(sid);
                 System.out.println(eee);
-                boolean userRole = Database.getRoleFromCookie(false, sid).equals("Admin");
-                if (eee != null && sid != null && (userRole || Database.getRoleFromCookie(false, sid).equals("Doctor"))) {
+                boolean userRole = Database.getRoleFromCookie(sid).equals("Admin");
+                if (eee != null && sid != null && (userRole || Database.getRoleFromCookie(sid).equals("Doctor"))) {
                     String role = Arrays.toString(request.getParameterValues("role"));
                     role = role.substring(1, role.length()-1);
                     if (role.equals("Doctor") || role.equals("Patient") || role.equals("Doktor") || role.equals("Pasient")) {
@@ -143,7 +143,7 @@ public class WebGet extends HttpServlet {
                             if (!userRole){
                                 String doctorEmail = null;
                                 try {
-                                    doctorEmail = Database.getEmailFromCookie(false,sid);
+                                    doctorEmail = Database.getEmailFromCookie(sid);
                                 } catch (SQLException e) {
                                     e.printStackTrace();
                                 }
@@ -177,12 +177,12 @@ public class WebGet extends HttpServlet {
         else if (!Arrays.toString(request.getParameterValues("delUser")).equals("null")){
             System.out.println("Vi sletter bruker=?");
             try {
-                if (Database.getRoleFromCookie(false, sid).equals("Admin") || Database.getRoleFromCookie(false, sid).equals("Doctor")&& sid != null){
+                if (Database.getRoleFromCookie(sid).equals("Admin") || Database.getRoleFromCookie(sid).equals("Doctor")&& sid != null){
                     System.out.println("Admin eller Lege sletter Pasient");
                     String user = Arrays.toString(request.getParameterValues("delUser"));
                     user = user.substring(1, user.length()-1);
                     try {
-                        Database.deleteUser(user, false);
+                        Database.deleteUser(user);
                     } catch (NamingException e) {
                     e.printStackTrace();
                     }
@@ -241,7 +241,7 @@ public class WebGet extends HttpServlet {
             data = data.substring(1, data.length()-1);
             System.out.println("Para AddDataPatient: " + Arrays.toString(request.getParameterValues("addDataPatient")));
             try {
-                if(Database.addDataToUser(false, data, username)){
+                if(Database.addDataToUser(data, username)){
                     response.setStatus(200);
                 }
                 else {
@@ -257,11 +257,11 @@ public class WebGet extends HttpServlet {
             System.out.println("Para PatientData: " + Arrays.toString(request.getParameterValues("getPatientData")));
             String payLoad = null;
             try {
-                ArrayList<String> data = Database.getNLastPatientData(false, email, 1);
+                ArrayList<String> data = Database.getNLastPatientData(email, 1);
                 if (data != null) {
                     payLoad = data.get(1);
                 }
-            } catch (NamingException | IllegalAccessException | InstantiationException | ClassNotFoundException e) {
+            } catch ( IllegalAccessException | InstantiationException | ClassNotFoundException | SQLException e) {
                 e.printStackTrace();
             }
             /*
@@ -275,19 +275,19 @@ public class WebGet extends HttpServlet {
             String feedback = Arrays.toString(request.getParameterValues("feedback"));
             feedback = feedback.substring(1, feedback.length()-1);
             try {
-                Database.createFeedback(false, feedback);
+                Database.createFeedback(feedback);
             } catch (SQLException | ClassNotFoundException | IllegalAccessException | InstantiationException | NamingException e) {
                 e.printStackTrace();
             }
             response.setStatus(200);
         }
         else if(!Arrays.toString(request.getParameterValues("getDoctorsPatients")).equals("null")) try {
-            if (Database.getRoleFromCookie(false, sid).equals("Doctor")) {
+            if (Database.getRoleFromCookie(sid).equals("Doctor")) {
                 String userEmail = Arrays.toString(request.getParameterValues("getDoctorsPatients"));
                 userEmail = userEmail.substring(1, userEmail.length() - 1);
                 System.out.println("Para getDocotrsPatients: " + userEmail);
                 try {
-                    String data = Database.getDoctorsPatients(false, userEmail);
+                    String data = Database.getDoctorsPatients(userEmail);
                     System.out.println(data);
                     response.addHeader("doctorPatients", data);
                     response.setStatus(200);

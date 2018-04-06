@@ -8,8 +8,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static javax.swing.text.html.HTML.Tag.HEAD;
-
 public class DatabaseTest {
     boolean onlineOrOffline = false;
 	@Before
@@ -30,7 +28,7 @@ public class DatabaseTest {
 		String email = "tom@doctor.com";
 		String password = "password";
 		Database.createUser(onlineOrOffline,"Doctor", "Tom", email, password, null);
-		Assert.assertTrue(Authentication.login(onlineOrOffline, email, password));
+		Assert.assertTrue(Authentication.login(email, password));
 	}
 
 	@Test
@@ -38,8 +36,8 @@ public class DatabaseTest {
 		String email = "tom@doctor.com";
 		SqlConnect conn = new SqlConnect();
 		Database.createUser(false,"role", "name", email, "password", null);
-		Database.deleteUser(email, false);
-		PreparedStatement statement = conn.connect(false).prepareStatement("select * from users where email = ?");
+		Database.deleteUser(email);
+		PreparedStatement statement = conn.connect().prepareStatement("select * from users where email = ?");
 		statement.setString(1, email);
 		statement.execute();
 		ResultSet rs = statement.getResultSet();
@@ -53,16 +51,16 @@ public class DatabaseTest {
 		String email = "tom@doctor.com";
 		String password = "password";
 		Database.createUser(false,"Doctor", "Tom", email, password, null);
-		Assert.assertTrue(Authentication.login(false, email, password));
+		Assert.assertTrue(Authentication.login(email, password));
 	}
 	
 	@Test
 	public void getRoleFromCookieWhenCookieExists() throws IllegalAccessException, ClassNotFoundException, InstantiationException, NamingException {
-		Assert.assertEquals("Doctor", Database.getRoleFromCookie(false,"a"));
+		Assert.assertEquals("Doctor", Database.getRoleFromCookie("a"));
 	}
 	
 	@Test
 	public void getRoleFromCookieWhenCookieDoesNotExist() throws IllegalAccessException, ClassNotFoundException, InstantiationException, NamingException {
-		Assert.assertNull(Database.getRoleFromCookie(false,"doesNotExist"));
+		Assert.assertNull(Database.getRoleFromCookie("doesNotExist"));
 	}
 }

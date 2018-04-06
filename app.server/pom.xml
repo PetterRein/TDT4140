@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
 
-    <artifactId>tdt4140-gr1844.app.oldServer</artifactId>
+    <artifactId>tdt4140-gr1844.app.server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <parent>
@@ -15,13 +15,6 @@
     </parent>
 
     <dependencies>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
-        </dependency>
-
-
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>

@@ -12,15 +12,14 @@ import javax.naming.NamingException;
 public class Authentication {
 	/**
 	* Logs the user in.
-	* @param onlineOrOffline Check if the database is online or offline.
 	* @param username Username.
 	* @param password Password.
 	* @return {@code true} if the login was successful, {@code false} otherwise.
 	*/
-	public static boolean login(boolean onlineOrOffline, String username, String password) throws IllegalAccessException, InstantiationException, ClassNotFoundException, SQLException, NamingException {
+	public static boolean login(String username, String password) throws IllegalAccessException, InstantiationException, ClassNotFoundException, SQLException, NamingException {
 		SqlConnect conn = new SqlConnect();
 		//Retrieve the users salt from the database, if no salt is returned then the user doesn't exist
-		PreparedStatement saltRetrieval = conn.connect(onlineOrOffline).prepareStatement("select salt from users where email = ?");
+		PreparedStatement saltRetrieval = conn.connect().prepareStatement("select salt from users where email = ?");
 		saltRetrieval.setString(1, username);
 		saltRetrieval.execute();
 		ResultSet retrievedSalt = saltRetrieval.getResultSet();
@@ -37,7 +36,7 @@ public class Authentication {
 
 		saltRetrieval.close();
 		//Make a query that checks if the user and password is valid
-		PreparedStatement authenticationQuery = conn.connect(onlineOrOffline).prepareStatement("select * from users where (email = ? and passwordHash = ?)");
+		PreparedStatement authenticationQuery = conn.connect().prepareStatement("select * from users where (email = ? and passwordHash = ?)");
 		authenticationQuery.setString(1, username);
 		authenticationQuery.setString(2, passwordHash);
 		authenticationQuery.execute();
@@ -51,13 +50,12 @@ public class Authentication {
 
 	/**
 	 * Logs the user out
-	 * @param onlineOrOffline Check if the database is online or offline.
 	 * @param cookie Session Cookie for the user that we want to log out.
 	 * @return {@code true} if the login was successful, {@code false} otherwise.
 	 */
-	public static Boolean logout(boolean onlineOrOffline, String cookie) throws IllegalAccessException, InstantiationException, ClassNotFoundException, SQLException, NamingException {
+	public static Boolean logout(String cookie) throws IllegalAccessException, InstantiationException, ClassNotFoundException, SQLException, NamingException {
 		SqlConnect conn = new SqlConnect();
-		PreparedStatement statement = conn.connect(onlineOrOffline).prepareStatement("update users set cookie = null where cookie = ?");
+		PreparedStatement statement = conn.connect().prepareStatement("update users set cookie = null where cookie = ?");
 		statement.setString(1, cookie);
 		int updateCheck = statement.executeUpdate();
 		//Returns true if something was updated

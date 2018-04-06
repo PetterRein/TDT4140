@@ -1,9 +1,5 @@
 package tdt4140.gr1844.app.core;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,10 +7,10 @@ import java.sql.SQLException;
 
 public class SqlConnect {
     // init database constants
-    private static final String DATABASE_URL = "jdbc:sqlite:sample.db"; //Denne er feil se print fra Workiing Directory
+    private static final String DATABASE_URL = "jdbc:sqlite:sample.db"; //Denne er feil se print fra Working Directory
     // init connection object
     // connect database
-    Connection connection = null;
+    private Connection connection = null;
     // disconnect database
     public void disconnect() {
         if (connection != null) {
@@ -27,7 +23,7 @@ public class SqlConnect {
         }
     }
 
-    public Connection connect(boolean onlineOrOffline) throws NamingException, SQLException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+    public Connection connect() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
             Class.forName("org.sqlite.JDBC").newInstance();
             //DriverManager.registerDriver(new JDBC());
             java.nio.file.Path currentRelativePath = Paths.get("");
@@ -45,9 +41,3 @@ public class SqlConnect {
 
         }
 }
-/**
- /**
- Context ctx = new InitialContext();
- DataSource ds = (DataSource)ctx.lookup("java:comp/env/jdbc/sample");
- conn = ds.getConnection();
- return conn;**/

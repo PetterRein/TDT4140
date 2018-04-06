@@ -12,8 +12,7 @@ public class CookieValueGenerator {
 			int index = random.nextInt(acceptedChars.length());
 			cookieValueBuilder.append(acceptedChars.charAt(index));
 		}
-		String cookieValue = cookieValueBuilder.toString();
-		return cookieValue;
+		return cookieValueBuilder.toString();
 	}
 	
 	public static void main(String[] args) {
