@@ -41,9 +41,16 @@ public class Database {
         PreparedStatement statement3 = conn.connect(false).prepareStatement("CREATE TABLE IF NOT EXISTS feedback" +
                 "(id INTEGER PRIMARY KEY, message VARCHAR (20000000))");
 
+
         statement1.execute();
         statement2.execute();
         statement3.execute();
+
+
+        // TODO: Fix test
+        createUser(false,"Doctor", "s", "email", "password", null);
+        PreparedStatement statement4 = conn.connect(false).prepareStatement("update users set cookie='a' where email = 'email'");
+        statement4.executeUpdate();
         conn.disconnect();
     }
 
@@ -295,12 +302,5 @@ public class Database {
          */
         return false;
     }
-
-    public static void main(String args[]) throws ClassNotFoundException, SQLException, NamingException, InstantiationException, IllegalAccessException {
-	    Database.initDatabase();
-        Database.createUser(false, "Doctor", "Balázs","doctor@email.no","123",null);
-
-    }
-
 
 }

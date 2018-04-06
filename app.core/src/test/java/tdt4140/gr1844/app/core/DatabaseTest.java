@@ -16,6 +16,8 @@ public class DatabaseTest {
 	public void setUp() throws NamingException, IllegalAccessException, InstantiationException, ClassNotFoundException {
 		try {
 			Database.initDatabase();
+			Database.createUser(false,"Admin","Per","admin@o.com","33", null);
+
 		}
 		catch(SQLException e){
 			System.err.println(e);
