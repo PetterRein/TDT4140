@@ -14,16 +14,8 @@ public class DatabaseTest {
     boolean onlineOrOffline = false;
 	@Before
 	public void setUp() throws NamingException, IllegalAccessException, InstantiationException, ClassNotFoundException {
-		SqlConnect conn = new SqlConnect();
 		try {
-			PreparedStatement statement1 = conn.connect(false).prepareStatement("drop table if exists users");
-			statement1.execute();
-			PreparedStatement statement2 = conn.connect(onlineOrOffline).prepareStatement("create table users(id int, role varchar(64), name varchar(64), email varchar(64), passwordHash varchar(2000), salt varchar(256), cookie varchar(256), doctorID int, primary key(id))");
-			statement2.execute();
-			Database.createUser(false,"Doctor", "s", "email", "password", null);
-			Database.createUser(false,"Admin","Per","admin@o.com","33", null);
-			PreparedStatement statement3 = conn.connect(false).prepareStatement("update users set cookie='a' where email = 'email'");
-			statement3.executeUpdate();
+			Database.initDatabase();
 		}
 		catch(SQLException e){
 			System.err.println(e);
@@ -32,7 +24,7 @@ public class DatabaseTest {
 	}
 	
 	@Test
-	public void addUserTest() throws NamingException, IllegalAccessException, ClassNotFoundException, InstantiationException {
+	public void addUserTest() throws NamingException, IllegalAccessException, ClassNotFoundException, InstantiationException, SQLException {
 		String email = "tom@doctor.com";
 		String password = "password";
 		Database.createUser(onlineOrOffline,"Doctor", "Tom", email, password, null);
@@ -40,29 +32,22 @@ public class DatabaseTest {
 	}
 
 	@Test
-	public void deleteUserTest() throws IllegalAccessException, ClassNotFoundException, InstantiationException {
+	public void deleteUserTest() throws IllegalAccessException, ClassNotFoundException, InstantiationException, SQLException, NamingException {
 		String email = "tom@doctor.com";
 		SqlConnect conn = new SqlConnect();
-		try {
-			Database.createUser(false,"role", "name", email, "password", null);
-			Database.deleteUser(email, false);
-			PreparedStatement statement = conn.connect(false).prepareStatement("select * from users where email = ?");
-			statement.setString(1, email);
-			statement.execute();
-			ResultSet rs = statement.getResultSet();
-			Assert.assertFalse(rs.isBeforeFirst());
-		}
-		catch(NamingException e){
-			System.err.println(e);
-		}
-		catch(SQLException e) {
-			System.err.println(e);
-		}
+		Database.createUser(false,"role", "name", email, "password", null);
+		Database.deleteUser(email, false);
+		PreparedStatement statement = conn.connect(false).prepareStatement("select * from users where email = ?");
+		statement.setString(1, email);
+		statement.execute();
+		ResultSet rs = statement.getResultSet();
+		Assert.assertFalse(rs.isBeforeFirst());
+
 	}
 
 	
 	@Test
-	public void loginUserTest() throws NamingException, IllegalAccessException, ClassNotFoundException, InstantiationException {
+	public void loginUserTest() throws NamingException, IllegalAccessException, ClassNotFoundException, InstantiationException, SQLException {
 		String email = "tom@doctor.com";
 		String password = "password";
 		Database.createUser(false,"Doctor", "Tom", email, password, null);
@@ -70,12 +55,12 @@ public class DatabaseTest {
 	}
 	
 	@Test
-	public void getRoleFromCookieWhenCookieExists() throws IllegalAccessException, ClassNotFoundException, InstantiationException {
+	public void getRoleFromCookieWhenCookieExists() throws IllegalAccessException, ClassNotFoundException, InstantiationException, NamingException {
 		Assert.assertEquals("Doctor", Database.getRoleFromCookie(false,"a"));
 	}
 	
 	@Test
-	public void getRoleFromCookieWhenCookieDoesNotExist() throws IllegalAccessException, ClassNotFoundException, InstantiationException {
+	public void getRoleFromCookieWhenCookieDoesNotExist() throws IllegalAccessException, ClassNotFoundException, InstantiationException, NamingException {
 		Assert.assertNull(Database.getRoleFromCookie(false,"doesNotExist"));
 	}
 }

@@ -40,27 +40,27 @@ public class AuthenticationTest {
 	}
 
 	@Test
-	public void loginTestCorrectCredentials() throws IllegalAccessException, ClassNotFoundException, InstantiationException {
+	public void loginTestCorrectCredentials() throws IllegalAccessException, ClassNotFoundException, InstantiationException, SQLException, NamingException {
 		Assert.assertTrue(Authentication.login(false, "correctEmail", "correctPassword"));
 	}
 
 	@Test
-	public void loginTestWrongUsername() throws IllegalAccessException, ClassNotFoundException, InstantiationException {
+	public void loginTestWrongUsername() throws IllegalAccessException, ClassNotFoundException, InstantiationException, SQLException, NamingException {
 		Assert.assertFalse(Authentication.login(false, "wrongUsername", "correctPassword"));
 	}
 
 	@Test
-	public void loginTestWrongPassword() throws IllegalAccessException, ClassNotFoundException, InstantiationException {
+	public void loginTestWrongPassword() throws IllegalAccessException, ClassNotFoundException, InstantiationException, SQLException, NamingException {
 		Assert.assertFalse(Authentication.login(false, "correctUsername", "wrongPassword"));
 	}
 
 	@Test
-	public void logoutCorrectCookie() throws IllegalAccessException, ClassNotFoundException, InstantiationException {
+	public void logoutCorrectCookie() throws IllegalAccessException, ClassNotFoundException, InstantiationException, SQLException, NamingException {
 		Assert.assertTrue(Authentication.logout(false,"aaaa"));
 	}
 
 	@Test
-	public void logoutWrongCookie() throws IllegalAccessException, ClassNotFoundException, InstantiationException {
+	public void logoutWrongCookie() throws IllegalAccessException, ClassNotFoundException, InstantiationException, SQLException, NamingException {
 		Assert.assertFalse(Authentication.logout(false,"b"));
 	}
 }

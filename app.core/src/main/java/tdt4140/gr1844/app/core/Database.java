@@ -15,42 +15,69 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 public class Database {
-	public static void createUser(boolean onlineOrOffline, String role, String name, String email, String password, String usersDoctor) throws NamingException, IllegalAccessException, InstantiationException, ClassNotFoundException {
+
+    public static void initDatabase() throws ClassNotFoundException, InstantiationException, IllegalAccessException, NamingException, SQLException {
+        // create a database connection
+        SqlConnect conn = new SqlConnect();
+
+        // drop tables if they exist
+        System.out.println("Dropping all tables...");
+        PreparedStatement usersTable = conn.connect(false).prepareStatement("DROP TABLE IF EXISTS users");
+        PreparedStatement patientDataTable = conn.connect(false).prepareStatement("DROP TABLE IF EXISTS patientData");
+        PreparedStatement feedback = conn.connect(false).prepareStatement("DROP TABLE IF EXISTS feedback");
+        usersTable.execute();
+        patientDataTable.execute();
+        feedback.execute();
+
+        // create table users
+        PreparedStatement statement1 = conn.connect(false).prepareStatement("CREATE TABLE IF NOT EXISTS users" +
+                "(id INTEGER PRIMARY KEY, role varchar(64), name varchar(64), email varchar(64), passwordHash varchar(2000), salt varchar(256)," +
+                "cookie varchar(256), doctorID int, FOREIGN KEY (doctorID) REFERENCES users(id))");
+        // create table patientData
+        PreparedStatement statement2 = conn.connect(false).prepareStatement("CREATE TABLE IF NOT EXISTS patientData" +
+                "(id INTEGER PRIMARY KEY, patientID int not null, rating int, extrainfo text," +
+                "times TIMESTAMP DEFAULT CURRENT_TIMESTAMP not null," +
+                "FOREIGN KEY (patientID) REFERENCES users(id))");
+        PreparedStatement statement3 = conn.connect(false).prepareStatement("CREATE TABLE IF NOT EXISTS feedback" +
+                "(id INTEGER PRIMARY KEY, message VARCHAR (20000000))");
+
+        statement1.execute();
+        statement2.execute();
+        statement3.execute();
+        conn.disconnect();
+    }
+
+
+
+	public static void createUser(boolean onlineOrOffline, String role, String name, String email, String password, String usersDoctor) throws NamingException, IllegalAccessException, InstantiationException, ClassNotFoundException, SQLException {
 		String salt = BCrypt.gensalt();
 		String passwordHash = BCrypt.hashpw(password, salt);
-        int doctorId;
-		try {
-			/**
-			 * Todo legg inn sjekk på bruker allerede er lagt til
-			 */
-			if (usersDoctor == null){
-                doctorId = -1;
-            }
-            else {
-                doctorId = getIdByUserEmail(onlineOrOffline,usersDoctor);
-            }
-            SqlConnect conn = new SqlConnect();
-            System.out.println("ger1");
-			PreparedStatement statement1 = conn.connect(onlineOrOffline).prepareStatement("insert into users(role, name, email, passwordHash, salt, doctorID) values(?, ?, ?, ?, ?, ?)");
-			statement1.setString(1, role);
-			statement1.setString(2, name);
-			statement1.setString(3, email);
-			statement1.setString(4, passwordHash);
-			statement1.setString(5, salt);
-			statement1.setInt(6, doctorId);
-			statement1.executeUpdate();
-			conn.disconnect();
-		}
-		catch(SQLException e) {
-			System.err.println(e);
-		}
+        int doctorId = -1;
+        /**
+         * Todo legg inn sjekk på bruker allerede er lagt til
+         */
+        if (usersDoctor != null){
+            doctorId = getIdByUserEmail(onlineOrOffline, usersDoctor);
+        }
+
+        SqlConnect conn = new SqlConnect();
+        PreparedStatement statement = conn.connect(onlineOrOffline).prepareStatement("insert into users(role, name, email, passwordHash, salt, doctorID) values(?, ?, ?, ?, ?, ?)");
+
+        statement.setString(1, role);
+        statement.setString(2, name);
+        statement.setString(3, email);
+        statement.setString(4, passwordHash);
+        statement.setString(5, salt);
+        statement.setInt(6, doctorId);
+        statement.executeUpdate();
+        conn.disconnect();
 	}
 
 	public static void createFeedback(boolean onlineOrOffline, String feedback) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, NamingException {
         SqlConnect conn = new SqlConnect();
-        PreparedStatement statement1 = conn.connect(onlineOrOffline).prepareStatement("insert into feedBack(message) values(?)");
-        statement1.setString(1, feedback);
-        statement1.executeUpdate();
+        PreparedStatement statement = conn.connect(onlineOrOffline).prepareStatement("insert into feedBack(message) values(?)");
+        statement.setString(1, feedback);
+        statement.executeUpdate();
         conn.disconnect();
     }
 
@@ -59,20 +86,15 @@ public class Database {
 	 * @param email The e-mail address of the user to be deleted.
 	 * @param onlineOrOffline If the database is online or offline.
 	 */
-	public static void deleteUser(String email, boolean onlineOrOffline) throws NamingException, IllegalAccessException, InstantiationException, ClassNotFoundException {
-        try {
-			/**
-			 * Todo legg til sjekk som sjekker om bruker finnes før vi sletter null
-			 */
-			SqlConnect conn = new SqlConnect();
-            PreparedStatement statement = conn.connect(onlineOrOffline).prepareStatement("delete from users where email=?");
-            statement.setString(1, email);
-            statement.executeUpdate();
-            conn.disconnect();
-        }
-        catch(SQLException e) {
-            System.err.println(e);
-        }
+	public static void deleteUser(String email, boolean onlineOrOffline) throws NamingException, IllegalAccessException, InstantiationException, ClassNotFoundException, SQLException {
+        /**
+         * Todo legg til sjekk som sjekker om bruker finnes før vi sletter null
+         */
+        SqlConnect conn = new SqlConnect();
+        PreparedStatement statement = conn.connect(onlineOrOffline).prepareStatement("delete from users where email=?");
+        statement.setString(1, email);
+        statement.executeUpdate();
+        conn.disconnect();
 	}
 
     /**
@@ -84,74 +106,63 @@ public class Database {
      * @throws InstantiationException
      * @throws ClassNotFoundException
      */
-	public static String getRoleFromCookie(boolean onlineOrOffline, String cookie) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
+	public static String getRoleFromCookie(boolean onlineOrOffline, String cookie) throws IllegalAccessException, InstantiationException, ClassNotFoundException, NamingException {
 		String role = null;
-		try {
-			/**
-			 * Todo legg til sjekk som sjekker om bruker har en role
-			 */
-			SqlConnect conn = new SqlConnect();
-			PreparedStatement statement1 = conn.connect(onlineOrOffline).prepareStatement("select role from users where cookie = ?");
-			statement1.setString(1, cookie);
-			statement1.execute();
-			ResultSet rs = statement1.getResultSet();
-			rs.next();
-			role = rs.getString("role");
-			conn.disconnect();
-		}
-		catch(SQLException e) {
-			
-		}
-		catch(NamingException e) {
-			
-		}
+        /**
+         * Todo legg til sjekk som sjekker om bruker har en role
+         */
+
+        try {
+            SqlConnect conn = new SqlConnect();
+            PreparedStatement statement = conn.connect(onlineOrOffline).prepareStatement("select role from users where cookie = ?");
+            statement.setString(1, cookie);
+            statement.execute();
+            ResultSet rs = statement.getResultSet();
+            rs.next();
+            role = rs.getString("role");
+            conn.disconnect();
+
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
 		return role;
 	}
 
 	public static String getEmailFromCookie(boolean onlineOrOffline, String sid) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, NamingException {
         SqlConnect conn = new SqlConnect();
-        PreparedStatement statement1 = conn.connect(onlineOrOffline).prepareStatement("select email from users where cookie = ?");
-        statement1.setString(1, sid);
-        statement1.execute();
-        ResultSet rs1 = statement1.getResultSet();
-        rs1.next();
-        String userEmail = rs1.getString(1);
+        PreparedStatement statement = conn.connect(onlineOrOffline).prepareStatement("select email from users where cookie = ?");
+        statement.setString(1, sid);
+        statement.execute();
+        ResultSet rs = statement.getResultSet();
+        rs.next();
+        String userEmail = rs.getString(1);
         conn.disconnect();
         return userEmail;
     }
 
-	public static String getDoctorsPatients(boolean onlineOrOffline, String email)throws NamingException, IllegalAccessException, InstantiationException, ClassNotFoundException{
-        try {
-            SqlConnect conn = new SqlConnect();
-            PreparedStatement statement1 = conn.connect(onlineOrOffline).prepareStatement("select id from users where email = ?");
-            statement1.setString(1, email);
-            statement1.execute();
-            ResultSet rs1 = statement1.getResultSet();
-            rs1.next();
-            int doctorId =  (Integer) rs1.getObject("id");
-            PreparedStatement statement2 = conn.connect(onlineOrOffline).prepareStatement("select name, email from users where doctorID = ?");
-            statement2.setInt(1, doctorId);
-            statement2.execute();
-            ResultSet rs2 = statement2.getResultSet();
-            String result1 = "";
-            while (rs2.next()){
-                if (result1.equals("")){
-                    result1 = result1 + rs2.getString(1) + "/" + rs2.getString(2);
-                }
-                else {
-                    result1 = result1 + "/" + rs2.getString(1)+ "/" + rs2.getString(2);
-                }
+	public static String getDoctorsPatients(boolean onlineOrOffline, String email) throws IllegalAccessException, InstantiationException, ClassNotFoundException, SQLException, NamingException{
+        SqlConnect conn = new SqlConnect();
+        PreparedStatement statement1 = conn.connect(onlineOrOffline).prepareStatement("select id from users where email = ?");
+        statement1.setString(1, email);
+        statement1.execute();
+        ResultSet rs1 = statement1.getResultSet();
+        rs1.next();
+        int doctorId =  (Integer) rs1.getObject("id");
+        PreparedStatement statement2 = conn.connect(onlineOrOffline).prepareStatement("select name, email from users where doctorID = ?");
+        statement2.setInt(1, doctorId);
+        statement2.execute();
+        ResultSet rs2 = statement2.getResultSet();
+        String result1 = "";
+        while (rs2.next()){
+            if (result1.equals("")){
+                result1 = result1 + rs2.getString(1) + "/" + rs2.getString(2);
             }
-            conn.disconnect();
-            return result1;
+            else {
+                result1 = result1 + "/" + rs2.getString(1)+ "/" + rs2.getString(2);
+            }
         }
-        catch(SQLException e) {
-
-        }
-        catch(NamingException e) {
-
-        }
-        return null;
+        conn.disconnect();
+        return result1;
     }
 
     public static ArrayList<String> getNLastPatientData(boolean onlineOrOffline, String email, int n)throws NamingException, IllegalAccessException, InstantiationException, ClassNotFoundException{
@@ -222,56 +233,34 @@ public class Database {
         return false;
 
     }
-    public static int getIdByUsername(boolean onlineOrOffline, String userName) {
-	    int userId;
-	    try {
-            SqlConnect conn = new SqlConnect();
-            PreparedStatement preparedStatement1 = conn.connect(false).prepareStatement("SELECT id FROM users WHERE name = ?");
-            preparedStatement1.setString(1,userName);
-            preparedStatement1.execute();
-            ResultSet rs1 = preparedStatement1.getResultSet();
-            rs1.next();
-            userId = (Integer) rs1.getObject("id");
-            conn.disconnect();
-            return userId;
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (NamingException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return -1;
+    public static int getIdByUsername(boolean onlineOrOffline, String userName) throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, NamingException {
+	    int userId = -1;
+        SqlConnect conn = new SqlConnect();
+        PreparedStatement preparedStatement1 = conn.connect(false).prepareStatement("SELECT id FROM users WHERE name = ?");
+        preparedStatement1.setString(1,userName);
+        preparedStatement1.execute();
+        ResultSet rs1 = preparedStatement1.getResultSet();
+        rs1.next();
+        userId = (Integer) rs1.getObject("id");
+        conn.disconnect();
+        return userId;
     }
 
-    public static int getIdByUserEmail(boolean onlineOrOffline, String userEmail){
-	    int userId;
-        try {
+    public static int getIdByUserEmail(boolean onlineOrOffline, String userEmail) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NamingException {
+	    int userId = -1;
+	    try {
             SqlConnect conn = new SqlConnect();
             PreparedStatement preparedStatement1 = conn.connect(false).prepareStatement("SELECT id FROM users WHERE email = ?");
             preparedStatement1.setString(1,userEmail);
             preparedStatement1.execute();
             ResultSet rs1 = preparedStatement1.getResultSet();
             rs1.next();
-            userId = (Integer) rs1.getObject("id");
+            userId = rs1.getInt("id");
             conn.disconnect();
-            return userId;
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (NamingException e) {
-            e.printStackTrace();
         } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+	        e.printStackTrace();
         }
-        return -1;
+        return userId;
     }
 
     public static boolean delDataFromUser(boolean onlineOrOffline, int primaryKey, String userName) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NamingException {
@@ -306,4 +295,12 @@ public class Database {
          */
         return false;
     }
+
+    public static void main(String args[]) throws ClassNotFoundException, SQLException, NamingException, InstantiationException, IllegalAccessException {
+	    Database.initDatabase();
+        Database.createUser(false, "Doctor", "Balázs","doctor@email.no","123",null);
+
+    }
+
+
 }
