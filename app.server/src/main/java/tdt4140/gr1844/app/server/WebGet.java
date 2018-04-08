@@ -17,16 +17,19 @@ public class WebGet extends HttpServlet {
 
     }
 
+    private void manageAction( Map<String, List<String>> params) {
+        switch (params.get("action").toArray()[0]) {
+            case "login":
+
+            default:
+        }
+    }
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String queryString = request.getQueryString();
-        if (queryString.equals("null")) {
-            queryString = "";
-        }
 
         Map<String, List<String>> params = QueryString.parse(new URL("http://localhost:8080/api?" + queryString));
-        for (String param: params.keySet()) {
-            System.out.println(param);
-        }
+        manageAction(params);
         // Set the response message's MIME type
         response.setContentType("text/html;charset=UTF-8");
         // Allocate a output writer to write the response message into the network socket
@@ -44,7 +47,7 @@ public class WebGet extends HttpServlet {
             out.println("<p>PathInfo: " + request.getPathInfo() + "</p>");
             out.println("<p>Remote Address: " + request.getRemoteAddr() + "</p>");
             // Generate a random number upon each request
-            out.println(request.getQueryString());
+            out.println(queryString);
             out.println("</body>");
             out.println("</html>");
         }
