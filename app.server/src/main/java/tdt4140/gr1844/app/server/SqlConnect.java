@@ -1,4 +1,4 @@
-package tdt4140.gr1844.app.core;
+package tdt4140.gr1844.app.server;
 
 import java.nio.file.Paths;
 import java.sql.Connection;

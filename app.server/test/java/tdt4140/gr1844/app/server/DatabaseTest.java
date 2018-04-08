@@ -14,7 +14,7 @@ public class DatabaseTest {
 	public void setUp() throws NamingException, IllegalAccessException, InstantiationException, ClassNotFoundException {
 		try {
 			Database.initDatabase();
-			Database.createUser(false,"Admin","Per","admin@o.com","33", null);
+			Database.createUser("Admin","Per","admin@o.com","33", null);
 
 		}
 		catch(SQLException e){
@@ -27,7 +27,7 @@ public class DatabaseTest {
 	public void addUserTest() throws NamingException, IllegalAccessException, ClassNotFoundException, InstantiationException, SQLException {
 		String email = "tom@doctor.com";
 		String password = "password";
-		Database.createUser(onlineOrOffline,"Doctor", "Tom", email, password, null);
+		Database.createUser("Doctor", "Tom", email, password, null);
 		Assert.assertTrue(Authentication.login(email, password));
 	}
 
@@ -35,7 +35,7 @@ public class DatabaseTest {
 	public void deleteUserTest() throws IllegalAccessException, ClassNotFoundException, InstantiationException, SQLException, NamingException {
 		String email = "tom@doctor.com";
 		SqlConnect conn = new SqlConnect();
-		Database.createUser(false,"role", "name", email, "password", null);
+		Database.createUser("role", "name", email, "password", null);
 		Database.deleteUser(email);
 		PreparedStatement statement = conn.connect().prepareStatement("select * from users where email = ?");
 		statement.setString(1, email);
@@ -50,7 +50,7 @@ public class DatabaseTest {
 	public void loginUserTest() throws NamingException, IllegalAccessException, ClassNotFoundException, InstantiationException, SQLException {
 		String email = "tom@doctor.com";
 		String password = "password";
-		Database.createUser(false,"Doctor", "Tom", email, password, null);
+		Database.createUser("Doctor", "Tom", email, password, null);
 		Assert.assertTrue(Authentication.login(email, password));
 	}
 	

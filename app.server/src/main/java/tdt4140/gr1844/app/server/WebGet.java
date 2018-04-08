@@ -1,10 +1,10 @@
 package tdt4140.gr1844.app.server;
 
 import org.json.JSONArray;
-import tdt4140.gr1844.app.core.Authentication;
-import tdt4140.gr1844.app.core.Database;
+import org.json.JSONObject;
 import tdt4140.gr1844.app.core.QueryString;
 
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,22 +25,22 @@ public class WebGet extends HttpServlet {
         return param.toArray()[0].toString();
     }
 
-    private JSONArray getResponse(Map<String, List<String>> params) throws IllegalAccessException, ClassNotFoundException, InstantiationException, SQLException {
+    private JSONObject getResponse(Map<String, List<String>> params) throws IllegalAccessException, ClassNotFoundException, InstantiationException, SQLException, NamingException {
         String action = params.get("action").toArray()[0].toString();
-        JSONArray response = null;
+        JSONObject response = null;
         //if (!action.equals("login") && Authentication.isAuthenticated(params.get("cookie"))) {
             switch (action) {
                 case "login":
-                    //handleLogin(params.get("username"), params.get("password"));
-                    System.out.println(params);
+                    response = Database.handleLogin(
+                            getParam(params.get("email")),
+                            getParam(params.get("password"))
+                    );
                     break;
                 case "logout":
                     //handleLogout();
                     break;
                 case "getPatientData":
                     response = Database.handleGetPatientData(
-                            getParam(params.get("role")),
-                            //params.get("cookie"),
                             getParam(params.get("patientId")),
                             getParam(params.get("orderBy"))
                     );
@@ -71,7 +71,7 @@ public class WebGet extends HttpServlet {
         response.setContentType("application/json");
         try (PrintWriter out = response.getWriter()) {
             out.print(getResponse(params));
-        } catch (IllegalAccessException | InstantiationException | ClassNotFoundException | SQLException e) {
+        } catch (IllegalAccessException | InstantiationException | ClassNotFoundException | SQLException | NamingException e) {
             e.printStackTrace();
         }
     }
