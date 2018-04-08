@@ -10,7 +10,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>MyApplication</servlet-name>
-        <url-pattern>/webapi/*</url-pattern>
+        <url-pattern>/api</url-pattern>
     </servlet-mapping>
     <resource-ref>
         <description>Reviews Database</description>

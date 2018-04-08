@@ -26,12 +26,6 @@ public class WebCalls {
     private String userEmail = "per";
     private String userRole = "pasient";
 
-    public static void main(String[] args) throws Exception {
-
-        WebCalls http = new WebCalls();
-        System.out.println("Testing 1 - Send Http GET request");
-        http.sendGet();
-    }
 
     private void updateSessionCookie(String cookie){
         sessionCookie = cookie;
@@ -136,6 +130,8 @@ public class WebCalls {
         System.out.println(result.toString());
         return response.getStatusLine().getStatusCode();
     }
+
+
 
 
     public CloseableHttpResponse sendPostArray(String userEmail, String userPassword, ArrayList<ArrayList<String>> params) throws IOException {
