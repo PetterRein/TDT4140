@@ -1,5 +1,8 @@
 package tdt4140.gr1844.app.server;
 
+import org.json.JSONArray;
+import tdt4140.gr1844.app.core.Authentication;
+import tdt4140.gr1844.app.core.Database;
 import tdt4140.gr1844.app.core.QueryString;
 
 import javax.servlet.ServletException;
@@ -17,50 +20,58 @@ public class WebGet extends HttpServlet {
 
     }
 
-    private void manageAction( Map<String, List<String>> params) {
+    private String getParam(List<String> param){
+        return param.toArray()[0].toString();
+    }
+
+    private JSONArray getResponse(Map<String, List<String>> params) throws IllegalAccessException, ClassNotFoundException, InstantiationException {
         String action = params.get("action").toArray()[0].toString();
-        switch (action) {
-            case "login":
-                handleLogin(params.get("username"), params.get("password"));
-                break;
-            case "logout":
-                handleLogout();
-                break;
-            case "createUser":
-                handleCreateuser();
-                break;
-            case "deleteUser":
-                handleDeleteUser();
-                break;
-            case "addDataToUser":
-                handleAddDataToUser();
-                break;
-        }
+        JSONArray response = null;
+        //if (!action.equals("login") && Authentication.isAuthenticated(params.get("cookie"))) {
+            switch (action) {
+                case "login":
+                    //handleLogin(params.get("username"), params.get("password"));
+                    System.out.println(params);
+                    break;
+                case "logout":
+                    //handleLogout();
+                    break;
+                case "getPatientData":
+                    response = Database.handleGetPatientData(
+                            getParam(params.get("role")),
+                            //params.get("cookie"),
+                            getParam(params.get("patientId")),
+                            getParam(params.get("orderBy"))
+                    );
+                    break;
+                case "createUser":
+                    //handleCreateuser();
+                    break;
+                case "deleteUser":
+                    //handleDeleteUser();
+                    break;
+                case "addDataToUser":
+                    //handleAddDataToUser();
+                    break;
+            }
+        //} else {
+            // TODO: Send authentication error response
+        //}
+        return response;
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String queryString = request.getQueryString();
-
-        Map<String, List<String>> params = QueryString.parse(new URL("http://localhost:8080/api?" + queryString));
-        manageAction(params);
+        Map<String, List<String>> params = QueryString.parse(
+                new URL("http://localhost:8080/api?" + request.getQueryString()
+                ));
         // Set the response message's MIME type
-        response.setContentType("text/html;charset=UTF-8");
         // Allocate a output writer to write the response message into the network socket
         // Write the response message, in an HTML page
+        response.setContentType("application/json");
         try (PrintWriter out = response.getWriter()) {
-            out.println("<!DOCTYPE html>");
-            out.println("<html><head>");
-            out.println("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>");
-            out.println("<title>Response from the server</title></head>");
-            out.println("<body>");
-            // Echo client's request information
-            out.println("<p>Request URI: " + request.getRequestURI() + "</p>");
-            out.println("<p>Protocol: " + request.getProtocol() + "</p>");
-            out.println("<p>PathInfo: " + request.getPathInfo() + "</p>");
-            out.println("<p>Remote Address: " + request.getRemoteAddr() + "</p>");
-            out.println(queryString);
-            out.println("</body>");
-            out.println("</html>");
+            out.print(getResponse(params));
+        } catch (IllegalAccessException | InstantiationException | ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -1,8 +1,11 @@
 package tdt4140.gr1844.app.core;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.naming.NamingException;
@@ -13,6 +16,7 @@ import javax.naming.NamingException;
  **/
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Database {
 
@@ -291,4 +295,38 @@ public class Database {
         return false;
     }
 
+    public static JSONArray handleGetPatientData(String role, String patientId, String orderBy) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
+        try {
+            SqlConnect conn = new SqlConnect();
+            PreparedStatement statement = conn.connect().prepareStatement("SELECT * FROM patientData WHERE patientID = ?");
+            statement.setInt(1, Integer.parseInt(patientId));
+            statement.execute();
+            conn.disconnect();
+            return SQLToJSON(statement.getResultSet());
+
+        } catch (SQLException e) {
+            System.err.println(e);
+            return null;
+        }
+	}
+
+	private static JSONArray SQLToJSON (ResultSet rs) throws SQLException {
+        JSONArray json = new JSONArray();
+        ResultSetMetaData rsmd = rs.getMetaData();
+        while(rs.next()) {
+            int numColumns = rsmd.getColumnCount();
+            JSONObject obj = new JSONObject();
+            for (int i=1; i<=numColumns; i++) {
+                String column_name = rsmd.getColumnName(i);
+                System.out.println(column_name);
+                obj.put(column_name, rs.getObject(column_name));
+            }
+            json.put(obj);
+        }
+        return json;
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException, SQLException, NamingException, InstantiationException, IllegalAccessException {
+        initDatabase();
+    }
 }
