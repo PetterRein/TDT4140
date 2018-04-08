@@ -18,10 +18,23 @@ public class WebGet extends HttpServlet {
     }
 
     private void manageAction( Map<String, List<String>> params) {
-        switch (params.get("action").toArray()[0]) {
+        String action = params.get("action").toArray()[0].toString();
+        switch (action) {
             case "login":
-
-            default:
+                handleLogin(params.get("username"), params.get("password"));
+                break;
+            case "logout":
+                handleLogout();
+                break;
+            case "createUser":
+                handleCreateuser();
+                break;
+            case "deleteUser":
+                handleDeleteUser();
+                break;
+            case "addDataToUser":
+                handleAddDataToUser();
+                break;
         }
     }
 
@@ -38,19 +51,16 @@ public class WebGet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html><head>");
             out.println("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>");
-            out.println("<title>Hello, World</title></head>");
+            out.println("<title>Response from the server</title></head>");
             out.println("<body>");
-            out.println("<h1>Hello, world!</h1>");  // says Hello
             // Echo client's request information
             out.println("<p>Request URI: " + request.getRequestURI() + "</p>");
             out.println("<p>Protocol: " + request.getProtocol() + "</p>");
             out.println("<p>PathInfo: " + request.getPathInfo() + "</p>");
             out.println("<p>Remote Address: " + request.getRemoteAddr() + "</p>");
-            // Generate a random number upon each request
             out.println(queryString);
             out.println("</body>");
             out.println("</html>");
         }
-        // Always close the output writer
     }
 }
