@@ -295,20 +295,18 @@ public class Database {
         return false;
     }
 
-    public static JSONArray handleGetPatientData(String role, String patientId, String orderBy) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
-        try {
-            SqlConnect conn = new SqlConnect();
-            PreparedStatement statement = conn.connect().prepareStatement("SELECT * FROM patientData WHERE patientID = ?");
-            statement.setInt(1, Integer.parseInt(patientId));
-            statement.execute();
-            conn.disconnect();
-            return SQLToJSON(statement.getResultSet());
-
-        } catch (SQLException e) {
-            System.err.println(e);
-            return null;
-        }
+    public static JSONArray handleGetPatientData(String role, String patientId, String orderBy) throws IllegalAccessException, InstantiationException, ClassNotFoundException, SQLException {
+        SqlConnect conn = new SqlConnect();
+        PreparedStatement statement = conn.connect().prepareStatement("SELECT * FROM patientData WHERE patientID = ?");
+        statement.setInt(1, Integer.parseInt(patientId));
+        statement.execute();
+        ResultSet rs = statement.getResultSet();
+        JSONArray json = SQLToJSON(rs);
+        conn.disconnect();
+        return json;
 	}
+
+
 
 	private static JSONArray SQLToJSON (ResultSet rs) throws SQLException {
         JSONArray json = new JSONArray();
@@ -326,7 +324,4 @@ public class Database {
         return json;
     }
 
-    public static void main(String[] args) throws ClassNotFoundException, SQLException, NamingException, InstantiationException, IllegalAccessException {
-        initDatabase();
-    }
 }

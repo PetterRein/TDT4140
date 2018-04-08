@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +25,7 @@ public class WebGet extends HttpServlet {
         return param.toArray()[0].toString();
     }
 
-    private JSONArray getResponse(Map<String, List<String>> params) throws IllegalAccessException, ClassNotFoundException, InstantiationException {
+    private JSONArray getResponse(Map<String, List<String>> params) throws IllegalAccessException, ClassNotFoundException, InstantiationException, SQLException {
         String action = params.get("action").toArray()[0].toString();
         JSONArray response = null;
         //if (!action.equals("login") && Authentication.isAuthenticated(params.get("cookie"))) {
@@ -70,7 +71,7 @@ public class WebGet extends HttpServlet {
         response.setContentType("application/json");
         try (PrintWriter out = response.getWriter()) {
             out.print(getResponse(params));
-        } catch (IllegalAccessException | InstantiationException | ClassNotFoundException e) {
+        } catch (IllegalAccessException | InstantiationException | ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
     }
