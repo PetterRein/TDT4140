@@ -28,36 +28,32 @@ public class WebGet extends HttpServlet {
     private JSONObject getResponse(Map<String, List<String>> params) throws IllegalAccessException, ClassNotFoundException, InstantiationException, SQLException, NamingException {
         String action = params.get("action").toArray()[0].toString();
         JSONObject response = null;
-        //if (!action.equals("login") && Authentication.isAuthenticated(params.get("cookie"))) {
-            switch (action) {
-                case "login":
-                    response = Database.handleLogin(
-                            getParam(params.get("email")),
-                            getParam(params.get("password"))
-                    );
-                    break;
-                case "logout":
-                    //handleLogout();
-                    break;
-                case "getPatientData":
-                    response = Database.handleGetPatientData(
-                            getParam(params.get("patientId")),
-                            getParam(params.get("orderBy"))
-                    );
-                    break;
-                case "createUser":
-                    //handleCreateuser();
-                    break;
-                case "deleteUser":
-                    //handleDeleteUser();
-                    break;
-                case "addDataToUser":
-                    //handleAddDataToUser();
-                    break;
-            }
-        //} else {
-            // TODO: Send authentication error response
-        //}
+        switch (action) {
+            case "login":
+                response = Database.handleLogin(
+                        getParam(params.get("email")),
+                        getParam(params.get("password"))
+                );
+                break;
+            case "logout":
+                //handleLogout();
+                break;
+            case "getPatientData":
+                response = Database.handleGetPatientData(
+                        getParam(params.get("patientId")),
+                        getParam(params.get("orderBy"))
+                );
+                break;
+            case "createUser":
+                //handleCreateuser();
+                break;
+            case "deleteUser":
+                //handleDeleteUser();
+                break;
+            case "addDataToUser":
+                //handleAddDataToUser();
+                break;
+        }
         return response;
     }
 

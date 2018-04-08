@@ -12,7 +12,7 @@ public class SqlConnect {
     // connect database
     private Connection connection = null;
     // disconnect database
-    public void disconnect() {
+    void disconnect() {
         if (connection != null) {
             try {
                 connection.close();
@@ -23,7 +23,7 @@ public class SqlConnect {
         }
     }
 
-    public Connection connect() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+    Connection connect() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
             Class.forName("org.sqlite.JDBC").newInstance();
             //DriverManager.registerDriver(new JDBC());
             java.nio.file.Path currentRelativePath = Paths.get("");
