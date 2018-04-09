@@ -1,5 +1,5 @@
 import sqlite3
-import bcrypt
+#import bcrypt
 
 databaseName = "testData.db"
 def databaseSetup():
@@ -38,9 +38,10 @@ def getIdFromEmail(email):
     conn.close()
     return data[0]
 
-def createUser(role, username, email, password, userDoctor):
-    salt = bcrypt.gensalt()
-    passwordHash = bcrypt.hashpw(password.encode('utf-8'), salt)
+def createUser(role, username, email, password, salt, userDoctor):
+    #salt = bcrypt.gensalt()
+    #passwordHash = bcrypt.hashpw(password.encode('utf-8'), salt)
+    passwordHash = password
     conn = sqlite3.connect(databaseName)
     c = conn.cursor()
     if userDoctor is None:
@@ -60,18 +61,17 @@ def insertUserData(email, rating, extrainfo, times):
     conn.close()
 
 databaseSetup()
-createUser("Admin", "Tom", "Tom@admin.com", "password", None)
-createUser("Doctor", "Jake", "Jake@doctor.com", "password", None)
-createUser("Patient", "Scott", "Scott@patient.com", "password", "Jake@doctor.com")
-createUser("Doctor", "Cindy", "Cindy@doctor.com", "password", None)
-createUser("Patient", "Anna", "Anna@patient.com", "password", "Cindy@doctor.com")
-insertUserData("Anna@patient.com", 1, "Worst day ever", "2018-04-01 09:54:01")
-insertUserData("Anna@patient.com", 5, "Decent day", "2018-04-10 09:54:01")
-insertUserData("Anna@patient.com", 9, "Went and got ice cream", "2018-04-15 09:54:01")
-insertUserData("Anna@patient.com", 2, "Horrible day", "2018-04-20 09:54:01")
-insertUserData("Anna@patient.com", 4, "Better", "2018-04-23 09:54:01")
-insertUserData("Anna@patient.com", 6, "Pretty good", "2018-04-26 09:54:01")
-insertUserData("Anna@patient.com", 2, "BAD!!!", "2018-05-01 09:54:01")
-insertUserData("Anna@patient.com", 10, "AMAZING!!!", "2018-05-08 09:54:01")
-insertUserData("Anna@patient.com", 7, "Pretty good", "2018-05-14 09:54:01")
-insertUserData("Anna@patient.com", 9, "Really goo day", "2018-05-20 09:54:01")
+#ALL PASSWORDS ARE PASSWORD
+createUser("Admin", "Tom", "tom@admin.com", "$2a$10$prMsoZN9yy6rgy2KuyE5mOKHAAuJ6wbGF4cr82ouNFYgcjNtTFMPK", "$2a$10$prMsoZN9yy6rgy2KuyE5mO", None)
+createUser("Doctor", "Jake", "jake@doctor.com", "$2a$10$Vrg6sD8DupdURM5E6HfnY.Z7e0..qsHLPx4wvSxExXJKQ7EH5HHH6", "$2a$10$Vrg6sD8DupdURM5E6HfnY.", None)
+createUser("Patient", "Anna", "anna@patient.com", "$2a$10$1N6zxQnYuULXzW1onF45mOvmD9AGHTbwpGMH1FxeS0PxcQcT.s1LG", "$2a$10$1N6zxQnYuULXzW1onF45mO", "jake@doctor.com")
+insertUserData("anna@patient.com", 1, "Worst day ever", "2018-04-01 09:54:01")
+insertUserData("anna@patient.com", 5, "Decent day", "2018-04-10 09:54:01")
+insertUserData("anna@patient.com", 9, "Went and got ice cream", "2018-04-15 09:54:01")
+insertUserData("anna@patient.com", 2, "Horrible day", "2018-04-20 09:54:01")
+insertUserData("anna@patient.com", 4, "Better", "2018-04-23 09:54:01")
+insertUserData("anna@patient.com", 6, "Pretty good", "2018-04-26 09:54:01")
+insertUserData("anna@patient.com", 2, "BAD!!!", "2018-05-01 09:54:01")
+insertUserData("anna@patient.com", 10, "AMAZING!!!", "2018-05-08 09:54:01")
+insertUserData("anna@patient.com", 7, "Pretty good", "2018-05-14 09:54:01")
+insertUserData("anna@patient.com", 9, "Really goo day", "2018-05-20 09:54:01")
