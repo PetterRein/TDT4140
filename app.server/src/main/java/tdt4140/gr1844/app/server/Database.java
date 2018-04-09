@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -170,8 +171,22 @@ public class Database {
         }
 	}
 
-
-
+    private static JSONObject SQLToJSONArray (ResultSet rs, String listName) throws SQLException {
+        JSONObject json = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+        ResultSetMetaData rsmd = rs.getMetaData();
+        while(rs.next()) {
+            int numColumns = rsmd.getColumnCount();
+            JSONObject jsonObject = new JSONObject();
+            for (int i=1; i<=numColumns; i++) {
+                String column_name = rsmd.getColumnName(i);
+                jsonObject.put(column_name, rs.getObject(column_name));
+            }
+            jsonArray.put(jsonObject);
+        }
+        json.put(listName, jsonArray);
+        return json;
+    }
 	private static JSONObject SQLToJSON (ResultSet rs) throws SQLException {
         JSONObject json = new JSONObject();
         ResultSetMetaData rsmd = rs.getMetaData();
