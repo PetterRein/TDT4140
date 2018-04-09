@@ -17,8 +17,7 @@
         <module>app.core</module>
         <module>app.ui</module>
         <module>app.client</module>
-	    <module>app.oldServer</module>
-        <module>app.spring</module>
+	    <module>app.server</module>
     </modules>
     <dependencies>
         <dependency>
@@ -26,5 +25,12 @@
             <artifactId>jfoenix</artifactId>
             <version>8.0.1</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.json/json -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20180130</version>
+        </dependency>
+
     </dependencies>
 </project>

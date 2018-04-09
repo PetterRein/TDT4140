@@ -8,6 +8,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.apache.http.Header;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import tdt4140.gr1844.app.client.Send;
 import tdt4140.gr1844.app.client.WebCalls;
 
 import java.io.IOException;
@@ -15,6 +16,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Main extends Application {
     /**public static List<Festival> festivals;
@@ -41,6 +44,10 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 1280, 720));
         primaryStage.show();
         primaryStage.setResizable(false);
+
+        Map<String, String> params = new HashMap<>();
+        params.put("action", "login");
+        Send.sendGET(params);
     }
 
     public void changeView(AnchorPane rootPane, String fxmlFile) {
