@@ -48,7 +48,11 @@ public class Database {
 
 
         // TODO: Fix test
-        createUser("Doctor", "s", "email", "password", null);
+        createUser("Doctor", "Johannes", "johannes@email.com", "password", null);
+        createUser("Patient", "Haavard", "haavard@email.com", "password", null);
+        createUser("Doctor", "Petter", "petter@email.com", "password", null);
+        createUser("Patient", "Balazs", "balazs@email.com", "password", null);
+        createUser("Patient", "Mats", "mats@email.com", "password", null);
         PreparedStatement statement4 = conn.connect().prepareStatement("update users set cookie='a' where email = 'email'");
         statement4.executeUpdate();
         conn.disconnect();
