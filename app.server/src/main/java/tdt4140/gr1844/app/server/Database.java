@@ -1,25 +1,18 @@
 package tdt4140.gr1844.app.server;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
-import org.mindrot.jbcrypt.BCrypt;
-
-import javax.naming.NamingException;
 
 
-//Contains the methods for handling/mutating the database.
-
-import java.sql.ResultSet;
-
+/**
+ * Contains the methods for handling/mutating the database.
+ */
 public class Database {
 
-    static void initDatabase() throws ClassNotFoundException, InstantiationException, IllegalAccessException, NamingException, SQLException {
+    static void initDatabase() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
         // create a database connection
-        SqlConnect conn = new SqlConnect();
+        SQL conn = new SQL();
 
         // drop tables if they exist
         System.out.println("Dropping all tables...");
@@ -49,155 +42,47 @@ public class Database {
 
 
         // TODO: Fix test
-        createUser("Doctor", "Johannes", "johannes@email.com", "password", null);
-        createUser("Patient", "Haavard", "haavard@email.com", "password", null);
-        createUser("Doctor", "Petter", "petter@email.com", "password", null);
-        createUser("Patient", "Balazs", "balazs@email.com", "password", null);
-        createUser("Patient", "Mats", "mats@email.com", "password", null);
+        handleCreatePatient("Haavard", "haavard@email.com", "password", 2);
+        handleCreatePatient("Balazs", "balazs@email.com", "password", 3);
+        handleCreatePatient("Mats", "mats@email.com", "password", 1);
         PreparedStatement statement4 = conn.connect().prepareStatement("update users set cookie='a' where email = 'email'");
         statement4.executeUpdate();
         conn.disconnect();
     }
 
 
-
-	static void createUser(String role, String name, String email, String password, String usersDoctor) throws NamingException, IllegalAccessException, InstantiationException, ClassNotFoundException, SQLException {
-		String salt = BCrypt.gensalt();
-		String passwordHash = BCrypt.hashpw(password, salt);
-        int doctorId = -1;
-        //  TODO: legg inn sjekk på bruker allerede er lagt til
-        if (usersDoctor != null){
-            doctorId = getIdByUserEmail(usersDoctor);
-        }
-
-        SqlConnect conn = new SqlConnect();
-        PreparedStatement statement = conn.connect().prepareStatement("insert into users(role, name, email, passwordHash, salt, doctorID) values(?, ?, ?, ?, ?, ?)");
-
-        statement.setString(1, role);
-        statement.setString(2, name);
-        statement.setString(3, email);
-        statement.setString(4, passwordHash);
-        statement.setString(5, salt);
-        statement.setInt(6, doctorId);
-        statement.executeUpdate();
-        conn.disconnect();
-	}
-
-	/**
-	 * Deletes a user from the database by their e-mail address.
-	 * @param email The e-mail address of the user to be deleted.
-     */
-	static void deleteUser(String email) throws IllegalAccessException, InstantiationException, ClassNotFoundException, SQLException {
-        //  TODO: legg til sjekk som sjekker om bruker finnes før vi sletter null
-        SqlConnect conn = new SqlConnect();
-        PreparedStatement statement = conn.connect().prepareStatement("delete from users where email=?");
-        statement.setString(1, email);
-        statement.executeUpdate();
-        conn.disconnect();
-	}
-
-    /**
-     *
-     * @param cookie Users cookie you want to check the role on
-     * @return Returns the users role
-     */
-	static String getRoleFromCookie(String cookie) throws IllegalAccessException, InstantiationException, ClassNotFoundException, NamingException {
-		String role = null;
-
-        try {
-            SqlConnect conn = new SqlConnect();
-            PreparedStatement statement = conn.connect().prepareStatement("select role from users where cookie = ?");
-            statement.setString(1, cookie);
-            statement.execute();
-            ResultSet rs = statement.getResultSet();
-            rs.next();
-            role = rs.getString("role");
-            conn.disconnect();
-
-        } catch (SQLException e) {
-            System.err.println(e);
-        }
-		return role;
-	}
-
-
-
-
-    private static int getIdByUserEmail(String userEmail) throws ClassNotFoundException, InstantiationException, IllegalAccessException, NamingException {
-	    int userId = -1;
-	    try {
-            SqlConnect conn = new SqlConnect();
-            PreparedStatement preparedStatement1 = conn.connect().prepareStatement("SELECT id FROM users WHERE email = ?");
-            preparedStatement1.setString(1,userEmail);
-            preparedStatement1.execute();
-            ResultSet rs1 = preparedStatement1.getResultSet();
-            rs1.next();
-            userId = rs1.getInt("id");
-            conn.disconnect();
-        } catch (SQLException e) {
-	        e.printStackTrace();
-        }
-        return userId;
+    // Handling Authentication actions
+    static JSONObject handleLogin(String email, String password) throws IllegalAccessException, InstantiationException, ClassNotFoundException, SQLException {
+        return Authentication.login(email, password);
     }
 
-
-    static JSONObject handleLogin(String email, String passwordHash) throws IllegalAccessException, InstantiationException, ClassNotFoundException, SQLException {
-        return Authentication.login(email, passwordHash);
-    }
-
-
-    static JSONObject handleLogout(String cookie) throws IllegalAccessException, InstantiationException, ClassNotFoundException, SQLException, NamingException {
+    static JSONObject handleLogout(String cookie) throws IllegalAccessException, InstantiationException, ClassNotFoundException, SQLException {
         return Authentication.logout(cookie);
     }
 
-    static JSONObject handleGetPatientData(String patientId, String orderBy, String cookie) throws IllegalAccessException, InstantiationException, ClassNotFoundException, SQLException {
-        SqlConnect conn = new SqlConnect();
-        if (Authentication.isAuthenticated(cookie, "Doctor")){
-            PreparedStatement statement = conn.connect()
-                    .prepareStatement(
-                            "SELECT * FROM patientData " +
-                                    "WHERE patientID = " + patientId + " " +
-                                    "ORDER BY timestamp " + orderBy);
-            statement.execute();
-            ResultSet rs = statement.getResultSet();
-            JSONObject json = SQLToJSONArray(rs, "patients");
-            conn.disconnect();
-            return json;
-        } else {
-            JSONObject json = new JSONObject();
-            json.put("status", "ERROR");
-            json.put("message", "You are not authorized to retrieve this information");
-            return json;
-        }
+    // Handling Create actions
+    static JSONObject handleCreateAdminOrDoctor(String name, String email, String password, String role, String cookie) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+        return Create.createAdminOrDoctor(name, email, password, role, cookie);
+    }
+
+    static JSONObject handleCreatePatient(String name, String email, String password, int doctorId) throws IllegalAccessException, InstantiationException, ClassNotFoundException, SQLException {
+        return Create.createPatient(name, email, password, doctorId);
+    }
+
+    static JSONObject handleCreateFeeling(int patientId, int rating, String extraInfo, String cookie) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+        return Create.createFeeling(patientId, rating, extraInfo, cookie);
+    }
+
+
+    // Handling Delete actions
+	static JSONObject handleDeleteUser(int userId, String cookie) throws IllegalAccessException, InstantiationException, ClassNotFoundException, SQLException {
+        return Delete.deleteUser(userId, cookie);
 	}
 
-    private static JSONObject SQLToJSONArray (ResultSet rs, String listName) throws SQLException {
-        JSONObject json = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
-        ResultSetMetaData rsmd = rs.getMetaData();
-        while(rs.next()) {
-            int numColumns = rsmd.getColumnCount();
-            JSONObject jsonObject = new JSONObject();
-            for (int i=1; i<=numColumns; i++) {
-                String column_name = rsmd.getColumnName(i);
-                jsonObject.put(column_name, rs.getObject(column_name));
-            }
-            jsonArray.put(jsonObject);
-        }
-        json.put(listName, jsonArray);
-        return json;
-    }
-	private static JSONObject SQLToJSON (ResultSet rs) throws SQLException {
-        JSONObject json = new JSONObject();
-        ResultSetMetaData rsmd = rs.getMetaData();
-        while(rs.next()) {
-            int numColumns = rsmd.getColumnCount();
-            for (int i=1; i<=numColumns; i++) {
-                String column_name = rsmd.getColumnName(i);
-                json.put(column_name, rs.getObject(column_name));
-            }
-        }
-        return json;
+
+	// Handling Retrieve actions
+    static JSONObject handleGetPatientData(int patientID, String orderBy, String cookie) throws IllegalAccessException, InstantiationException, ClassNotFoundException, SQLException {
+        return Retrieve.getPatientData(patientID, orderBy, cookie);
     }
 
 }

@@ -1,11 +1,12 @@
 package tdt4140.gr1844.app.server;
 
-import java.nio.file.Paths;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-public class SqlConnect {
+import java.nio.file.Paths;
+import java.sql.*;
+
+public class SQL {
     // init database constants
     private static final String DATABASE_URL = "jdbc:sqlite:sample.db"; //Denne er feil se print fra Working Directory
     // init connection object
@@ -40,4 +41,35 @@ public class SqlConnect {
             return connection;
 
         }
+
+    static JSONObject SQLToJSONArray(ResultSet rs, String listName) throws SQLException {
+        JSONObject json = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+        ResultSetMetaData rsmd = rs.getMetaData();
+        while(rs.next()) {
+            int numColumns = rsmd.getColumnCount();
+            JSONObject jsonObject = new JSONObject();
+            for (int i=1; i<=numColumns; i++) {
+                String column_name = rsmd.getColumnName(i);
+                jsonObject.put(column_name, rs.getObject(column_name));
+            }
+            jsonArray.put(jsonObject);
+        }
+        json.put(listName, jsonArray);
+        return json;
+    }
+
+
+    static JSONObject SQLToJSON (ResultSet rs) throws SQLException {
+        JSONObject json = new JSONObject();
+        ResultSetMetaData rsmd = rs.getMetaData();
+        while(rs.next()) {
+            int numColumns = rsmd.getColumnCount();
+            for (int i=1; i<=numColumns; i++) {
+                String column_name = rsmd.getColumnName(i);
+                json.put(column_name, rs.getObject(column_name));
+            }
+        }
+        return json;
+    }
 }
