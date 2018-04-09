@@ -40,7 +40,8 @@ public class WebGet extends HttpServlet {
             case "getPatientData":
                 response = Database.handleGetPatientData(
                         getParam(params.get("patientId")),
-                        getParam(params.get("orderBy"))
+                        getParam(params.get("orderBy")),
+                        getParam(params.get("cookie"))
                 );
                 break;
             case "createUser":
