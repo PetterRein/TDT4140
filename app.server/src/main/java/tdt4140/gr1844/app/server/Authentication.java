@@ -97,6 +97,18 @@ public class Authentication {
 		return json;
 	}
 
+	static Boolean isAuthenticated(String cookie, String role) throws IllegalAccessException, InstantiationException, ClassNotFoundException, SQLException {
+		SqlConnect conn = new SqlConnect();
+		PreparedStatement getCookie = conn.connect().prepareStatement("SELECT cookie FROM users WHERE (cookie = ? AND role = ?)");
+		getCookie.setString(1, cookie);
+		getCookie.setString(2, role);
+		getCookie.execute();
+		ResultSet rs = getCookie.getResultSet();
+		Boolean hasCookie = rs.isBeforeFirst();
+		conn.disconnect();
+		return hasCookie;
+
+	}
 
 	/**
 	 * Logs the user out
