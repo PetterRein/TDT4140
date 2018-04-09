@@ -35,7 +35,7 @@ public class WebGet extends HttpServlet {
                 );
                 break;
             case "logout":
-                //handleLogout();
+                response = Database.handleLogout(getParam(params.get("cookie")));
                 break;
             case "getPatientData":
                 response = Database.handleGetPatientData(
