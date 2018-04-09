@@ -1,6 +1,5 @@
 package tdt4140.gr1844.app.server;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.mindrot.jbcrypt.BCrypt;
 import tdt4140.gr1844.app.core.CookieValueGenerator;
@@ -8,7 +7,6 @@ import tdt4140.gr1844.app.core.CookieValueGenerator;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collection;
 import javax.naming.NamingException;
 
 /**
@@ -105,13 +103,20 @@ public class Authentication {
 	 * @param cookie Session Cookie for the user that we want to log out.
 	 * @return {@code true} if the login was successful, {@code false} otherwise.
 	 */
-	public static Boolean logout(String cookie) throws IllegalAccessException, InstantiationException, ClassNotFoundException, SQLException, NamingException {
+	static JSONObject logout(String cookie) throws IllegalAccessException, InstantiationException, ClassNotFoundException, SQLException, NamingException {
 		SqlConnect conn = new SqlConnect();
-		PreparedStatement statement = conn.connect().prepareStatement("update users set cookie = null where cookie = ?");
-		statement.setString(1, cookie);
-		int updateCheck = statement.executeUpdate();
-		//Returns true if something was updated
-		conn.disconnect();
-		return updateCheck > 0;
+		JSONObject json = new JSONObject();
+		PreparedStatement doLogout = conn.connect().prepareStatement("UPDATE users SET cookie = null WHERE cookie = ?");
+		doLogout.setString(1, cookie);
+		int successfulLogout = doLogout.executeUpdate();
+        if (successfulLogout > 0) {
+            json.put("status", "OK");
+        } else {
+            json.put("status", "ERROR");
+            json.put("message", "Logout was not successful.");
+        }
+        doLogout.close();
+        conn.disconnect();
+		return json;
 	}
 }

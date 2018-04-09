@@ -140,6 +140,11 @@ public class Database {
         return Authentication.login(email, passwordHash);
     }
 
+
+    static JSONObject handleLogout(String cookie) throws IllegalAccessException, InstantiationException, ClassNotFoundException, SQLException, NamingException {
+        return Authentication.logout(cookie);
+    }
+
     static JSONObject handleGetPatientData(String patientId, String orderBy) throws IllegalAccessException, InstantiationException, ClassNotFoundException, SQLException {
         SqlConnect conn = new SqlConnect();
         PreparedStatement statement = conn.connect().prepareStatement("SELECT * FROM patientData WHERE patientID = ? ORDER BY timestamp ?");
