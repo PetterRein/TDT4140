@@ -36,7 +36,7 @@ public class Database {
         // create table patientData
         PreparedStatement statement2 = conn.connect().prepareStatement("CREATE TABLE IF NOT EXISTS patientData" +
                 "(id INTEGER PRIMARY KEY, patientID int not null, rating int, extrainfo text," +
-                "times TIMESTAMP DEFAULT CURRENT_TIMESTAMP not null," +
+                "timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP not null," +
                 "FOREIGN KEY (patientID) REFERENCES users(id))");
         PreparedStatement statement3 = conn.connect().prepareStatement("CREATE TABLE IF NOT EXISTS feedback" +
                 "(id INTEGER PRIMARY KEY, message VARCHAR (20000000))");
