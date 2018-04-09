@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -36,7 +37,7 @@ public class Database {
         // create table patientData
         PreparedStatement statement2 = conn.connect().prepareStatement("CREATE TABLE IF NOT EXISTS patientData" +
                 "(id INTEGER PRIMARY KEY, patientID int not null, rating int, extrainfo text," +
-                "times TIMESTAMP DEFAULT CURRENT_TIMESTAMP not null," +
+                "timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP not null," +
                 "FOREIGN KEY (patientID) REFERENCES users(id))");
         PreparedStatement statement3 = conn.connect().prepareStatement("CREATE TABLE IF NOT EXISTS feedback" +
                 "(id INTEGER PRIMARY KEY, message VARCHAR (20000000))");
@@ -48,7 +49,11 @@ public class Database {
 
 
         // TODO: Fix test
-        createUser("Doctor", "s", "email", "password", null);
+        createUser("Doctor", "Johannes", "johannes@email.com", "password", null);
+        createUser("Patient", "Haavard", "haavard@email.com", "password", null);
+        createUser("Doctor", "Petter", "petter@email.com", "password", null);
+        createUser("Patient", "Balazs", "balazs@email.com", "password", null);
+        createUser("Patient", "Mats", "mats@email.com", "password", null);
         PreparedStatement statement4 = conn.connect().prepareStatement("update users set cookie='a' where email = 'email'");
         statement4.executeUpdate();
         conn.disconnect();
@@ -166,8 +171,22 @@ public class Database {
         }
 	}
 
-
-
+    private static JSONObject SQLToJSONArray (ResultSet rs, String listName) throws SQLException {
+        JSONObject json = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+        ResultSetMetaData rsmd = rs.getMetaData();
+        while(rs.next()) {
+            int numColumns = rsmd.getColumnCount();
+            JSONObject jsonObject = new JSONObject();
+            for (int i=1; i<=numColumns; i++) {
+                String column_name = rsmd.getColumnName(i);
+                jsonObject.put(column_name, rs.getObject(column_name));
+            }
+            jsonArray.put(jsonObject);
+        }
+        json.put(listName, jsonArray);
+        return json;
+    }
 	private static JSONObject SQLToJSON (ResultSet rs) throws SQLException {
         JSONObject json = new JSONObject();
         ResultSetMetaData rsmd = rs.getMetaData();
@@ -175,7 +194,6 @@ public class Database {
             int numColumns = rsmd.getColumnCount();
             for (int i=1; i<=numColumns; i++) {
                 String column_name = rsmd.getColumnName(i);
-                System.out.println(column_name);
                 json.put(column_name, rs.getObject(column_name));
             }
         }
