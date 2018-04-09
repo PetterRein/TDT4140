@@ -145,16 +145,25 @@ public class Database {
         return Authentication.logout(cookie);
     }
 
-    static JSONObject handleGetPatientData(String patientId, String orderBy) throws IllegalAccessException, InstantiationException, ClassNotFoundException, SQLException {
+    static JSONObject handleGetPatientData(String patientId, String orderBy, String cookie) throws IllegalAccessException, InstantiationException, ClassNotFoundException, SQLException {
         SqlConnect conn = new SqlConnect();
-        PreparedStatement statement = conn.connect().prepareStatement("SELECT * FROM patientData WHERE patientID = ? ORDER BY timestamp ?");
-        statement.setInt(1, Integer.parseInt(patientId));
-        statement.setString(1, orderBy);
-        statement.execute();
-        ResultSet rs = statement.getResultSet();
-        JSONObject json = SQLToJSON(rs);
-        conn.disconnect();
-        return json;
+        if (Authentication.isAuthenticated(cookie, "Doctor")){
+            PreparedStatement statement = conn.connect()
+                    .prepareStatement(
+                            "SELECT * FROM patientData " +
+                                    "WHERE patientID = " + patientId + " " +
+                                    "ORDER BY timestamp " + orderBy);
+            statement.execute();
+            ResultSet rs = statement.getResultSet();
+            JSONObject json = SQLToJSONArray(rs, "patients");
+            conn.disconnect();
+            return json;
+        } else {
+            JSONObject json = new JSONObject();
+            json.put("status", "ERROR");
+            json.put("message", "You are not authorized to retrieve this information");
+            return json;
+        }
 	}
 
 
