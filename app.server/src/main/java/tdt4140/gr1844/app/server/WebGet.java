@@ -26,7 +26,7 @@ public class WebGet extends HttpServlet {
 
     private JSONObject getResponse(Map<String, List<String>> params) throws IllegalAccessException, ClassNotFoundException, InstantiationException, SQLException, NamingException {
         String action = params.get("action").toArray()[0].toString();
-        JSONObject response = null;
+        JSONObject response = new JSONObject();
         switch (action) {
             case "login":
                 response = Database.handleLogin(
@@ -52,6 +52,9 @@ public class WebGet extends HttpServlet {
             case "addDataToUser":
                 //handleAddDataToUser();
                 break;
+            default:
+                response.put("status", "ERROR");
+                response.put("message", "There is no action '" + action +"' specified in the database.");
         }
         return response;
     }
