@@ -194,7 +194,6 @@ public class Database {
             int numColumns = rsmd.getColumnCount();
             for (int i=1; i<=numColumns; i++) {
                 String column_name = rsmd.getColumnName(i);
-                System.out.println(column_name);
                 json.put(column_name, rs.getObject(column_name));
             }
         }
