@@ -3,6 +3,8 @@ package tdt4140.gr1844.app.server;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.mindrot.jbcrypt.BCrypt;
+import tdt4140.gr1844.app.core.CookieValueGenerator;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,13 +33,13 @@ public class Authentication {
 		SqlConnect conn = new SqlConnect();
 		JSONObject json = new JSONObject();
 
-		PreparedStatement statement = conn.connect().prepareStatement("SELECT salt FROM users WHERE email = ?");
-		statement.setString(1, email);
-		statement.execute();
-		ResultSet rs = statement.getResultSet();
+		PreparedStatement getSalt = conn.connect().prepareStatement("SELECT salt FROM users WHERE email = ?");
+		getSalt.setString(1, email);
+		getSalt.execute();
+		ResultSet rs = getSalt.getResultSet();
 		// If null was returned, the user does not exist and login() should return false
 		if (!rs.isBeforeFirst()) {
-			statement.close();
+			getSalt.close();
 			conn.disconnect();
 			json.put("status", "ERROR");
 			json.put("message", "User does not exist");
@@ -45,17 +47,15 @@ public class Authentication {
 			rs.next();
 			String salt = rs.getString("salt");
 			String passwordHash = BCrypt.hashpw(password, salt);
-			PreparedStatement statement2 = conn.connect().prepareStatement(
+			PreparedStatement getUser = conn.connect().prepareStatement(
 					"SELECT * FROM users WHERE (email = ? AND passwordHash = ?)"
 			);
-			statement2.setString(1, email);
-			statement2.setString(2, passwordHash);
-			statement2.execute();
-			ResultSet authenticationResponse = statement2.getResultSet();
-			Boolean isLoggedIn = authenticationResponse.isBeforeFirst();
-
-
-			if (isLoggedIn) {
+			getUser.setString(1, email);
+			getUser.setString(2, passwordHash);
+			getUser.execute();
+			ResultSet authenticationResponse = getUser.getResultSet();
+			Boolean userExists = authenticationResponse.isBeforeFirst();
+			if (userExists) {
 				JSONObject user = new JSONObject();
 				user.put("userId", authenticationResponse.getString(1));
 				user.put("role",authenticationResponse.getString(2));
@@ -63,12 +63,36 @@ public class Authentication {
 				user.put("doctorId",authenticationResponse.getInt(7));
 				json.put("user", user);
 				json.put("status", "OK");
+				PreparedStatement getCookie = conn.connect().prepareStatement(
+						"SELECT cookie FROM users WHERE email = ?"
+				);
+				getCookie.setString(1, email);
+				getCookie.execute();
+				String cookie = getCookie.getResultSet().getString(1);
+
+				// If this is the first login, generate a cookie and send it in the response
+                if (cookie == null) {
+                    String newCookie = CookieValueGenerator.generateCookieValue();
+                    PreparedStatement setCookie = conn.connect().prepareStatement(
+                            "UPDATE users SET cookie = ? WHERE email = ?"
+                    );
+                    setCookie.setString(1, newCookie);
+                    setCookie.setString(2, email);
+                    setCookie.execute();
+                    json.put("cookie", newCookie);
+
+                    getCookie.close();
+                    setCookie.close();
+                    // If there is a cookie, send it in the response
+                } else {
+                    json.put("cookie", cookie);
+                }
 			} else {
 				json.put("status", "ERROR");
 				json.put("message", "Wrong username or password");
 			}
 
-			statement2.close();
+			getUser.close();
 			conn.disconnect();
 
 		}
