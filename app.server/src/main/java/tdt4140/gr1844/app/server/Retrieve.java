@@ -17,21 +17,22 @@ class Retrieve {
      * @param cookie The logged in user's cookie
      * @return {JSONObject}
      * @throws SQLException
-     * TODO: Make the patients be able to see their own data
+     * TODO: Only your own doctor should see your data
      */
-    static JSONObject getPatientData(int patientID, String orderBy, String cookie) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+    static JSONObject listFeelings(int patientID, String cookie) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         JSONObject response = new JSONObject();
+
         if (Authentication.isAuthenticated(cookie, "doctor") || Authentication.isDataOwner(patientID, cookie)) {
-            SQL conn = new SQL();
-            PreparedStatement statement = conn.connect()
+            SQL sql = new SQL();
+            PreparedStatement statement = sql.connect()
                     .prepareStatement(
-                            "SELECT * FROM patientData " +
-                                    "WHERE patientID = " + patientID + " " +
-                                    "ORDER BY timestamp " + orderBy);
+                    "SELECT * FROM ratings WHERE patientID = ?"
+                    );
+            statement.setInt(1, patientID);
             statement.execute();
             ResultSet rs = statement.getResultSet();
             response = SQLToJSONArray(rs, "feelings");
-            conn.disconnect();
+            sql.disconnect();
             return response;
         } else {
             response.put("status", "ERROR");

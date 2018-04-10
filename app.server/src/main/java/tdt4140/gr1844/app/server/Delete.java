@@ -16,8 +16,8 @@ class Delete {
     static JSONObject deleteUser(int userId, String cookie) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         JSONObject response = new JSONObject();
         if (Authentication.isAuthenticated(cookie, "admin") || Authentication.isDataOwner(userId, cookie)) {
-            SQL conn = new SQL();
-            PreparedStatement statement = conn.connect().prepareStatement("DELETE FROM users WHERE id = ?");
+            SQL sql = new SQL();
+            PreparedStatement statement = sql.connect().prepareStatement("DELETE FROM users WHERE id = ?");
             statement.setInt(1, userId);
             Boolean isDeleted = statement.executeUpdate() > 0;
             if (isDeleted) {
@@ -27,7 +27,7 @@ class Delete {
                 response.put("message", "The user could not be deleted.");
 
             }
-            conn.disconnect();
+            sql.disconnect();
         } else {
             response.put("status", "ERROR");
             response.put("message", "You are not authorized for that action.");

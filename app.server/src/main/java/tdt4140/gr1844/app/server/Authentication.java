@@ -24,26 +24,30 @@ public class Authentication {
 	 */
 	static JSONObject login(String email, String password) throws IllegalAccessException, InstantiationException, ClassNotFoundException, SQLException {
 
-		SQL conn = new SQL();
+		SQL sql = new SQL();
 		JSONObject json = new JSONObject();
 
-		PreparedStatement getSalt = conn.connect().prepareStatement("SELECT salt FROM users WHERE email = ?");
+		PreparedStatement getSalt = sql.connect()
+				.prepareStatement(
+				"SELECT salt FROM users WHERE email = ?"
+				);
 		getSalt.setString(1, email);
 		getSalt.execute();
 		ResultSet rs = getSalt.getResultSet();
 		// If null was returned, the user does not exist and login() should return false
 		if (!rs.isBeforeFirst()) {
 			getSalt.close();
-			conn.disconnect();
+			sql.disconnect();
 			json.put("status", "ERROR");
 			json.put("message", "User does not exist");
 		} else {
 			rs.next();
 			String salt = rs.getString("salt");
 			String passwordHash = BCrypt.hashpw(password, salt);
-			PreparedStatement getUser = conn.connect().prepareStatement(
+			PreparedStatement getUser = sql.connect()
+					.prepareStatement(
 					"SELECT * FROM users WHERE (email = ? AND passwordHash = ?)"
-			);
+					);
 			getUser.setString(1, email);
 			getUser.setString(2, passwordHash);
 			getUser.execute();
@@ -57,9 +61,10 @@ public class Authentication {
 				user.put("doctorId",authenticationResponse.getInt(7));
 				json.put("user", user);
 				json.put("status", "OK");
-				PreparedStatement getCookie = conn.connect().prepareStatement(
+				PreparedStatement getCookie = sql.connect()
+						.prepareStatement(
 						"SELECT cookie FROM users WHERE email = ?"
-				);
+						);
 				getCookie.setString(1, email);
 				getCookie.execute();
 				String cookie = getCookie.getResultSet().getString(1);
@@ -67,9 +72,10 @@ public class Authentication {
 				// If this is the first login, generate a cookie and send it in the response
                 if (cookie == null) {
                     String newCookie = CookieValueGenerator.generateCookieValue();
-                    PreparedStatement setCookie = conn.connect().prepareStatement(
+                    PreparedStatement setCookie = sql.connect()
+							.prepareStatement(
                             "UPDATE users SET cookie = ? WHERE email = ?"
-                    );
+                    		);
                     setCookie.setString(1, newCookie);
                     setCookie.setString(2, email);
                     setCookie.execute();
@@ -87,7 +93,7 @@ public class Authentication {
 			}
 
 			getUser.close();
-			conn.disconnect();
+			sql.disconnect();
 
 		}
 		return json;
@@ -100,9 +106,12 @@ public class Authentication {
 	 * @return {@code true} if the login was successful, {@code false} otherwise.
 	 */
 	static JSONObject logout(String cookie) throws IllegalAccessException, InstantiationException, ClassNotFoundException, SQLException {
-		SQL conn = new SQL();
+		SQL sql = new SQL();
 		JSONObject json = new JSONObject();
-		PreparedStatement doLogout = conn.connect().prepareStatement("UPDATE users SET cookie = null WHERE cookie = ?");
+		PreparedStatement doLogout = sql.connect()
+				.prepareStatement(
+						"UPDATE users SET cookie = null WHERE cookie = ?"
+				);
 		doLogout.setString(1, cookie);
 		int successfulLogout = doLogout.executeUpdate();
 		if (successfulLogout > 0) {
@@ -112,33 +121,39 @@ public class Authentication {
 			json.put("message", "Logout was not successful.");
 		}
 		doLogout.close();
-		conn.disconnect();
+		sql.disconnect();
 		return json;
 	}
 
 
 	static Boolean isAuthenticated(String cookie, String role) throws IllegalAccessException, InstantiationException, ClassNotFoundException, SQLException {
-		SQL conn = new SQL();
-		PreparedStatement getCookie = conn.connect().prepareStatement("SELECT cookie FROM users WHERE (cookie = ? AND role = ?)");
+		SQL sql = new SQL();
+		PreparedStatement getCookie = sql.connect()
+				.prepareStatement(
+				"SELECT cookie FROM users WHERE (cookie = ? AND role = ?)"
+				);
 		getCookie.setString(1, cookie);
 		getCookie.setString(2, role);
 		getCookie.execute();
 		ResultSet rs = getCookie.getResultSet();
 		Boolean hasCookie = rs.isBeforeFirst();
-		conn.disconnect();
+		sql.disconnect();
 		return hasCookie;
 	}
 
 
 	static boolean isDataOwner(int id, String cookie) throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
-		SQL conn = new SQL();
-		PreparedStatement getUser = conn.connect().prepareStatement("SELECT cookie FROM users WHERE (id = ? AND cookie = ?)");
+		SQL sql = new SQL();
+		PreparedStatement getUser = sql.connect()
+				.prepareStatement(
+				"SELECT cookie FROM users WHERE (id = ? AND cookie = ?)"
+				);
 		getUser.setInt(1, id);
 		getUser.setString(2, cookie);
 		getUser.execute();
 		ResultSet rs = getUser.getResultSet();
 		Boolean isRightUser = rs.isBeforeFirst();
-		conn.disconnect();
+		sql.disconnect();
 		return isRightUser;
 	}
 

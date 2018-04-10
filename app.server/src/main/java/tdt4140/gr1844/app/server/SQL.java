@@ -17,8 +17,8 @@ class SQL {
         // drop tables if they exist
         System.out.println("Dropping all tables...");
         PreparedStatement usersTable = conn.connect().prepareStatement("DROP TABLE IF EXISTS users");
-        PreparedStatement patientDataTable = conn.connect().prepareStatement("DROP TABLE IF EXISTS patientData");
-        PreparedStatement feedback = conn.connect().prepareStatement("DROP TABLE IF EXISTS feedback");
+        PreparedStatement patientDataTable = conn.connect().prepareStatement("DROP TABLE IF EXISTS ratings");
+        PreparedStatement feedback = conn.connect().prepareStatement("DROP TABLE IF EXISTS feedbacks");
         usersTable.execute();
         patientDataTable.execute();
         feedback.execute();
@@ -29,7 +29,7 @@ class SQL {
                 "cookie varchar(256), doctorID int, FOREIGN KEY (doctorID) REFERENCES users(id))");
         // create table patientData
         PreparedStatement statement2 = conn.connect().prepareStatement("CREATE TABLE IF NOT EXISTS patientData" +
-                "(id INTEGER PRIMARY KEY, patientID int not null, rating int, extrainfo text," +
+                "(id INTEGER PRIMARY KEY, patientID int not null, rating int, message text," +
                 "timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP not null," +
                 "FOREIGN KEY (patientID) REFERENCES users(id))");
         PreparedStatement statement3 = conn.connect().prepareStatement("CREATE TABLE IF NOT EXISTS feedback" +

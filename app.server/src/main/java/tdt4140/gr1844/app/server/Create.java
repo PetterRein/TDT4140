@@ -9,18 +9,18 @@ import java.sql.SQLException;
 class Create {
 
 
-    static JSONObject createFeeling(int patientId, int rating, String extrainfo, String cookie) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+    static JSONObject createFeeling(int patientId, int rating, String message, String cookie) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         JSONObject response = new JSONObject();
         if (Authentication.isValid("rating", rating)){
             if (Authentication.isDataOwner(patientId, cookie)) {
-                SQL conn = new SQL();
-                PreparedStatement createFeelingQuery = conn.connect()
+                SQL sql = new SQL();
+                PreparedStatement createFeelingQuery = sql.connect()
                         .prepareStatement(
-                                "INSERT INTO patientData(patientID, rating, extrainfo)  VALUES(?,?,?)"
+                        "INSERT INTO ratings(patientID, rating, message)  VALUES(?,?,?)"
                         );
                 createFeelingQuery.setInt(1,patientId);
                 createFeelingQuery.setInt(2, rating);
-                createFeelingQuery.setString(3, extrainfo);
+                createFeelingQuery.setString(3, message);
                 Boolean successfulCreation = createFeelingQuery.executeUpdate() > 0;
                 if (successfulCreation) {
                     response.put("status", "OK");
@@ -28,7 +28,7 @@ class Create {
                     response.put("status", "ERROR");
                     response.put("message", "Feeling was not added to the database.");
                 }
-                conn.disconnect();
+                sql.disconnect();
             } else {
                 response.put("status", "ERROR");
                 response.put("message", "You are not authorized to do that action.");
@@ -42,13 +42,13 @@ class Create {
 
 
     static JSONObject createAdminOrDoctor(String name, String email, String password, String role, String cookie) throws SQLException, IllegalAccessException, ClassNotFoundException, InstantiationException {
-        SQL conn = new SQL();
+        SQL sql = new SQL();
         JSONObject response = new JSONObject();
         if (Authentication.isAuthenticated(cookie, "admin")) {
 
-            PreparedStatement userExistsQuery = conn.connect()
+            PreparedStatement userExistsQuery = sql.connect()
                     .prepareStatement(
-                            "SELECT * FROM users WHERE email = ?"
+                    "SELECT * FROM users WHERE email = ?"
                     );
             userExistsQuery.setString(1, email);
             userExistsQuery.execute();
@@ -60,7 +60,11 @@ class Create {
             } else {
                 String salt = BCrypt.gensalt();
                 String passwordHash = BCrypt.hashpw(password, salt);
-                PreparedStatement createPatientQuery = conn.connect().prepareStatement("INSERT INTO users(role, name, email, passwordHash, salt) VALUES (?, ?, ?, ?, ?)");
+                PreparedStatement createPatientQuery = sql.connect()
+                        .prepareStatement(
+                        "INSERT INTO users(role, name, email, passwordHash, salt)" +
+                            " VALUES (?, ?, ?, ?, ?)"
+                        );
                 createPatientQuery.setString(1, role);
                 createPatientQuery.setString(2, name);
                 createPatientQuery.setString(3, email);
@@ -80,17 +84,17 @@ class Create {
             response.put("status", "ERROR");
             response.put("message", "You are not authorized for that action.");
         }
-        conn.disconnect();
+        sql.disconnect();
         return response;
     }
 
 
     static JSONObject createPatient(String name, String email, String password, int doctorId) throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
-        SQL conn = new SQL();
+        SQL sql = new SQL();
         JSONObject response = new JSONObject();
-        PreparedStatement userExistsQuery = conn.connect()
+        PreparedStatement userExistsQuery = sql.connect()
                 .prepareStatement(
-                        "SELECT * FROM users WHERE email = ?"
+                "SELECT * FROM users WHERE email = ?"
                 );
         userExistsQuery.setString(1, email);
         userExistsQuery.execute();
@@ -102,7 +106,11 @@ class Create {
         } else {
             String salt = BCrypt.gensalt();
             String passwordHash = BCrypt.hashpw(password, salt);
-            PreparedStatement createPatientQuery = conn.connect().prepareStatement("INSERT INTO users(role, name, email, passwordHash, salt, doctorID) VALUES (?, ?, ?, ?, ?, ?)");
+            PreparedStatement createPatientQuery = sql.connect()
+                    .prepareStatement(
+                    "INSERT INTO users(role, name, email, passwordHash, salt, doctorID) " +
+                        "VALUES (?, ?, ?, ?, ?, ?)"
+                    );
             createPatientQuery.setString(1, "patient");
             createPatientQuery.setString(2, name);
             createPatientQuery.setString(3, email);
@@ -118,7 +126,8 @@ class Create {
             }
             createPatientQuery.close();
         }
-        conn.disconnect();
+        sql.disconnect();
         return response;
     }
+
 }
