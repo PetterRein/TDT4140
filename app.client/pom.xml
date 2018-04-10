@@ -35,6 +35,13 @@
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>tdt4140-gr1844</groupId>
+            <artifactId>tdt4140-gr1844.app.server</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <type>war</type>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -43,39 +50,25 @@
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <version>2.2</version>
+                <configuration>
+                    <url>http://localhost:8080/manager/text</url>
+                    <server>tomcatServer</server>
+                    <path>/api</path>
+                    <warFile>${project.basedir}/target/${project.parent.artifactId}-${project.parent.version}.war</warFile>
+                    <username>admin</username>
+                    <password>password</password>
+                </configuration>
                 <executions>
                     <execution>
-                        <id>tomcat7-run</id>
+                        <id>redeployafterinstall</id>
+                        <phase>install</phase>
                         <goals>
-                            <goal>run-war-only</goal>
-                        </goals>
-                        <phase>pre-integration-test</phase>
-                        <configuration>
-                            <fork>true</fork>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>tomcat7-shutdown</id>
-                        <goals>
-                            <goal>shutdown</goal>
-                        </goals>
-                        <phase>post-integration-test</phase>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.17</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
+                            <goal>redeploy</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
+
         </plugins>
     </build>
 

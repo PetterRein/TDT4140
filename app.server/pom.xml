@@ -3,7 +3,6 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <artifactId>tdt4140-gr1844.app.server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
@@ -40,25 +39,6 @@
         </dependency>
 
     </dependencies>
-
-
-    <profiles>
-        <profile>
-            <id>gitlab-ci</id>
-            <activation>
-                <property>
-                    <name>gitlab-ci</name>
-                    <value>true</value>
-                </property>
-            </activation>
-            <!--
-            <properties>
-                <skip-ui-tests>true</skip-ui-tests>
-            </properties>
-             -->
-        </profile>
-    </profiles>
-
     <build>
         <plugins>
             <plugin>
@@ -81,8 +61,34 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <webXml>web\WEB-INF\web.xml</webXml>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>gitlab-ci</id>
+            <activation>
+                <property>
+                    <name>gitlab-ci</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <!--
+            <properties>
+                <skip-ui-tests>true</skip-ui-tests>
+            </properties>
+             -->
+
+        </profile>
+    </profiles>
+
 
 
 </project>

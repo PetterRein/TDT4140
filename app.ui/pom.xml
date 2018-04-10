@@ -44,30 +44,6 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.0</version>
-                <executions>
-                    <execution>
-                        <id>pre-unit-test</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>post-unit-test</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 
     <profiles>
         <profile>
@@ -83,6 +59,30 @@
             <skip-ui-tests>true</skip-ui-tests>
             </properties>
             -->
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>0.8.0</version>
+                        <executions>
+                            <execution>
+                                <id>pre-unit-test</id>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>post-unit-test</id>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>report</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 </project>
