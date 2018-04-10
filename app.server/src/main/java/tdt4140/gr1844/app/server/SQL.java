@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import java.nio.file.Paths;
 import java.sql.*;
 
+import static tdt4140.gr1844.app.server.Create.createAdminTestPropse;
 import static tdt4140.gr1844.app.server.Create.createPatient;
 
 class SQL {
@@ -42,6 +43,7 @@ class SQL {
 
 
         // TODO: Fix test
+        createAdminTestPropse("Petter", "petter@email.com", "password", 1);
         createPatient("Haavard", "haavard@email.com", "password", 2);
         createPatient("Balazs", "balazs@email.com", "password", 3);
         createPatient("Mats", "mats@email.com", "password", 1);
@@ -51,7 +53,7 @@ class SQL {
     }
 
     // init database constants
-    private static final String DATABASE_URL = "jdbc:sqlite:sample.db"; //Denne er feil se print fra Working Directory
+    private static final String DATABASE_URL = "jdbc:sqlite:sample.db";
     // init connection object
     // connect database
     private Connection connection = null;
