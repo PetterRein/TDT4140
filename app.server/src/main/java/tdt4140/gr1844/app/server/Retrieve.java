@@ -5,7 +5,6 @@ import org.json.JSONObject;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import static tdt4140.gr1844.app.server.SQL.SQLToJSONArray;
 
 class Retrieve {

@@ -6,7 +6,50 @@ import org.json.JSONObject;
 import java.nio.file.Paths;
 import java.sql.*;
 
-public class SQL {
+import static tdt4140.gr1844.app.server.Create.createPatient;
+
+class SQL {
+
+    static void initDatabase() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+        // create a database connection
+        SQL conn = new SQL();
+
+        // drop tables if they exist
+        System.out.println("Dropping all tables...");
+        PreparedStatement usersTable = conn.connect().prepareStatement("DROP TABLE IF EXISTS users");
+        PreparedStatement patientDataTable = conn.connect().prepareStatement("DROP TABLE IF EXISTS patientData");
+        PreparedStatement feedback = conn.connect().prepareStatement("DROP TABLE IF EXISTS feedback");
+        usersTable.execute();
+        patientDataTable.execute();
+        feedback.execute();
+
+        // create table users
+        PreparedStatement statement1 = conn.connect().prepareStatement("CREATE TABLE IF NOT EXISTS users" +
+                "(id INTEGER PRIMARY KEY, role varchar(64), name varchar(64), email varchar(64), passwordHash varchar(2000), salt varchar(256)," +
+                "cookie varchar(256), doctorID int, FOREIGN KEY (doctorID) REFERENCES users(id))");
+        // create table patientData
+        PreparedStatement statement2 = conn.connect().prepareStatement("CREATE TABLE IF NOT EXISTS patientData" +
+                "(id INTEGER PRIMARY KEY, patientID int not null, rating int, extrainfo text," +
+                "timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP not null," +
+                "FOREIGN KEY (patientID) REFERENCES users(id))");
+        PreparedStatement statement3 = conn.connect().prepareStatement("CREATE TABLE IF NOT EXISTS feedback" +
+                "(id INTEGER PRIMARY KEY, message VARCHAR (20000000))");
+
+
+        statement1.execute();
+        statement2.execute();
+        statement3.execute();
+
+
+        // TODO: Fix test
+        createPatient("Haavard", "haavard@email.com", "password", 2);
+        createPatient("Balazs", "balazs@email.com", "password", 3);
+        createPatient("Mats", "mats@email.com", "password", 1);
+        PreparedStatement statement4 = conn.connect().prepareStatement("update users set cookie='a' where email = 'email'");
+        statement4.executeUpdate();
+        conn.disconnect();
+    }
+
     // init database constants
     private static final String DATABASE_URL = "jdbc:sqlite:sample.db"; //Denne er feil se print fra Working Directory
     // init connection object
