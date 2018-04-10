@@ -8,7 +8,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.apache.http.Header;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import tdt4140.gr1844.app.client.Send;
 import tdt4140.gr1844.app.client.WebCalls;
 
 import java.io.IOException;
@@ -47,7 +46,7 @@ public class Main extends Application {
 
         Map<String, String> params = new HashMap<>();
         params.put("action", "login");
-        Send.sendGET(params);
+        //Send.sendGET(params);
     }
 
     public void changeView(AnchorPane rootPane, String fxmlFile) {

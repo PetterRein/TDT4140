@@ -64,7 +64,7 @@ public class LegeController {
          * Gjør sånn at index 0 er Navn på Pasient, index 1 er siste rapport, index 2 er gjennomsnitt og index 3 til n er følinger så kan jeg fikse resten
          *
          */
-        String[] response = Main.client.getDoctorsPatients();
+        /**String[] response = Main.client.getDoctorsPatients();
         System.out.println(response[4]);
         String[] pasients  = response[4].split("/");
         ArrayList<ArrayList<String>> pasientsName = new ArrayList<>();
@@ -84,7 +84,7 @@ public class LegeController {
             }
         }
 
-        /**ArrayList<ArrayList<String>> pasients = new ArrayList<>();
+        ArrayList<ArrayList<String>> pasients = new ArrayList<>();
         ArrayList<String> pasient1 = new ArrayList<>();
         pasient1.add("Per");
         pasient1.add("03.03.2018");
@@ -96,10 +96,10 @@ public class LegeController {
         pasient2.add("5");
         pasient2.add("4");
         pasients.add(pasient1);
-        pasients.add(pasient2);**/
+        pasients.add(pasient2);
 
         // Denne funksjonen blir kjørt automatisk når alt er loadet og du kan begynne å endre på ting.
-        addButtons(pasientsName, needsNotSent1);
+        addButtons(pasientsName, needsNotSent1);**/
     }
 
     private void popListView(List<String> needList, ListView listArea) {
@@ -142,7 +142,7 @@ public class LegeController {
 
     @FXML
     private void goHome() throws Exception {
-        main.client.logoutUser();
+        //main.client.logoutUser();
         main.changeView(rootPane, "Main");
     }
 
@@ -161,19 +161,19 @@ public class LegeController {
         System.out.println(userEmail);
         System.out.println(userName);
         System.out.println(userPassword);
-        main.client.addUser(userName,userPassword,userEmail, "Patient");
+        //main.client.addUser(userName,userPassword,userEmail, "Patient");
     }
 
     @FXML
     private void delPasient() throws Exception {
         String userEmail = slettBrukerEpost.getText();
-        main.client.delUser(userEmail);
+        //main.client.delUser(userEmail);
     }
 
     @FXML
     private void sendTilbakeMedling() throws Exception {
         String tilbakemedling = Tilbakemedling.getText();
-        main.client.sendFeedback(tilbakemedling);
+        //main.client.sendFeedback(tilbakemedling);
     }
 
 }

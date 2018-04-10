@@ -121,12 +121,12 @@ public class PasientController {
     @FXML
     private void sendFoling() throws Exception {
         String data = foleFelt.getText();
-        main.client.sendUserData(data);
+        //main.client.sendUserData(data);
     }
 
     @FXML
     private void goHome() throws Exception {
-        main.client.logoutUser();
+        //main.client.logoutUser();
         main.changeView(rootPane, "Main");
     }
 }

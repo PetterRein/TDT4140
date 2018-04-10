@@ -49,7 +49,7 @@ public class MainController {
     public void sendLogin() throws Exception {
         String epost = Brukernavn.getText();
         String passord = Passord.getText();
-        String [] response = main.client.loginUser(epost,passord,epost);
+        /**String [] response = main.client.loginUser(epost,passord,epost);
         response[0] = "200";
         if (response[0] == "200"){
             if (response[3].equals("Admin")){
@@ -67,7 +67,7 @@ public class MainController {
         }
         else {
             System.out.println("Du har ikke lov");
-        }
+        }**/
     }
 
     public void addButtons(ArrayList<String> jobs, VBox jobsList) {

@@ -90,11 +90,19 @@ class Create {
 
 
     static JSONObject createPatient(String name, String email, String password, int doctorId) throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
+        return create("patient", name,email,password,doctorId);
+    }
+
+    static JSONObject createAdminTestPropse(String name, String email, String password, int doctorId) throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException{
+        return  create("admin", name, email, password, doctorId);
+    }
+
+    static JSONObject create(String role, String name, String email, String password, int doctorId) throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException{
         SQL sql = new SQL();
         JSONObject response = new JSONObject();
         PreparedStatement userExistsQuery = sql.connect()
                 .prepareStatement(
-                "SELECT * FROM users WHERE email = ?"
+                        "SELECT * FROM users WHERE email = ?"
                 );
         userExistsQuery.setString(1, email);
         userExistsQuery.execute();
@@ -108,10 +116,10 @@ class Create {
             String passwordHash = BCrypt.hashpw(password, salt);
             PreparedStatement createPatientQuery = sql.connect()
                     .prepareStatement(
-                    "INSERT INTO users(role, name, email, passwordHash, salt, doctorID) " +
-                        "VALUES (?, ?, ?, ?, ?, ?)"
+                            "INSERT INTO users(role, name, email, passwordHash, salt, doctorID) " +
+                                    "VALUES (?, ?, ?, ?, ?, ?)"
                     );
-            createPatientQuery.setString(1, "patient");
+            createPatientQuery.setString(1, role);
             createPatientQuery.setString(2, name);
             createPatientQuery.setString(3, email);
             createPatientQuery.setString(4, passwordHash);

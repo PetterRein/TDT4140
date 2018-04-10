@@ -1,4 +1,4 @@
-package tdt4140.gr1844.app.core;
+package tdt4140.gr1844.app.server;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,8 +13,7 @@ public class DatabaseTest {
 	@Before
 	public void setUp() throws NamingException, IllegalAccessException, InstantiationException, ClassNotFoundException {
 		try {
-			Database.initDatabase();
-			Database.createUser("Admin","Per","admin@o.com","33", null);
+			SQL.initDatabase();
 
 		}
 		catch(SQLException e){
@@ -27,16 +26,20 @@ public class DatabaseTest {
 	public void addUserTest() throws NamingException, IllegalAccessException, ClassNotFoundException, InstantiationException, SQLException {
 		String email = "tom@doctor.com";
 		String password = "password";
-		Database.createUser("Doctor", "Tom", email, password, null);
-		Assert.assertTrue(Authentication.login(email, password));
+		Create.createPatient("tom", email, password, 2);
+		Assert.assertTrue(Authentication.login(email, password).get("status").toString().equals("OK"));
 	}
 
 	@Test
 	public void deleteUserTest() throws IllegalAccessException, ClassNotFoundException, InstantiationException, SQLException, NamingException {
 		String email = "tom@doctor.com";
-		SqlConnect conn = new SqlConnect();
-		Database.createUser("role", "name", email, "password", null);
-		Database.deleteUser(email);
+		String password = "password";
+		SQL conn = new SQL();
+		Create.createPatient("tom", email, password, 2);
+		Create.createAdminTestPropse("tom", "tom", "tom", 1);
+		String cookieAdmin = Authentication.login("tom", "tom").get("cookie").toString();
+		int idPatient = Authentication.login(email,password).getJSONObject("user").getInt("userId");
+		Delete.deleteUser(idPatient, cookieAdmin);
 		PreparedStatement statement = conn.connect().prepareStatement("select * from users where email = ?");
 		statement.setString(1, email);
 		statement.execute();
@@ -47,20 +50,10 @@ public class DatabaseTest {
 
 	
 	@Test
-	public void loginUserTest() throws NamingException, IllegalAccessException, ClassNotFoundException, InstantiationException, SQLException {
-		String email = "tom@doctor.com";
-		String password = "password";
-		Database.createUser("Doctor", "Tom", email, password, null);
-		Assert.assertTrue(Authentication.login(email, password));
+	public void tryToAddAdminAssPatient() throws IllegalAccessException, ClassNotFoundException, InstantiationException, NamingException, SQLException {
+		String cookiePatient = Authentication.login("haavard@email.com", "password").get("cookie").toString();
+		String result = Create.createAdminOrDoctor("per", "per", "per", "admin", cookiePatient).getString("status");
+		Assert.assertEquals("ERROR", result);
 	}
-	
-	@Test
-	public void getRoleFromCookieWhenCookieExists() throws IllegalAccessException, ClassNotFoundException, InstantiationException, NamingException {
-		Assert.assertEquals("Doctor", Database.getRoleFromCookie("a"));
-	}
-	
-	@Test
-	public void getRoleFromCookieWhenCookieDoesNotExist() throws IllegalAccessException, ClassNotFoundException, InstantiationException, NamingException {
-		Assert.assertNull(Database.getRoleFromCookie("doesNotExist"));
-	}
+
 }

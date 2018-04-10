@@ -1,4 +1,4 @@
-package tdt4140.gr1844.app.core;
+package tdt4140.gr1844.app.server;
 
 
 import java.sql.PreparedStatement;
@@ -13,25 +13,15 @@ import javax.naming.NamingException;
 
 public class AuthenticationTest {
 	private String salt;
+	private Authentication authentication;
 
 	@Before
 	public void setUp() throws IllegalAccessException, InstantiationException, ClassNotFoundException {
-		SqlConnect conn = new SqlConnect();
 		try {
-			PreparedStatement statement1 = conn.connect().prepareStatement("drop table if exists users");
-			statement1.execute();
-			PreparedStatement statement2 = conn.connect().prepareStatement("create table users(id int, email varchar(64), passwordHash varchar(2000), salt varchar(256), cookie varchar(32), primary key(id))");
-			statement2.execute();
-			String username = "correctEmail";
-			String password = "correctPassword";
-			salt = BCrypt.gensalt();
-			String passwordHash = BCrypt.hashpw(password, salt);
-			PreparedStatement statement3 = conn.connect().prepareStatement("insert into users values(1, ?, ?, ?, 'aaaa')");
-			statement3.setString(1, username);
-			statement3.setString(2, passwordHash);
-			statement3.setString(3, salt);
-			statement3.execute();
-		} catch (SQLException e) {
+			SQL.initDatabase();
+
+		}
+		catch(SQLException e){
 			System.err.println(e);
 			System.out.println("Setup failure");
 		}
@@ -39,26 +29,27 @@ public class AuthenticationTest {
 
 	@Test
 	public void loginTestCorrectCredentials() throws IllegalAccessException, ClassNotFoundException, InstantiationException, SQLException, NamingException {
-		Assert.assertTrue(Authentication.login("correctEmail", "correctPassword"));
+		Assert.assertEquals("OK", Authentication.login("haavard@email.com", "password").get("status").toString());
 	}
 
 	@Test
 	public void loginTestWrongUsername() throws IllegalAccessException, ClassNotFoundException, InstantiationException, SQLException, NamingException {
-		Assert.assertFalse(Authentication.login("wrongUsername", "correctPassword"));
+		Assert.assertEquals("ERROR", Authentication.login("wrongUsername", "password").getString("status"));
 	}
 
 	@Test
 	public void loginTestWrongPassword() throws IllegalAccessException, ClassNotFoundException, InstantiationException, SQLException, NamingException {
-		Assert.assertFalse(Authentication.login("correctUsername", "wrongPassword"));
+		Assert.assertEquals("ERROR", Authentication.login("haavard@email.com", "wrongPassword").getString("status"));
 	}
 
 	@Test
 	public void logoutCorrectCookie() throws IllegalAccessException, ClassNotFoundException, InstantiationException, SQLException, NamingException {
-		Assert.assertTrue(Authentication.logout("aaaa"));
+		String cookie = Authentication.login("haavard@email.com", "password").get("cookie").toString();
+		Assert.assertEquals("OK", Authentication.logout(cookie).getString("status"));
 	}
 
 	@Test
 	public void logoutWrongCookie() throws IllegalAccessException, ClassNotFoundException, InstantiationException, SQLException, NamingException {
-		Assert.assertFalse(Authentication.logout("b"));
+		Assert.assertEquals("ERROR", Authentication.logout("b").getString("status"));
 	}
 }
