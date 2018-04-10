@@ -14,6 +14,14 @@ public class WebCallsTest {
 
     @Test
     public void testGet() throws Exception {
+        String url1 = "http://localhost:8080/api";
+        String url2 = "http://localhost:8080/";
+        String url3 = "http://localhost:8080/api/tdt4140-gr1844.app.server-0.0.1-SNAPSHOT";
+        String url4 = "http://localhost:8080/tdt4140-gr1844.app.server-0.0.1-SNAPSHOT";
+        WebCalls.sendGet(url1);
+        WebCalls.sendGet(url2);
+        WebCalls.sendGet(url3);
+        WebCalls.sendGet(url4);
         String stringURL = "action=createPatient&name=name&password=pw&email=email&doctorID=1";
         URL url = createUrlFromStringMethode(stringURL);
         JSONObject json = WebCalls.sendGET(QueryString.parse(url));

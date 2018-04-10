@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.Map;
 
@@ -102,6 +103,9 @@ public class WebGet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response){
+        java.nio.file.Path currentRelativePath = Paths.get("");
+        String s = currentRelativePath.toAbsolutePath().toString();
+        System.out.println(s);
         response.setContentType("application/json");
         try (PrintWriter out = response.getWriter()) {
             out.print(getResponse(
