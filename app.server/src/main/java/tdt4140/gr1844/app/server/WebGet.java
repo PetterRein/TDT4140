@@ -14,9 +14,11 @@ import java.util.Map;
 
 import static tdt4140.gr1844.app.server.Authentication.login;
 import static tdt4140.gr1844.app.server.Authentication.logout;
-import static tdt4140.gr1844.app.server.Create.createAdminOrDoctor;
-import static tdt4140.gr1844.app.server.Create.createPatient;
+import static tdt4140.gr1844.app.server.Create.*;
+import static tdt4140.gr1844.app.server.Delete.deleteFeeling;
 import static tdt4140.gr1844.app.server.Delete.deleteUser;
+import static tdt4140.gr1844.app.server.Retrieve.listFeelings;
+import static tdt4140.gr1844.app.server.Retrieve.listPatients;
 
 public class WebGet extends HttpServlet {
 
@@ -32,12 +34,7 @@ public class WebGet extends HttpServlet {
                 );
             case "logout":
                 return logout(params.get("cookie"));
-            case "getPatientData":
-                return Retrieve.getPatientData(
-                    toInt(params.get("patientID")),
-                    params.get("orderBy"),
-                    params.get("cookie")
-                );
+
             case "createPatient":
                 return createPatient(
                     params.get("name"),
@@ -59,10 +56,41 @@ public class WebGet extends HttpServlet {
                     params.get("cookie")
                 );
             case "createFeeling":
-                return Create.createFeeling(
+                return createFeeling(
                     toInt(params.get("patientID")),
                     toInt(params.get("rating")),
                     params.get("message"),
+                    params.get("cookie")
+                );
+            case "deleteFeeling":
+                return deleteFeeling(
+                    toInt(params.get("feelingID")),
+                    toInt(params.get("patientID")),
+                    params.get("cookie")
+                );
+            case "listFeelings":
+                return listFeelings(
+                    toInt(params.get("patientID")),
+                    params.get("cookie")
+            );
+            // only doctor
+
+            case "createFeedback":
+                return createFeedback(
+                    params.get("message"),
+                    params.get("cookie")
+                );
+
+            // only admin
+            case "markFeedbackRead":
+                return markFeedbackRead(
+                    toInt(params.get("feedbackID")),
+                    params.get("cookie")
+                );
+
+            case "listPatients":
+                return listPatients(
+                    toInt(params.get("doctorID")),
                     params.get("cookie")
                 );
             default:

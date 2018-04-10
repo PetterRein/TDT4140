@@ -40,4 +40,32 @@ class Retrieve {
             return response;
         }
     }
+
+    /**
+     *
+     * @param doctorID The doctor's id
+     * @param cookie The logged in user's cookie
+     * @return {JSONObject}
+     */
+    static JSONObject listPatients(int doctorID, String cookie) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+        JSONObject response = new JSONObject();
+
+        if (Authentication.isAuthenticated(cookie, "doctor")) {
+            SQL sql = new SQL();
+            PreparedStatement statement = sql.connect()
+                    .prepareStatement(
+                    "SELECT name, email FROM users WHERE (role = ? AND doctorID = ?)"
+                    );
+            statement.setString(1, "patient");
+            statement.setInt(2, doctorID);
+            statement.execute();
+            ResultSet rs = statement.getResultSet();
+            response = SQLToJSONArray(rs, "patients");
+            sql.disconnect();
+        } else {
+            response.put("status", "ERROR");
+            response.put("message", "You are not authorized to retrieve this information");
+        }
+        return response;
+    }
 }

@@ -130,4 +130,56 @@ class Create {
         return response;
     }
 
+
+
+    static JSONObject createFeedback(String message, String cookie) throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
+        JSONObject response = new JSONObject();
+        if (Authentication.isAuthenticated(cookie, "doctor")) {
+            SQL sql = new SQL();
+            PreparedStatement createFeedbackQuery = sql.connect()
+                    .prepareStatement(
+                    "INSERT INTO feedbacks(message) VALUES (?)"
+                    );
+            createFeedbackQuery.setString(1, message);
+            boolean isFeedbackCreated = createFeedbackQuery.executeUpdate() > 0;
+            if (isFeedbackCreated) {
+                response.put("status", "OK");
+            } else {
+                response.put("status", "ERROR");
+                response.put("message", "Feedback creation was unsuccessful.");
+
+            }
+            sql.disconnect();
+        } else {
+            response.put("status", "ERROR");
+            response.put("message", "You are not authorized for that action.");
+        }
+        return response;
+    }
+
+    static JSONObject markFeedbackRead(int feedbackID, String cookie) throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
+        JSONObject response = new JSONObject();
+        if (Authentication.isAuthenticated(cookie, "admin")) {
+            SQL sql = new SQL();
+            PreparedStatement createFeedbackQuery = sql.connect()
+                    .prepareStatement(
+                    "UPDATE feedbacks SET isRead = TRUE WHERE id = ?"
+                    );
+            createFeedbackQuery.setInt(1, feedbackID);
+            boolean isFeedbackSetToRead = createFeedbackQuery.executeUpdate() > 0;
+            if (isFeedbackSetToRead) {
+                response.put("status", "OK");
+            } else {
+                response.put("status", "ERROR");
+                response.put("message", "Feedback could not be set to read.");
+
+            }
+            sql.disconnect();
+        } else {
+            response.put("status", "ERROR");
+            response.put("message", "You are not authorized for that action.");
+        }
+        return response;
+    }
+
 }
