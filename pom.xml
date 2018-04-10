@@ -17,6 +17,12 @@
     <prerequisites>
         <maven>3.5.1</maven>
     </prerequisites>
+    <repositories>
+        <repository>
+            <id>alfresco-public</id>
+            <url>https://artifacts.alfresco.com/nexus/content/groups/public</url>
+        </repository>
+    </repositories>
         
     <modules>
         <module>app.core</module>
