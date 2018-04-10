@@ -25,7 +25,7 @@ public class WebCallsTest {
         WebCalls.sendGet(url4);
         WebCalls.sendGet(url5);
 
-        /**String stringURL = "action=createPatient&name=name&password=pw&email=email&doctorID=1";
+        String stringURL = "action=createPatient&name=name&password=pw&email=email&doctorID=1";
         URL url = createUrlFromStringMethode(stringURL);
         JSONObject json = WebCalls.sendGET(QueryString.parse(url));
         switch (json.getString("status")) {
@@ -39,7 +39,6 @@ public class WebCallsTest {
             default:
                 Assert.fail();
                 break;
-        }**/
-        Assert.assertTrue(true);
+        }
     }
 }
