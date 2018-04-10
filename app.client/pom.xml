@@ -44,36 +44,6 @@
     </dependencies>
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.2</version>
-                <configuration>
-                    <url>http://localhost:8080/manager/text</url>
-                    <port>${maven.tomcat.port}</port>
-                    <server>tomcatServer</server>
-                    <path>/api</path>
-                    <warFile>${project.basedir}/target/${project.parent.artifactId}-${project.parent.version}.war</warFile>
-                    <username>admin</username>
-                    <password>password</password>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>tomcat-run</id>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <phase>prepare-package</phase>
-                    </execution>
-                    <execution>
-                        <id>tomcat-shutdown</id>
-                        <goals>
-                            <goal>shutdown</goal>
-                        </goals>
-                        <phase>post-integration-test</phase>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 

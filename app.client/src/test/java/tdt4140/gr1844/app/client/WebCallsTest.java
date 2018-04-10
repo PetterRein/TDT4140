@@ -15,7 +15,7 @@ public class WebCallsTest {
     @Test
     public void testGet() throws Exception {
         String url1 = "http://localhost:8080/api?action=2";
-        String url5 = "http://localhost:8080/tdt4140-gr1844.app.server-0.0.1-SNAPSHOT/api?action=c";
+        String url5 = "http://localhost:8080/api/tdt4140-gr1844.app.server-0.0.1-SNAPSHOT/api?action=c";
         String url2 = "http://localhost:8080/api/tdt4140-gr1844.app.server-0.0.1-SNAPSHOT?action=c";
         WebCalls.sendGet(url2);
         WebCalls.sendGet(url1);

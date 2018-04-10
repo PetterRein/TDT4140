@@ -69,6 +69,38 @@
                     <webXml>web\WEB-INF\web.xml</webXml>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <url>http://localhost:8080/manager/text</url>
+                    <server>tomcatServer</server>
+                    <warFile>${project.basedir}/target/${project.parent.artifactId}.app.server-${project.parent.version}.war</warFile>
+                    <path>/api</path>
+                    <username>admin</username>
+                    <password>password</password>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>tomcat-run</id>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <phase>initialize</phase>
+                        <configuration>
+                            <fork>true</fork>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>tomcat-shutdown</id>
+                        <goals>
+                            <goal>shutdown</goal>
+                        </goals>
+                        <phase>post-clean</phase>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <profiles>
