@@ -16,7 +16,7 @@
 
     <prerequisites>
         <maven>2.2.1</maven>
-    </prerequisites
+    </prerequisites>
         
     <modules>
         <module>app.core</module>
@@ -80,5 +80,5 @@
             </plugin>
         </plugins>
     </build>
-    
+
 </project>
