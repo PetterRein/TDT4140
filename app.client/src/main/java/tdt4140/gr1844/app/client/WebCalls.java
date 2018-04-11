@@ -19,7 +19,7 @@ public class WebCalls {
 
     public static JSONObject sendGET(Map<?, ?> params) throws Exception {
 
-        URL url = new URL("http://localhost:8080/tdt4140-gr1844.app.server-0.0.1-SNAPSHOT/api?action=c" + QueryString.stringify(params));
+        URL url = new URL("http://localhost:8080/tdt4140-gr1844.app.server-0.0.1-SNAPSHOT" + QueryString.stringify(params));
 
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
