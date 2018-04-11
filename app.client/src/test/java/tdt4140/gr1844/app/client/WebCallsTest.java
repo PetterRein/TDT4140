@@ -14,19 +14,21 @@ public class WebCallsTest {
 
     @Test
     public void testGet() throws Exception {
-       String narDuLagerWarOgKjorer = "http://localhost:8080/tdt4140-gr1844.app.server-0.0.1-SNAPSHOT/api?action=3";
+        String narDuLagerWarOgKjorer = "http://localhost:8080/tdt4140-gr1844.app.server-0.0.1-SNAPSHOT/api?action=3";
         String url5 = "http://localhost:8080/api/tdt4140-gr1844.app.server-0.0.1-SNAPSHOT/api?action=c";
         String url3 = "http://localhost:8080/api/tdt4140-gr1844.app.server-0.0.1-SNAPSHOT?action=c";
         String url2 = "http://localhost:8080/tdt4140-gr1844.app.server-0.0.1-SNAPSHOT?action=c";
         String url4 = "http://localhost:8080/tdt4140-gr1844.app.server-0.0.1-SNAPSHOT/api/api?action=c";
         String url6 = "http://localhost:8080/api?action=2";
+        String url7 =  "http://localhost:8080/";
         WebCalls.sendGet(narDuLagerWarOgKjorer);
         WebCalls.sendGet(url5);
         WebCalls.sendGet(url3);
         WebCalls.sendGet(url2);
         WebCalls.sendGet(url4);
         WebCalls.sendGet(url6);
-
+        WebCalls.sendGet(url7);
+        System.in.read();
         /**String stringURL = "action=createPatient&name=name&password=pw&email=email&doctorID=1";
         URL url = createUrlFromStringMethode(stringURL);
         JSONObject json = WebCalls.sendGET(QueryString.parse(url));
