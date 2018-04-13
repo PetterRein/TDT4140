@@ -171,6 +171,9 @@ public class LegeController {
     @FXML
     private void sendTilbakeMedling() throws Exception {
         String tilbakemedling = Tilbakemedling.getText();
+        JSONObject response = main.sendFeedback(tilbakemedling);
+        //TODO Lag at det kommer en alert om det var sukssess eller ike
+
     }
 
 }
