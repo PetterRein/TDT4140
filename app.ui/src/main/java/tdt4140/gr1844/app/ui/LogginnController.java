@@ -62,7 +62,7 @@ public class LogginnController {
 
 
     @FXML
-    private void goHome() throws Exception {
+    private void logout() throws Exception {
         //client.logoutUser();
         Main main = new Main();
         main.changeView(rootPane, "Main");

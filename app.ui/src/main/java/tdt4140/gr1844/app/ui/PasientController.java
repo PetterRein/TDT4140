@@ -123,7 +123,7 @@ public class PasientController {
     }
 
     @FXML
-    private void goHome() throws Exception {
+    private void logout() throws Exception {
         //main.client.logoutUser();
         main.changeView(rootPane, "Main");
     }

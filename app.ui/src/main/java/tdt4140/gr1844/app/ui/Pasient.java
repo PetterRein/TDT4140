@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,7 +73,7 @@ public class Pasient {
 
 
     @FXML
-    private void goHome() {
+    private void logout() throws IOException {
         Main main = new Main();
         main.changeView(rootPane, "Main");
     }

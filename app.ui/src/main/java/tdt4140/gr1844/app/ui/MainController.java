@@ -21,10 +21,10 @@ public class MainController {
     private AnchorPane rootPane;
 
     @FXML
-    private TextField Brukernavn;
+    private TextField emailTextField;
 
     @FXML
-    private TextField Passord;
+    private TextField passwordTextField;
 
     @FXML
     private TextField faillogginn;
@@ -45,30 +45,34 @@ public class MainController {
 
     @FXML
     public void sendLogin() throws Exception {
-        String email = Brukernavn.getText();
-        String password = Passord.getText();
-        JSONObject json = WebCalls.sendGET("action=login&email=" + email +  "&password=" + password);
-        if (json.getString("status").equals("OK")){
-            main.setSessionCookie(json.getString("cookie"));
-            System.out.println(main.getSessionCookie());
-            main.setUserID(json.getJSONObject("user").getString("userID"));
-            switch (json.getJSONObject("user").getString("role")) {
+        String email = emailTextField.getText();
+        String password = passwordTextField.getText();
+        JSONObject userResponse = WebCalls.sendGET(
+                "action=login" +
+                        "&email=" + email +
+                        "&password=" + password
+        );
+
+
+
+        if (userResponse.getString("status").equals("OK")){
+            main.setUser(userResponse);
+            switch (main.getRole()) {
                 case "admin":
-                    main.changeView(rootPane, "admin");
+                    main.changeView(rootPane, "Admin");
                     break;
                 case "doctor":
-                    main.changeView(rootPane, "Lege");
+                    main.changeView(rootPane, "Doctor");
                     break;
                 case "patient":
-                    main.changeView(rootPane, "Pasient");
+                    main.changeView(rootPane, "Patient");
                     break;
                 default:
-                    System.out.println("Du har en role som ikke finnes");
                     break;
             }
         }
         //TODO: Lag en alert som sier at email eller passord er feil
-        else System.out.println(json.getString("message"));
+        else System.out.println(userResponse.getString("message"));
     }
 
 }

@@ -9,77 +9,106 @@ import javafx.stage.Stage;
 import org.json.JSONObject;
 import tdt4140.gr1844.app.client.WebCalls;
 import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Objects;
 
 public class Main extends Application {
     /**public static List<Festival> festivals;
     public static List<Offer> offers;**/
-    public static String API_URL = "http://api.moholt.me?";
+    private static String name;
+    private static String role;
+    private static String cookie;
+    private static int userID;
+    private static int doctorID;
+
 
     public static void main(String[] args) {
         launch(args);
     }
 
-    ArrayList<String> response = new ArrayList<>();
-
-    private static String SessionCookie = "123";
-
-    private static String userID = "-1";
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        java.nio.file.Path currentRelativePath = Paths.get("");
-        String s = currentRelativePath.toAbsolutePath().toString();
-        //"/app.client/src/main/java/tdt4140/gr1844/app/client/"
-        System.out.println("Current relative path is: " + s);
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource( "Main.fxml"));
-        primaryStage.setTitle("Hvordan føler du deg?");
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("Main.fxml")));
+        primaryStage.setTitle("How do you feel?");
         primaryStage.setScene(new Scene(root, 1280, 720));
         primaryStage.show();
         primaryStage.setResizable(false);
-
-        Map<String, String> params = new HashMap<>();
-        params.put("action", "login");
-        //Send.sendGET(params);
     }
 
-    public void changeView(AnchorPane rootPane, String fxmlFile) {
-        try {
-            AnchorPane pane = FXMLLoader.load(getClass().getClassLoader().getResource(fxmlFile + ".fxml"));
-            rootPane.getChildren().setAll(pane);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    void changeView(AnchorPane rootPane, String fxmlFile) throws IOException {
+        AnchorPane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource(fxmlFile + ".fxml")));
+        rootPane.getChildren().setAll(pane);
     }
 
-    public String getSessionCookie() {
-        return SessionCookie;
-    }
 
-    public void setSessionCookie(String sessionCookie) {
-        this.SessionCookie = sessionCookie;
-    }
-
-    public String getUserID() {
-        return userID;
-    }
-
-    public void setUserID(String userID) {
-        this.userID = userID;
-    }
-
-    public JSONObject createUser(String name, String email, String password, String doctorID) throws Exception {
+    JSONObject createUser(String name, String email, String password, int doctorID) throws Exception {
         return  WebCalls.sendGET("action=createPatient&name=" + name + "&email=" + email + "&password=" + " &doctorID=" + doctorID);
     }
 
-    public JSONObject delUser(int userID) throws Exception {
+    JSONObject delUser(int userID) throws Exception {
         return  WebCalls.sendGET("action=deleteUser&userID=" + userID);
     }
 
-    public JSONObject sendFeedback(String feedback) throws Exception {
-        return WebCalls.sendGET("action=createFeedback&message=" + feedback +"&cookie=" + this.SessionCookie);
+    JSONObject sendFeedback(String feedback) throws Exception {
+        return WebCalls.sendGET("action=createFeedback&message=" + feedback +"&cookie=" + cookie);
+    }
+
+
+    void setUser(JSONObject userResponse) {
+        JSONObject user = userResponse.getJSONObject("user");
+        System.out.println(user);
+        name = user.getString("name");
+        userID = user.getInt("userID");
+        doctorID = user.getInt("doctorID");
+        role = user.getString("role");
+        setCookie(userResponse.getString("cookie"));
+    }
+
+    void logout() throws Exception {
+        WebCalls.sendGET("action=logout&cookie=" + cookie);
+    }
+
+
+
+    int getUserID() {
+        return userID;
+    }
+
+    void setUserID(String userID) {
+        userID = userID;
+    }
+
+
+    String getCookie() {
+        return cookie;
+    }
+
+    private void setCookie(String sessionCookie) {
+        cookie = sessionCookie;
+    }
+
+
+    String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public int getDoctorID() {
+        return doctorID;
+    }
+
+    public void setDoctorID(int doctorID) {
+        this.doctorID = doctorID;
     }
 }

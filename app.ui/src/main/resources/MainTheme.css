@@ -39,7 +39,7 @@
 
 /* Buttons */
 
-#jobButt, #goHome {
+#jobButt, #logout {
     -fx-background-radius: 40;
     -fx-padding: 10, 10, 10, 10;
     -fx-background-color: #A6808C,
@@ -49,7 +49,7 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
 }
 
-#goHome {
+#logout {
     -fx-font-size: 18;
 }
 
@@ -97,7 +97,7 @@
 
 /* Button effects */
 
-#jobButt:hover, #goHome:hover {
+#jobButt:hover, #logout:hover {
     -fx-background-color: #A6808C,
     linear-gradient(#A6808C, #B697A0);
 }

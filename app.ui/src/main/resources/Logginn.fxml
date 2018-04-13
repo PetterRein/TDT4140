@@ -62,7 +62,7 @@
                     <buttons>
                         <Label/>
                         <Label fx:id="labelArrTitle" alignment="CENTER" text="Manager"/>
-                        <Button fx:id="goHome" mnemonicParsing="false" onAction="#goHome" prefHeight="37.0"
+                        <Button fx:id="logout" mnemonicParsing="false" onAction="#logout" prefHeight="37.0"
                                 prefWidth="1290.0" text="Logg ut"/>
                     </buttons>
                     <BorderPane.margin>
