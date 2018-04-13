@@ -52,7 +52,7 @@ public class AdminController {
 
     @FXML
     public void initialize() throws Exception {
-        doctorLabel.setText("Welcome Dr. " + main.getName());
+        doctorLabel.setText("Welcome Admin " + main.getName());
         getInfo();
         comFun.updatePatientList();
     }
