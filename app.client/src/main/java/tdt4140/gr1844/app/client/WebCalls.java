@@ -12,9 +12,8 @@ import static org.apache.http.protocol.HTTP.USER_AGENT;
 public class WebCalls {
 
     static public JSONObject sendGET(String params) throws Exception {
-
-        //URL url = new URL("http://api.moholt.me" + params);
-        URL url = new URL("http://localhost:8080/api" + params);
+        URL url = new URL("http://api.moholt.me?" + params);
+        //URL url = new URL("http://localhost:8080/api" + QueryString.stringify(params));
 
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
