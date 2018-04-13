@@ -58,7 +58,7 @@ public class Authentication {
 				user.put("userId", authenticationResponse.getString(1));
 				user.put("role",authenticationResponse.getString(2));
 				user.put("name", authenticationResponse.getString(3));
-				user.put("doctorId",authenticationResponse.getInt(7));
+				user.put("doctorId",authenticationResponse.getInt(8));
 				json.put("user", user);
 				json.put("status", "OK");
 				PreparedStatement getCookie = sql.connect()
