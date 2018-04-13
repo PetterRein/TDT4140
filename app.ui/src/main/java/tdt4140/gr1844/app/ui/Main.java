@@ -65,19 +65,7 @@ public class Main extends Application {
             e.printStackTrace();
         }
     }
-
-    public void updateCookie(CloseableHttpResponse response){
-        Header[] ws = response.getAllHeaders();
-        String cookie1 = "non";
-        for (Header header: ws){
-            if (header.getName().equals("cookie")){
-                cookie1 = header.getValue();
-            }
-            System.out.println(header);
-        }
-        SessionCookie = cookie1;
-    }
-
+    
     public JSONObject createUser(String name, String email, String password, String doctorID) throws Exception {
         return  WebCalls.sendGET("action=createPatient&name=" + name + "&email=" + email + "&password=" + " &doctorID=" + doctorID);
     }
