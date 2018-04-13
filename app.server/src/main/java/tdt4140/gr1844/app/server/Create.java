@@ -93,11 +93,13 @@ class Create {
         return create("patient", name,email,password,doctorId);
     }
 
-    static JSONObject createAdminTestPropse(String name, String email, String password, int doctorId) throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException{
-        return  create("admin", name, email, password, doctorId);
+
+    // Create admin user for testing
+    static JSONObject createAdminTestPuropse() throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException{
+        return  create("admin", "tom", "tom@email.com", "password", -1);
     }
 
-    static JSONObject create(String role, String name, String email, String password, int doctorId) throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException{
+    private static JSONObject create(String role, String name, String email, String password, int doctorId) throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException{
         SQL sql = new SQL();
         JSONObject response = new JSONObject();
         PreparedStatement userExistsQuery = sql.connect()

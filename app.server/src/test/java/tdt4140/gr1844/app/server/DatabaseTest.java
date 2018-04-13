@@ -25,15 +25,15 @@ public class DatabaseTest {
 
 	@Test
 	public void deleteUserTest() throws IllegalAccessException, ClassNotFoundException, InstantiationException, SQLException, NamingException {
-		String email = "tom@doctor.com";
+		String email = "tom@patient.com";
 		String password = "password";
-		SQL conn = new SQL();
+		SQL sql = new SQL();
 		Create.createPatient("tom", email, password, 2);
-		Create.createAdminTestPropse("tom", "tom", "tom", 1);
+		Create.createAdminTestPuropse();
 		String cookieAdmin = Authentication.login("tom", "tom").get("cookie").toString();
 		int idPatient = Authentication.login(email,password).getJSONObject("user").getInt("userId");
 		Delete.deleteUser(idPatient, cookieAdmin);
-		PreparedStatement statement = conn.connect().prepareStatement("SELECT * FROM users WHERE email = ?");
+		PreparedStatement statement = sql.connect().prepareStatement("SELECT * FROM users WHERE email = ?");
 		statement.setString(1, email);
 		statement.execute();
 		ResultSet rs = statement.getResultSet();

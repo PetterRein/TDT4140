@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URL;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.Map;
@@ -110,9 +109,7 @@ public class WebGet extends HttpServlet {
         response.setContentType("application/json");
         try (PrintWriter out = response.getWriter()) {
             out.print(getResponse(
-                QueryString.parse(
-                    new URL("http://localhost:8080/api?" + request.getQueryString())
-                ))
+                QueryString.parse("http://localhost:8080/api?" + request.getQueryString()))
             );
         } catch (InstantiationException | SQLException | ClassNotFoundException | IllegalAccessException | IOException e) {
             e.printStackTrace();

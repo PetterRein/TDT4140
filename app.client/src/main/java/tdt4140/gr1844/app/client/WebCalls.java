@@ -1,25 +1,19 @@
 package tdt4140.gr1844.app.client;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.json.JSONObject;
-import tdt4140.gr1844.app.core.QueryString;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Map;
 
 import static org.apache.http.protocol.HTTP.USER_AGENT;
 
 class WebCalls {
 
-    static JSONObject sendGET(Map<?, ?> params) throws Exception {
+    static JSONObject sendGET(String params) throws Exception {
 
-        URL url = new URL("http://api.moholt.me" + QueryString.stringify(params));
+        URL url = new URL("http://api.moholt.me" + params);
         //URL url = new URL("http://localhost:8080/api" + QueryString.stringify(params));
 
         HttpURLConnection con = (HttpURLConnection) url.openConnection();

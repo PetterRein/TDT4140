@@ -1,11 +1,10 @@
 package tdt4140.gr1844.app.core;
 
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 public class QueryString {
@@ -19,7 +18,8 @@ public class QueryString {
                 .orElse("");
     }
 
-    public static Map<String, String> parse(URL url) throws UnsupportedEncodingException {
+    public static Map<String, String> parse(String queryString) throws UnsupportedEncodingException, MalformedURLException {
+        URL url = new URL("http://api.moholt.me/" + queryString);
         final Map<String, String> query_pairs = new LinkedHashMap<>();
         final String[] pairs = url.getQuery().split("&");
         for (String pair : pairs) {
