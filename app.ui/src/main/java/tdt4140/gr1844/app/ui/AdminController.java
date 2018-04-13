@@ -1,14 +1,17 @@
 package tdt4140.gr1844.app.ui;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import tdt4140.gr1844.app.client.WebCalls;
 
-public class DoctorController {
+public class AdminController {
     public Label doctorLabel;
     public Button deletePatientButton;
     public TextField deletePatientID;
@@ -42,7 +45,8 @@ public class DoctorController {
 
     private CommonFunctions comFun = new CommonFunctions();
 
-    private void getInfo(){
+
+    public void getInfo(){
         comFun.setInfo(deletePatientButton,deletePatientID,activePatientNameLabel,lastRatingLabel,ratingAvgLabel,activePatientIDLabel,patientName,patientEmail,patientPassword,patientListBox,feedbackTextField);
     }
 
@@ -73,5 +77,4 @@ public class DoctorController {
     private void sendFeedback() throws Exception {
         comFun.sendFeedback();
     }
-
 }
