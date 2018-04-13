@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import org.json.JSONObject;
 import tdt4140.gr1844.app.client.WebCalls;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.Objects;
 
 public class Main extends Application {
@@ -41,16 +42,26 @@ public class Main extends Application {
     }
 
 
-    JSONObject createUser(String name, String email, String password, int doctorID) throws Exception {
-        return  WebCalls.sendGET("action=createPatient&name=" + name + "&email=" + email + "&password=" + " &doctorID=" + doctorID);
+    JSONObject createPatient(String name, String email, String password, int doctorID) throws Exception {
+        return  WebCalls.sendGET(
+                "action=createPatient" +
+                        "&name=" + name +
+                        "&email=" + email +
+                        "&password=" + password +
+                        "&doctorID=" + doctorID
+        );
     }
 
-    JSONObject delUser(int userID) throws Exception {
-        return  WebCalls.sendGET("action=deleteUser&userID=" + userID);
+
+    JSONObject deletePatient(int userID) throws Exception {
+        return  WebCalls.sendGET(
+                "action=deleteUser&userID=" + userID +
+                        "&cookie=" + getCookie()
+        );
     }
 
     JSONObject sendFeedback(String feedback) throws Exception {
-        return WebCalls.sendGET("action=createFeedback&message=" + feedback +"&cookie=" + cookie);
+        return WebCalls.sendGET("action=createFeedback&message=" + URLEncoder.encode(feedback, "UTF-8") +"&cookie=" + cookie);
     }
 
 
@@ -111,4 +122,6 @@ public class Main extends Application {
     public void setDoctorID(int doctorID) {
         this.doctorID = doctorID;
     }
+
+
 }

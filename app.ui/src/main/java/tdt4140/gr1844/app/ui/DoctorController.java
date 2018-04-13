@@ -10,94 +10,125 @@ import tdt4140.gr1844.app.client.WebCalls;
 
 public class DoctorController {
     public Label doctorLabel;
+    public Button deletePatientButton;
+    public TextField deletePatientID;
+
+
+
+    // Active user panel
     @FXML
-    private VBox vboxBorderLeft;
+    private Label activePatientNameLabel;
+    @FXML
+    private Label lastRatingLabel;
+    @FXML
+    private Label ratingAvgLabel;
+    @FXML
+    private  Label activePatientIDLabel;
+
+
+
+
+    @FXML
+    private TextField patientName;
+
+
+    @FXML
+    private TextField patientEmail;
+
+    @FXML
+    private TextField patientPassword;
+
 
     @FXML
     private AnchorPane rootPane;
 
     @FXML
-    private VBox needsNotSent1;
+    private VBox patientListBox;
+
+
+
+    @FXML
+    private TextArea feedbackTextField;
+
+
+
+    private Main main = new Main();
 
     private Button buttonName;
 
     @FXML
-    private ListView needListAdded;
-
-    @FXML
-    private Label pasientName;
-
-    @FXML
-    private Label sisteFoling;
-
-    @FXML
-    private Label score;
-
-    @FXML
-    private TextArea Tilbakemedling;
-	
-	@FXML
-	private TextField nyBrukerNavn;
-	
-	@FXML
-	private TextField nyBrukerEpost;
-	
-	@FXML
-	private TextField nyBrukerPassord;
-	
-	@FXML
-	private TextField slettBrukerEpost;
-
-
-    private String pasientNameString;
-
-    private Main main = new Main();
-
-    @FXML
     public void initialize() throws Exception {
-        sisteFoling.setVisible(false);
-        /**TODO
-         * Finne alle pasienter til en lege og legge de i pasients
-         * Regne ut gjennomsnittet til hver bruker for å sette det også
-         * Gjør sånn at index 0 er Navn på Pasient, index 1 er siste rapport, index 2 er gjennomsnitt og index 3 til n er følinger så kan jeg fikse resten
-         *
-         */
-        JSONObject response = WebCalls.sendGET("action=listPatients&doctorID=" + main.getUserID() + "&cookie=" + main.getCookie());
-        JSONArray patients = response.getJSONArray("patients");
         doctorLabel.setText("Welcome Dr. " + main.getName());
-        addButtons(patients, needsNotSent1);
+        updatePatientList();
     }
 
 
 
-    private void addButtons(JSONArray patients, VBox needsList) throws Exception {
+    private void updatePatientList() throws Exception {
+        listPatients(getPatients());
+    }
+
+    private JSONArray getPatients() throws Exception {
+        return WebCalls.sendGET(
+                "action=listPatients&" +
+                        "doctorID=" + main.getUserID() +
+                        "&cookie=" + main.getCookie()
+        ).getJSONArray("patients");
+    }
+
+    private void listPatients(JSONArray patients) throws Exception {
+        patientListBox.getChildren().clear();
         for(Object patient : patients){
-            Button btnNumber = createButton((JSONObject) patient);
-            needsList.getChildren().add(btnNumber);
+            Button btnNumber = createPatient((JSONObject) patient);
+            patientListBox.getChildren().add(btnNumber);
         }
     }
 
-    private Button createButton(JSONObject patient) throws Exception {
+    private Button createPatient(JSONObject patient) throws Exception {
         final Button button = new Button(patient.getString("name"));
-        System.out.println(patient);
-        JSONObject feelings = WebCalls.sendGET("action=listFeelings&patientID=" + patient.getInt("id") + "&orderBy=desc&cookie=" + main.getCookie());
-        int rating = feelings.getJSONArray("feelings").getJSONObject(0).getInt("rating");
-        if(rating < 5){
-            button.setId("dangerPasient");
-        }
-        else {
-            button.setId("offerButt");
+        JSONArray feelings = WebCalls.sendGET(
+                "action=listFeelings" +
+                        "&patientID=" + patient.getInt("id") +
+                        "&orderBy=desc" +
+                        "&cookie=" + main.getCookie()
+        ).getJSONArray("feelings");
+
+        int lastRating = 0;
+        int ratingAvg = 0;
+        if (feelings.length() != 0) {
+            ratingAvg = getAverageRating(feelings);
+            lastRating = feelings.getJSONObject(0).getInt("rating");
+            if (ratingAvg < 2) {
+                button.setId("unhealthyRating");
+            } else if(ratingAvg < 3.5) {
+                button.setId("averageHealthRating");
+            } else {
+                button.setId("healthyRating");
+            }
+
         }
         button.setPrefSize(200, 20);
+        int finalRatingAvg = ratingAvg;
+        int finalLastRating = lastRating;
         button.setOnMouseClicked(event -> {
-            try {
-                buttonName = button;
-                updateStuff(patient.getString("name"), patient.getString("email"), rating);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            buttonName = button;
+            updateActivePatient(
+                patient.getString("name"),
+                patient.getInt("id"),
+                finalLastRating,
+                finalRatingAvg
+            );
         });
         return button;
+    }
+
+    private int getAverageRating(JSONArray feelings) {
+        int sum = 0;
+        for (Object feelingObject : feelings) {
+            JSONObject feeling = (JSONObject) feelingObject;
+            sum += feeling.getInt("rating");
+        }
+        return sum/feelings.length();
     }
 
     @FXML
@@ -106,34 +137,56 @@ public class DoctorController {
         main.changeView(rootPane, "Main");
     }
 
-    private void updateStuff(String pasientName1, String sisteFoling1, int score1){
-        this.pasientNameString = pasientName1;
-        pasientName.setText("Pasient: " + pasientName1);
-        sisteFoling.setText("Siste føling: " + sisteFoling1);
-        score.setText("Score: " + score1);
+    private void updateActivePatient(String patientName, int patientID, int lastRating, int ratingAvg){
+        activePatientNameLabel.setText("Patient's name: " + patientName);
+        activePatientIDLabel.setText("Patients's ID: " + patientID);
+        String finalLastRating = lastRating == 0 ? "no ratings yet" : Integer.toString(lastRating);
+        String finalRatingAvg = ratingAvg== 0 ? "no ratings yet" : Integer.toString(ratingAvg);
+        lastRatingLabel.setText("Last rating: " + finalLastRating);
+        ratingAvgLabel.setText("Rating average: " + finalRatingAvg);
     }
 
     @FXML
-    private void addNewPasient() throws Exception {
-        String userEmail = nyBrukerEpost.getText();
-        String userName = nyBrukerNavn.getText();
-        String userPassword = nyBrukerPassord.getText();
-        JSONObject response = main.createUser(userName,userEmail,userPassword, main.getUserID());
+    private void registerPatient() throws Exception {
+        String userEmail = patientEmail.getText();
+        String userName = patientName.getText();
+        String userPassword = patientPassword.getText();
+
+        JSONObject response = main.createPatient(
+                userName,
+                userEmail,
+                userPassword,
+                main.getUserID()
+        );
         //TODO Lag at det kommer en alert om det var sukssess eller ikke
+        if (response.getString("status").equals("OK")) {
+            updatePatientList();
+        } else {
+            System.out.println(response.getString("message"));
+        }
     }
 
     @FXML
-    private void delPasient() throws Exception {
-        String userID = slettBrukerEpost.getText();
-        JSONObject response = main.delUser(Integer.parseInt(userID));
+    private void removePatient() throws Exception {
+        int userID = Integer.parseInt(deletePatientID.getText());
+        JSONObject response = main.deletePatient(userID);
         //TODO Lag at det kommer en alert om det var sukssess eller ike
+        if (response.getString("status").equals("OK")) {
+            updatePatientList();
+            System.out.println("Patient removed.");
+        } else {
+            System.out.println(response.getString("message"));
+        }
     }
 
     @FXML
-    private void sendTilbakeMedling() throws Exception {
-        String tilbakemedling = Tilbakemedling.getText();
-        JSONObject response = main.sendFeedback(tilbakemedling);
-        //TODO Lag at det kommer en alert om det var sukssess eller ike
+    private void sendFeedback() throws Exception {
+        JSONObject response = main.sendFeedback(feedbackTextField.getText());
+        if (response.getString("status").equals("OK")) {
+            System.out.println("Feedback sent");
+        } else {
+            System.out.println(response.getString("message"));
+        }
 
     }
 
