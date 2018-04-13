@@ -161,6 +161,9 @@ public class DoctorController {
         //TODO Lag at det kommer en alert om det var sukssess eller ikke
         if (response.getString("status").equals("OK")) {
             updatePatientList();
+            patientEmail.clear();
+            patientName.clear();
+            patientPassword.clear();
         } else {
             System.out.println(response.getString("message"));
         }
@@ -184,6 +187,7 @@ public class DoctorController {
         JSONObject response = main.sendFeedback(feedbackTextField.getText());
         if (response.getString("status").equals("OK")) {
             System.out.println("Feedback sent");
+            feedbackTextField.clear();
         } else {
             System.out.println(response.getString("message"));
         }
