@@ -30,7 +30,7 @@ public class DatabaseTest {
 		SQL sql = new SQL();
 		Create.createPatient("tom", email, password, 2);
 		Create.createAdminTestPurpose();
-		int idPatient = Authentication.login(email,password).getJSONObject("user").getInt("userId");
+		int idPatient = Authentication.login(email,password).getJSONObject("user").getInt("userID");
 		String cookieAdmin = Authentication.login("admin@email.com", "password").getString("cookie");
 		Delete.deleteUser(idPatient, cookieAdmin);
 		PreparedStatement statement = sql.connect().prepareStatement("SELECT * FROM users WHERE email = ?");

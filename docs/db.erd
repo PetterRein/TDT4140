@@ -26,8 +26,8 @@
     <entity id="4" is_weak="false" name="PatientData" x="811" y="56">
         <attributes>
             <attribute is_hidden="false" is_key="true" name="id" type=""/>
-            <attribute is_hidden="false" is_key="true" name="patientId" type=""/>
-            <attribute is_hidden="false" is_key="true" name="doctorId" type=""/>
+            <attribute is_hidden="false" is_key="true" name="patientID" type=""/>
+            <attribute is_hidden="false" is_key="true" name="doctorID" type=""/>
             <attribute is_hidden="false" is_key="false" name="rating" type=""/>
             <attribute is_hidden="false" is_key="false" name="extraInfo" type=""/>
             <attribute is_hidden="false" is_key="false" name="timestamp" type=""/>

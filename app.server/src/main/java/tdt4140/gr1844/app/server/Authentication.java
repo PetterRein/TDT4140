@@ -55,10 +55,10 @@ public class Authentication {
 			Boolean userExists = authenticationResponse.isBeforeFirst();
 			if (userExists) {
 				JSONObject user = new JSONObject();
-				user.put("userId", authenticationResponse.getString(1));
+				user.put("userID", authenticationResponse.getString(1));
 				user.put("role",authenticationResponse.getString(2));
 				user.put("name", authenticationResponse.getString(3));
-				user.put("doctorId",authenticationResponse.getInt(7));
+				user.put("doctorID",authenticationResponse.getInt(8));
 				json.put("user", user);
 				json.put("status", "OK");
 				PreparedStatement getCookie = sql.connect()
@@ -167,21 +167,21 @@ public class Authentication {
 		}
 	}
 
-	static boolean isDoctorsPatient(String cookie, int patientId)throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException{
+	static boolean isDoctorsPatient(String cookie, int patientID)throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException{
 	    SQL sql = new SQL();
 	    PreparedStatement getDoctorId = sql.connect().prepareStatement("SELECT * FROM users WHERE cookie = ?");
 	    getDoctorId.setString(1, cookie);
 	    getDoctorId.execute();
 	    ResultSet getDoctorIdResult = getDoctorId.getResultSet();
 	    getDoctorIdResult.next();
-	    int doctorId = getDoctorIdResult.getInt("id");
+	    int doctorID = getDoctorIdResult.getInt("id");
 	    PreparedStatement getPatientsDoctorId = sql.connect().prepareStatement("SELECT * FROM users WHERE id = ?");
-	    getPatientsDoctorId.setInt(1, patientId);
+	    getPatientsDoctorId.setInt(1, patientID);
 	    getPatientsDoctorId.execute();
 	    ResultSet getPatientsDoctorIdResult = getPatientsDoctorId.getResultSet();
 	    getPatientsDoctorIdResult.next();
 	    int patientsDoctorId = getPatientsDoctorIdResult.getInt("doctorID");
 	    sql.disconnect();
-	    return patientsDoctorId == doctorId;
+	    return patientsDoctorId == doctorID;
     }
 }

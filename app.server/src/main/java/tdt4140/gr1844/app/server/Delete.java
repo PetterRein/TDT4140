@@ -10,15 +10,15 @@ class Delete {
 
     /**
      * Deletes a user from the database by their e-mail address.
-     * @param userId The id of the user to be deleted.
+     * @param userID The id of the user to be deleted.
      * @param cookie The cookie of the logged in person. It must be any of the admins
      */
-    static JSONObject deleteUser(int userId, String cookie) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+    static JSONObject deleteUser(int userID, String cookie) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         JSONObject response = new JSONObject();
-        if (Authentication.isAuthenticated(cookie, "admin") || Authentication.isDataOwner(userId, cookie)) {
+        if (Authentication.isAuthenticated(cookie, "admin") || Authentication.isDataOwner(userID, cookie)) {
             SQL sql = new SQL();
             PreparedStatement statement = sql.connect().prepareStatement("DELETE FROM users WHERE id = ?");
-            statement.setInt(1, userId);
+            statement.setInt(1, userID);
             Boolean isDeleted = statement.executeUpdate() > 0;
             if (isDeleted) {
                 response.put("status", "OK");

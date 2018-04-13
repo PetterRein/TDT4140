@@ -9,16 +9,16 @@ import java.sql.SQLException;
 class Create {
 
 
-    static JSONObject createFeeling(int patientId, int rating, String message, String cookie) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+    static JSONObject createFeeling(int patientID, int rating, String message, String cookie) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         JSONObject response = new JSONObject();
         if (Authentication.isValid("rating", rating)){
-            if (Authentication.isDataOwner(patientId, cookie)) {
+            if (Authentication.isDataOwner(patientID, cookie)) {
                 SQL sql = new SQL();
                 PreparedStatement createFeelingQuery = sql.connect()
                         .prepareStatement(
                         "INSERT INTO ratings(patientID, rating, message)  VALUES(?,?,?)"
                         );
-                createFeelingQuery.setInt(1,patientId);
+                createFeelingQuery.setInt(1,patientID);
                 createFeelingQuery.setInt(2, rating);
                 createFeelingQuery.setString(3, message);
                 Boolean successfulCreation = createFeelingQuery.executeUpdate() > 0;
@@ -89,8 +89,8 @@ class Create {
     }
 
 
-    static JSONObject createPatient(String name, String email, String password, int doctorId) throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
-        return create("patient", name,email,password,doctorId);
+    static JSONObject createPatient(String name, String email, String password, int doctorID) throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
+        return create("patient", name,email,password,doctorID);
     }
 
 
@@ -99,7 +99,7 @@ class Create {
         create("admin", "Admin", "admin@email.com", "password", -1);
     }
 
-    private static JSONObject create(String role, String name, String email, String password, int doctorId) throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException{
+    private static JSONObject create(String role, String name, String email, String password, int doctorID) throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException{
         SQL sql = new SQL();
         JSONObject response = new JSONObject();
         PreparedStatement userExistsQuery = sql.connect()
@@ -126,7 +126,7 @@ class Create {
             createPatientQuery.setString(3, email);
             createPatientQuery.setString(4, passwordHash);
             createPatientQuery.setString(5, salt);
-            createPatientQuery.setInt(6, doctorId);
+            createPatientQuery.setInt(6, doctorID);
             Boolean userCreated = createPatientQuery.executeUpdate() > 0;
             if (userCreated) {
                 response.put("status", "OK");

@@ -45,18 +45,18 @@ def createUser(role, username, email, password, salt, userDoctor):
     conn = sqlite3.connect(databaseName)
     c = conn.cursor()
     if userDoctor is None:
-        doctorId = -1
+        doctorID = -1
     else:
-        doctorId = getIdFromEmail(userDoctor)
-    c.execute('INSERT INTO users(role, name, email, passwordHash, salt, doctorID) values(?, ?, ?, ?, ?, ?)', (role, username, email, passwordHash, salt, doctorId))
+        doctorID = getIdFromEmail(userDoctor)
+    c.execute('INSERT INTO users(role, name, email, passwordHash, salt, doctorID) values(?, ?, ?, ?, ?, ?)', (role, username, email, passwordHash, salt, doctorID))
     conn.commit()
     conn.close()
 
 def insertUserData(email, rating, extrainfo, times):
     conn = sqlite3.connect(databaseName)
     c = conn.cursor()
-    patientId = getIdFromEmail(email)
-    c.execute('INSERT INTO patientData(patientID, rating, extrainfo, times) values(?, ?, ?, ?)', (patientId, rating, extrainfo, times))
+    patientID = getIdFromEmail(email)
+    c.execute('INSERT INTO patientData(patientID, rating, extrainfo, times) values(?, ?, ?, ?)', (patientID, rating, extrainfo, times))
     conn.commit()
     conn.close()
 

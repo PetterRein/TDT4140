@@ -13,8 +13,8 @@ class WebCalls {
 
     static JSONObject sendGET(String params) throws Exception {
 
-        URL url = new URL("http://api.moholt.me" + params);
-        //URL url = new URL("http://localhost:8080/api" + QueryString.stringify(params));
+        //URL url = new URL("http://api.moholt.me" + params);
+        URL url = new URL("http://localhost:8080/api" + params);
 
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
 

@@ -68,7 +68,7 @@ class Retrieve {
             SQL sql = new SQL();
             PreparedStatement statement = sql.connect()
                     .prepareStatement(
-                    "SELECT name, email FROM users WHERE (role = ? AND doctorID = ?)"
+                    "SELECT id, name, email FROM users WHERE (role = ? AND doctorID = ?)"
                     );
             statement.setString(1, "patient");
             statement.setInt(2, doctorID);
