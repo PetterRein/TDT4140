@@ -95,8 +95,8 @@ class Create {
 
 
     // Create admin user for testing
-    static JSONObject createAdminTestPuropse() throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException{
-        return  create("admin", "tom", "tom@email.com", "password", -1);
+    static void createAdminTestPurpose() throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException{
+        create("admin", "Admin", "admin@email.com", "password", -1);
     }
 
     private static JSONObject create(String role, String name, String email, String password, int doctorId) throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException{

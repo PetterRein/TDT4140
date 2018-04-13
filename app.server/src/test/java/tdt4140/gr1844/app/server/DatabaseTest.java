@@ -29,9 +29,9 @@ public class DatabaseTest {
 		String password = "password";
 		SQL sql = new SQL();
 		Create.createPatient("tom", email, password, 2);
-		Create.createAdminTestPuropse();
-		String cookieAdmin = Authentication.login("tom", "tom").get("cookie").toString();
+		Create.createAdminTestPurpose();
 		int idPatient = Authentication.login(email,password).getJSONObject("user").getInt("userId");
+		String cookieAdmin = Authentication.login("admin@email.com", "password").getString("cookie");
 		Delete.deleteUser(idPatient, cookieAdmin);
 		PreparedStatement statement = sql.connect().prepareStatement("SELECT * FROM users WHERE email = ?");
 		statement.setString(1, email);
