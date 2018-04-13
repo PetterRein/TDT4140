@@ -1,6 +1,6 @@
 ## Melding til studass
 
-Det som er i app.spring er en backend vi tenker å gå overtil hvis vi får tid, akkurat nå er ikke noe kode der i bruk
+For å se prosjektet som det var ved innlevering sprint 2 se tag V.2
 
 # How Are You Feeling
 
