@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +52,7 @@ public class LegeController {
 
     Main main = new Main();
 
-    String pasientNameString = "artistName";
+    private String pasientNameString = "artistName";
 
     @FXML
     public void initialize() throws Exception {
@@ -155,22 +157,20 @@ public class LegeController {
         String userEmail = nyBrukerEpost.getText();
         String userName = nyBrukerNavn.getText();
         String userPassword = nyBrukerPassord.getText();
-        System.out.println(userEmail);
-        System.out.println(userName);
-        System.out.println(userPassword);
-        //main.client.addUser(userName,userPassword,userEmail, "Patient");
+        JSONObject response = main.createUser(userName,userEmail,userPassword, main.userID);
+        //TODO Lag at det kommer en alert om det var sukssess eller ikke
     }
 
     @FXML
     private void delPasient() throws Exception {
-        String userEmail = slettBrukerEpost.getText();
-        //main.client.delUser(userEmail);
+        String userID = slettBrukerEpost.getText();
+        JSONObject response = main.delUser(Integer.parseInt(userID));
+        //TODO Lag at det kommer en alert om det var sukssess eller ike
     }
 
     @FXML
     private void sendTilbakeMedling() throws Exception {
         String tilbakemedling = Tilbakemedling.getText();
-        //main.client.sendFeedback(tilbakemedling);
     }
 
 }

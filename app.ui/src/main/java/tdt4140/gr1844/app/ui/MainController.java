@@ -5,6 +5,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import org.json.JSONObject;
+import tdt4140.gr1844.app.client.WebCalls;
+import tdt4140.gr1844.app.core.QueryString;
+
+import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -40,48 +45,29 @@ public class MainController {
 
     @FXML
     public void sendLogin() throws Exception {
-        String epost = Brukernavn.getText();
-        String passord = Passord.getText();
-        /**String [] response = main.client.loginUser(epost,passord,epost);
-        response[0] = "200";
-        if (response[0] == "200"){
-            if (response[3].equals("Admin")){
-                main.changeView(rootPane, "Lege");
-            }
-            else if (response[3].equals("Patient")){
-                main.changeView(rootPane, "Pasient");
-            }
-            else if (response[3].equals("Doctor")){
-                main.changeView(rootPane, "Lege");
-            }
-            else {
-                System.out.println("Du har en role som ikke finnes");
+        String email = Brukernavn.getText();
+        String password = Passord.getText();
+        JSONObject json = WebCalls.sendGET("action=login&email=" + email +  "&password=" + password);
+        if (json.getString("status").equals("OK")){
+            main.SessionCookie = json.getString("cookie");
+            main.userID = json.getJSONObject("user").getString("userID");
+            switch (json.getJSONObject("user").getString("role")) {
+                case "admin":
+                    main.changeView(rootPane, "admin");
+                    break;
+                case "doctor":
+                    main.changeView(rootPane, "Lege");
+                    break;
+                case "patient":
+                    main.changeView(rootPane, "Pasient");
+                    break;
+                default:
+                    System.out.println("Du har en role som ikke finnes");
+                    break;
             }
         }
-        else {
-            System.out.println("Du har ikke lov");
-        }**/
+        //TODO: Lag en alert som sier at email eller passord er feil
+        else System.out.println(json.getString("message"));
     }
 
-    public void addButtons(ArrayList<String> jobs, VBox jobsList) {
-        for (int i = 0; i < jobs.size(); i++) {
-            Button btnNumber = createButton(jobs.get(i));
-            jobsList.getChildren().add(btnNumber);
-        }
-    }
-
-    public Button createButton(String name) {
-        final Button button = new Button(name);
-        button.setId("jobButt");
-        button.setPrefSize(210, 50);
-        button.setOnMouseClicked(event -> {
-            try {
-                Main main = new Main();
-                main.changeView(rootPane, name);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        return button;
-    }
 }

@@ -9,9 +9,9 @@ import java.net.URL;
 
 import static org.apache.http.protocol.HTTP.USER_AGENT;
 
-class WebCalls {
+public class WebCalls {
 
-    static JSONObject sendGET(String params) throws Exception {
+    static public JSONObject sendGET(String params) throws Exception {
 
         //URL url = new URL("http://api.moholt.me" + params);
         URL url = new URL("http://localhost:8080/api" + params);

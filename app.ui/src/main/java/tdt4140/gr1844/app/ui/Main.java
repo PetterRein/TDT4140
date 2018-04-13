@@ -8,7 +8,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.apache.http.Header;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.json.JSONObject;
+import tdt4140.gr1844.app.client.WebCalls;
+import tdt4140.gr1844.app.core.QueryString;
+
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.io.IOException;
@@ -19,6 +26,7 @@ import java.util.Map;
 public class Main extends Application {
     /**public static List<Festival> festivals;
     public static List<Offer> offers;**/
+    public static String API_URL = "http://api.moholt.me?";
 
     public static void main(String[] args) {
         launch(args);
@@ -27,6 +35,8 @@ public class Main extends Application {
     ArrayList<String> response = new ArrayList<>();
 
     String SessionCookie = "123";
+
+    String userID = "-1";
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -66,5 +76,17 @@ public class Main extends Application {
             System.out.println(header);
         }
         SessionCookie = cookie1;
+    }
+
+    public JSONObject createUser(String name, String email, String password, String doctorID) throws Exception {
+        return  WebCalls.sendGET("action=createPatient&name=" + name + "&email=" + email + "&password=" + " &doctorID=" + doctorID);
+    }
+
+    public JSONObject delUser(int userID) throws Exception {
+        return  WebCalls.sendGET("action=deleteUser&userID=" + userID);
+    }
+
+    public JSONObject sendFeedback(String feedback) throws Exception {
+        return WebCalls.sendGET("action=createFeedback&message=" + feedback +"&cookie=" + SessionCookie);
     }
 }
