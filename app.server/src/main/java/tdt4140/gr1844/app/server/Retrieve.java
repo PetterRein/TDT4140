@@ -54,8 +54,17 @@ class Retrieve {
      */
     static JSONObject listPatients(int doctorID, String cookie) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         JSONObject response = new JSONObject();
+        SQL sql2 = new SQL();
+        PreparedStatement statement2 = sql2.connect().prepareStatement("SELECT * FROM users WHERE id=? and cookie=?");
+        statement2.setInt(1, doctorID);
+        statement2.setString(2, cookie);
+        statement2.execute();
+        ResultSet rs2 = statement2.getResultSet();
+        boolean valid = rs2.isBeforeFirst();
+        sql2.disconnect();
 
-        if (Authentication.isAuthenticated(cookie, "doctor")) {
+
+        if (Authentication.isAuthenticated(cookie, "doctor") && valid) {
             SQL sql = new SQL();
             PreparedStatement statement = sql.connect()
                     .prepareStatement(
