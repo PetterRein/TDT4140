@@ -8,8 +8,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.apache.http.Header;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import tdt4140.gr1844.app.client.WebCalls;
-
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -29,8 +27,6 @@ public class Main extends Application {
     ArrayList<String> response = new ArrayList<>();
 
     String SessionCookie = "123";
-
-    static WebCalls client = new WebCalls();
 
     @Override
     public void start(Stage primaryStage) throws Exception {

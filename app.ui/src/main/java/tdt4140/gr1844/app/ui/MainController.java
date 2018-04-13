@@ -5,13 +5,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import tdt4140.gr1844.app.client.WebCalls;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import tdt4140.gr1844.app.client.WebCalls;
-import tdt4140.gr1844.app.ui.Main;
-
-
 import java.util.ArrayList;
 
 

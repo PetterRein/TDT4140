@@ -6,9 +6,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import tdt4140.gr1844.app.client.WebCalls;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
