@@ -49,8 +49,9 @@ public class MainController {
         String password = Passord.getText();
         JSONObject json = WebCalls.sendGET("action=login&email=" + email +  "&password=" + password);
         if (json.getString("status").equals("OK")){
-            main.SessionCookie = json.getString("cookie");
-            main.userID = json.getJSONObject("user").getString("userID");
+            main.setSessionCookie(json.getString("cookie"));
+            System.out.println(main.getSessionCookie());
+            main.setUserID(json.getJSONObject("user").getString("userID"));
             switch (json.getJSONObject("user").getString("role")) {
                 case "admin":
                     main.changeView(rootPane, "admin");

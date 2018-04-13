@@ -6,20 +6,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import org.apache.http.Header;
-import org.apache.http.client.methods.CloseableHttpResponse;
 import org.json.JSONObject;
 import tdt4140.gr1844.app.client.WebCalls;
-import tdt4140.gr1844.app.core.QueryString;
-
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,9 +25,9 @@ public class Main extends Application {
 
     ArrayList<String> response = new ArrayList<>();
 
-    String SessionCookie = "123";
+    private static String SessionCookie = "123";
 
-    String userID = "-1";
+    private static String userID = "-1";
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -56,8 +47,6 @@ public class Main extends Application {
     }
 
     public void changeView(AnchorPane rootPane, String fxmlFile) {
-        fxmlFile = fxmlFile.replace("ø", "o");
-        fxmlFile = fxmlFile.replace("-", "");
         try {
             AnchorPane pane = FXMLLoader.load(getClass().getClassLoader().getResource(fxmlFile + ".fxml"));
             rootPane.getChildren().setAll(pane);
@@ -65,7 +54,23 @@ public class Main extends Application {
             e.printStackTrace();
         }
     }
-    
+
+    public String getSessionCookie() {
+        return SessionCookie;
+    }
+
+    public void setSessionCookie(String sessionCookie) {
+        this.SessionCookie = sessionCookie;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+
     public JSONObject createUser(String name, String email, String password, String doctorID) throws Exception {
         return  WebCalls.sendGET("action=createPatient&name=" + name + "&email=" + email + "&password=" + " &doctorID=" + doctorID);
     }
@@ -75,6 +80,6 @@ public class Main extends Application {
     }
 
     public JSONObject sendFeedback(String feedback) throws Exception {
-        return WebCalls.sendGET("action=createFeedback&message=" + feedback +"&cookie=" + SessionCookie);
+        return WebCalls.sendGET("action=createFeedback&message=" + feedback +"&cookie=" + this.SessionCookie);
     }
 }
