@@ -15,11 +15,12 @@ import java.util.Map;
 
 import static org.apache.http.protocol.HTTP.USER_AGENT;
 
-public class WebCalls {
+class WebCalls {
 
-    public static JSONObject sendGET(Map<?, ?> params) throws Exception {
+    static JSONObject sendGET(Map<?, ?> params) throws Exception {
 
-        URL url = new URL("http://localhost:8080/tdt4140-gr1844.app.server-0.0.1-SNAPSHOT" + QueryString.stringify(params));
+        URL url = new URL("http://api.moholt.me" + QueryString.stringify(params));
+        //URL url = new URL("http://localhost:8080/api" + QueryString.stringify(params));
 
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
@@ -42,23 +43,5 @@ public class WebCalls {
 
         System.out.println(response.toString());
         return new JSONObject(response.toString());
-    }
-
-    public static int sendGet(String url) throws Exception {
-        CloseableHttpClient client = HttpClientBuilder.create().build();
-        HttpGet request = new HttpGet(url);
-        // add request header
-        request.addHeader("User-Agent", USER_AGENT);
-        HttpResponse response = client.execute(request);
-        System.out.println("\nSending 'GET' request to URL : " + url);
-        System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-        BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-        StringBuilder result = new StringBuilder();
-        String line;
-        while ((line = rd.readLine()) != null) {
-            result.append(line);
-        }
-        System.out.println(result.toString());
-        return response.getStatusLine().getStatusCode();
     }
 }

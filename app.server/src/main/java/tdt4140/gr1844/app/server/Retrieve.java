@@ -19,15 +19,20 @@ class Retrieve {
      * @throws SQLException
      * TODO: Only your own doctor should see your data
      */
-    static JSONObject listFeelings(int patientID, String cookie) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+    static JSONObject listFeelings(int patientID, String orderBy, String cookie) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         JSONObject response = new JSONObject();
 
         if (Authentication.isAuthenticated(cookie, "doctor") || Authentication.isDataOwner(patientID, cookie)) {
             SQL sql = new SQL();
+            System.out.println("YO");
+            String query;
+            if (orderBy.equals("asc")) {
+                query = "SELECT * FROM ratings WHERE patientID = ? ORDER BY timestamp ASC";
+            } else {
+                query = "SELECT * FROM ratings WHERE patientID = ? ORDER BY timestamp DESC";
+            }
             PreparedStatement statement = sql.connect()
-                    .prepareStatement(
-                    "SELECT * FROM ratings WHERE patientID = ?"
-                    );
+                    .prepareStatement(query);
             statement.setInt(1, patientID);
             statement.execute();
             ResultSet rs = statement.getResultSet();

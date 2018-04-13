@@ -72,6 +72,7 @@ public class WebGet extends HttpServlet {
             case "listFeelings":
                 return listFeelings(
                     toInt(params.get("patientID")),
+                    params.get("orderBy"),
                     params.get("cookie")
             );
             // only doctor

@@ -103,8 +103,8 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat8-maven-plugin</artifactId>
-                <version>3.0-r1756463</version>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
                 <configuration>
                     <ignorePackaging>true</ignorePackaging>
                     <warSourceDirectory>${project.basedir}/app.client/target/tomcat/webapps/</warSourceDirectory>
@@ -112,7 +112,7 @@
                     <path>/</path>
                 </configuration>
                 <executions>
-                    <execution>
+                    <!--<execution>
                         <id>tomcat-run</id>
                         <goals>
                             <goal>run</goal>
@@ -128,7 +128,7 @@
                             <goal>shutdown</goal>
                         </goals>
                         <phase>post-integration-test</phase>
-                    </execution>
+                    </execution>-->
                 </executions>
             </plugin>
 

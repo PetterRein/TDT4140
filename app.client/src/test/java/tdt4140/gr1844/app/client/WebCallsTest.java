@@ -2,49 +2,37 @@ package tdt4140.gr1844.app.client;
 
 import org.json.JSONObject;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import tdt4140.gr1844.app.core.QueryString;
-
 import java.net.URL;
 
-import static tdt4140.gr1844.app.core.createUrlFromString.createUrlFromStringMethode;
-
 public class WebCallsTest {
-
+    private WebCalls http;
+    private String API_URL = "http://api.moholt.me?";
+    @Before
+    public void setUp() { http = new WebCalls();
+    }
 
     @Test
-    public void testGet() throws Exception {
-        String narDuLagerWarOgKjorer = "http://localhost:8080/tdt4140-gr1844.app.server-0.0.1-SNAPSHOT/api?action=3";
-        String url5 = "http://localhost:8080/api/tdt4140-gr1844.app.server-0.0.1-SNAPSHOT/api?action=c";
-        String url3 = "http://localhost:8080/api/tdt4140-gr1844.app.server-0.0.1-SNAPSHOT?action=c";
-        String url2 = "http://localhost:8080/tdt4140-gr1844.app.server-0.0.1-SNAPSHOT?action=c";
-        String url4 = "http://localhost:8080/tdt4140-gr1844.app.server-0.0.1-SNAPSHOT/api/api?action=c";
-        String url6 = "http://localhost:8080/api?action=2";
-        String url7 =  "http://localhost:8080/";
-        WebCalls.sendGet(narDuLagerWarOgKjorer);
-        WebCalls.sendGet(url5);
-        WebCalls.sendGet(url3);
-        WebCalls.sendGet(url2);
-        WebCalls.sendGet(url4);
-        WebCalls.sendGet(url6);
-        WebCalls.sendGet(url7);
-        System.in.read();
-        /**String stringURL = "action=createPatient&name=name&password=pw&email=email&doctorID=1";
-        URL url = createUrlFromStringMethode(stringURL);
-        JSONObject json = WebCalls.sendGET(QueryString.parse(url));
-        switch (json.getString("status")) {
-            case "OK":
-                Assert.assertTrue(true);
-                break;
-            case "ERROR":
-                String message = json.getString("message");
-                Assert.assertEquals("E-mail address (email) is taken.", message);
-                break;
-            default:
-                Assert.fail();
-                break;
-        }**/
+    public void testGet() {
+        try {
+            JSONObject json = WebCalls.sendGET(QueryString.parse(new URL(API_URL + "action=createPatient&name=Petter&email=email&password=password&doctorID=2")));
+            switch (json.getString("status")) {
+                case "OK":
+                    Assert.assertTrue(true);
+                    break;
+                case "ERROR":
+                    String message = json.getString("message");
+                    Assert.assertEquals("E-mail address (email) is taken.", message);
+                    break;
+                default:
+                    Assert.fail();
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-        Assert.assertTrue(true);
-         }
 }
