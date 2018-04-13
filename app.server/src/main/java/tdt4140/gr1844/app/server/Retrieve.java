@@ -22,7 +22,7 @@ class Retrieve {
     static JSONObject listFeelings(int patientID, String orderBy, String cookie) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         JSONObject response = new JSONObject();
 
-        if (Authentication.isAuthenticated(cookie, "doctor") || Authentication.isDataOwner(patientID, cookie)) {
+        if ((Authentication.isAuthenticated(cookie, "doctor") && Authentication.isDoctorsPatient(cookie, patientID)) || Authentication.isDataOwner(patientID, cookie)) {
             SQL sql = new SQL();
             System.out.println("YO");
             String query;

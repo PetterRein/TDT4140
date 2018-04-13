@@ -166,4 +166,22 @@ public class Authentication {
 				return false;
 		}
 	}
+
+	static boolean isDoctorsPatient(String cookie, int patientId)throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException{
+	    SQL sql = new SQL();
+	    PreparedStatement getDoctorId = sql.connect().prepareStatement("SELECT * FROM users WHERE cookie = ?");
+	    getDoctorId.setString(1, cookie);
+	    getDoctorId.execute();
+	    ResultSet getDoctorIdResult = getDoctorId.getResultSet();
+	    getDoctorIdResult.next();
+	    int doctorId = getDoctorIdResult.getInt("id");
+	    PreparedStatement getPatientsDoctorId = sql.connect().prepareStatement("SELECT * FROM users WHERE id = ?");
+	    getPatientsDoctorId.setInt(1, patientId);
+	    getPatientsDoctorId.execute();
+	    ResultSet getPatientsDoctorIdResult = getPatientsDoctorId.getResultSet();
+	    getPatientsDoctorIdResult.next();
+	    int patientsDoctorId = getPatientsDoctorIdResult.getInt("doctorID");
+	    sql.disconnect();
+	    return patientsDoctorId == doctorId;
+    }
 }
