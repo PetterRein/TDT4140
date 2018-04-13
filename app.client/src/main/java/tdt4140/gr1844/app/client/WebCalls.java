@@ -11,11 +11,12 @@ import java.util.Map;
 
 import static org.apache.http.protocol.HTTP.USER_AGENT;
 
-public class WebCalls {
+class WebCalls {
 
-    public static JSONObject sendGET(Map<?, ?> params) throws Exception {
+    static JSONObject sendGET(Map<?, ?> params) throws Exception {
 
-        URL url = new URL("http://localhost:8080/api" + QueryString.stringify(params));
+        URL url = new URL("http://api.moholt.me" + QueryString.stringify(params));
+        //URL url = new URL("http://localhost:8080/api" + QueryString.stringify(params));
 
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
 

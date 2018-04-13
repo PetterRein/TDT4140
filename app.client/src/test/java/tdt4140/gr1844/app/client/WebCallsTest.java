@@ -3,10 +3,13 @@ package tdt4140.gr1844.app.client;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import tdt4140.gr1844.app.core.QueryString;
+
+import java.net.URL;
 
 public class WebCallsTest {
     private WebCalls http;
-
+    private String API_URL = "http://api.moholt.me?";
     @Before
     public void setUp() { http = new WebCalls();
     }
@@ -14,7 +17,7 @@ public class WebCallsTest {
     @Test
     public void testGet() {
         try {
-            Assert.assertEquals(200 , http.sendGet());
+            Assert.assertEquals(200 , http.sendGET(QueryString.parse(new URL(API_URL + "action=w"))));
         } catch (Exception e) {
             e.printStackTrace();
         }
