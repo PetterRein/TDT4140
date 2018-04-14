@@ -16,7 +16,7 @@ class Create {
                 SQL sql = new SQL();
                 PreparedStatement createFeelingQuery = sql.connect()
                         .prepareStatement(
-                        "INSERT INTO ratings(patientID, rating, message)  VALUES(?,?,?)"
+                        "INSERT INTO patientData(patientID, rating, message)  VALUES(?,?,?)"
                         );
                 createFeelingQuery.setInt(1,patientID);
                 createFeelingQuery.setInt(2, rating);
@@ -154,11 +154,11 @@ class Create {
 
     static JSONObject createFeedback(String message, String cookie) throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
         JSONObject response = new JSONObject();
-        if (Authentication.isAuthenticated(cookie, "doctor")) {
+        if (Authentication.isAuthenticated(cookie, "Doctor")) {
             SQL sql = new SQL();
             PreparedStatement createFeedbackQuery = sql.connect()
                     .prepareStatement(
-                    "INSERT INTO feedbacks(message) VALUES (?)"
+                    "INSERT INTO feedback(message) VALUES (?)"
                     );
             createFeedbackQuery.setString(1, message);
             boolean isFeedbackCreated = createFeedbackQuery.executeUpdate() > 0;
