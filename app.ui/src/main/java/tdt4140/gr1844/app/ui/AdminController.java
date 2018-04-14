@@ -7,9 +7,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import tdt4140.gr1844.app.client.WebCalls;
 
 public class AdminController {
     public Label doctorLabel;
@@ -19,42 +16,27 @@ public class AdminController {
     // Active user panel
     @FXML
     private Label activePatientNameLabel;
-    @FXML
-    private Label lastRatingLabel;
-    @FXML
-    private Label ratingAvgLabel;
-    @FXML
-    private  Label activePatientIDLabel;
-    @FXML
-    private TextField patientName;
-    @FXML
-    private TextField patientEmail;
-    @FXML
-    private TextField patientPassword;
 
     @FXML
-    private AnchorPane rootPane;
+    private  Label activePatientIDLabel;
+
 
     @FXML
     private VBox patientListBox;
 
-    @FXML
-    private TextArea feedbackTextField;
 
     private Main main = new Main();
 
-    private CommonFunctions comFun = new CommonFunctions();
+    private Shared shared = new Shared();
 
+    @FXML
+    private AnchorPane rootPane;
 
-    public void getInfo(){
-        comFun.setInfo(deletePatientButton,deletePatientID,activePatientNameLabel,lastRatingLabel,ratingAvgLabel,activePatientIDLabel,patientName,patientEmail,patientPassword,patientListBox,feedbackTextField);
-    }
 
     @FXML
     public void initialize() throws Exception {
         doctorLabel.setText("Welcome Admin " + main.getName());
-        getInfo();
-        comFun.updatePatientList();
+        shared.updatePatientList();
     }
 
     @FXML
@@ -64,17 +46,8 @@ public class AdminController {
     }
 
     @FXML
-    private void registerPatient() throws Exception {
-        comFun.registerPatient();
-    }
-
-    @FXML
     private void removePatient() throws Exception {
-        comFun.removePatient();
+        shared.removePatient();
     }
 
-    @FXML
-    private void sendFeedback() throws Exception {
-        comFun.sendFeedback();
-    }
 }

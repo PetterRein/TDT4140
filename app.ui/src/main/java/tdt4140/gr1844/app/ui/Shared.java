@@ -11,9 +11,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import tdt4140.gr1844.app.client.WebCalls;
 
-public class CommonFunctions {
-    public Button deletePatientButton;
-    public TextField deletePatientID;
+public class Shared {
+    private Button deletePatientButton;
+    private TextField deletePatientID;
+    private Button buttonName;
 
     // Active user panel
     @FXML
@@ -31,16 +32,15 @@ public class CommonFunctions {
     @FXML
     private TextField patientPassword;
 
-    @FXML
-    public AnchorPane rootPane;
 
+    // Left sidebar
     @FXML
     private VBox patientListBox;
 
-    private Button buttonName;
-
+    // Right sidebar
     @FXML
     private TextArea feedbackTextField;
+
 
     private Main main = new Main();
 

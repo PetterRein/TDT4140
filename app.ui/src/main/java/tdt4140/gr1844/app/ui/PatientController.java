@@ -11,7 +11,7 @@ import javafx.scene.layout.VBox;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PasientController {
+public class PatientController {
     @FXML
     private CheckBox remove2017;
 

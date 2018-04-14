@@ -4,9 +4,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import tdt4140.gr1844.app.client.WebCalls;
 
 public class DoctorController {
     public Label doctorLabel;
@@ -40,7 +37,7 @@ public class DoctorController {
 
     private Main main = new Main();
 
-    private CommonFunctions comFun = new CommonFunctions();
+    private Shared comFun = new Shared();
 
     private void getInfo(){
         comFun.setInfo(deletePatientButton,deletePatientID,activePatientNameLabel,lastRatingLabel,ratingAvgLabel,activePatientIDLabel,patientName,patientEmail,patientPassword,patientListBox,feedbackTextField);

@@ -23,7 +23,7 @@
                 <BorderPane.margin>
                     <Insets/>
                 </BorderPane.margin>
-                <Label text="Your patients">
+                <Label text="Registered patients">
                     <VBox.margin>
                         <Insets/>
                     </VBox.margin>
@@ -79,17 +79,6 @@
                                 </VBox.margin>
                             </HBox>
                         </VBox>
-                        <Label layoutX="381.0" layoutY="110.0" text="Feedback to the Admin"/>
-                        <Button layoutX="383.0" layoutY="342.0" mnemonicParsing="false"
-                                onAction="#sendFeedback" text="Send feedback"/>
-                        <TextArea fx:id="feedbackTextField" layoutX="381.0" layoutY="127.0" prefHeight="200.0"
-                                  prefWidth="200.0"/>
-                        <Label layoutX="50.0" layoutY="110.0" text="Create a new patient"/>
-                        <TextField layoutX="50.0" layoutY="125.0" promptText="name" fx:id="patientName"/>
-                        <TextField layoutX="50.0" layoutY="148.0" promptText="email" fx:id="patientEmail"/>
-                        <TextField layoutX="50.0" layoutY="171.0" promptText="password" fx:id="patientPassword"/>
-                        <Button layoutX="50.0" layoutY="194.0" mnemonicParsing="false" text="Create patient"
-                                id="createPatientButton" onAction="#registerPatient"/>
                         <Label layoutX="50.0" layoutY="227.0" text="Delete patient"/>
                         <TextField layoutX="50.0" layoutY="242.0" promptText="Patient's ID"
                                    fx:id="deletePatientID"/>
@@ -108,16 +97,6 @@
                                     <Insets/>
                                 </VBox.margin>
                             </Label><Label fx:id="activePatientIDLabel" text="Patient's ID">
-                                <VBox.margin>
-                                    <Insets/>
-                                </VBox.margin>
-                            </Label>
-                            <Label fx:id="lastRatingLabel" text="Last rating">
-                                <VBox.margin>
-                                    <Insets/>
-                                </VBox.margin>
-                            </Label>
-                            <Label fx:id="ratingAvgLabel" text="Rating score">
                                 <VBox.margin>
                                     <Insets/>
                                 </VBox.margin>
