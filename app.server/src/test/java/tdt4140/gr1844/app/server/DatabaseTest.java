@@ -1,5 +1,6 @@
 package tdt4140.gr1844.app.server;
 
+import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,9 +39,42 @@ public class DatabaseTest {
 		statement.execute();
 		ResultSet rs = statement.getResultSet();
 		Assert.assertFalse(rs.isBeforeFirst());
-
 	}
 
+	@Test
+	public void deleteUserNoneExistingUser() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+		String cookieAdmin = Authentication.login("admin@email.com", "password").getString("cookie");
+		Delete.deleteUser(1, cookieAdmin).getString("status");
+		Assert.assertEquals("ERROR", Delete.deleteUser(1, cookieAdmin).getString("status"));
+	}
+
+	@Test
+	public void deleteUserNonePower() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+		String cookieAdmin = Authentication.login("petter@email.com", "password").getString("cookie");
+		Assert.assertEquals("ERROR", Delete.deleteUser(1, cookieAdmin).getString("status"));
+	}
+
+	@Test
+	public void deleteFeelingValidUserAndFeelingExits() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+		JSONObject userResponse = Authentication.login("haavard@email.com", "password");
+		Create.createFeeling(userResponse.getJSONObject("user").getInt("userID"), 5, "Føler meg bra", userResponse.getString("cookie")).getString("status");
+		Assert.assertEquals("OK", Delete.deleteFeeling(1,userResponse.getJSONObject("user").getInt("userID"), userResponse.getString("cookie")).getString("status"));
+	}
+
+	@Test
+	public void deleteAlreadyDeletedFeeling() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+		JSONObject userResponse = Authentication.login("haavard@email.com", "password");
+		Create.createFeeling(userResponse.getJSONObject("user").getInt("userID"), 5, "Føler meg bra", userResponse.getString("cookie")).getString("status");
+		Delete.deleteFeeling(1,userResponse.getJSONObject("user").getInt("userID"), userResponse.getString("cookie")).getString("status");
+		Assert.assertEquals("ERROR", Delete.deleteFeeling(1,userResponse.getJSONObject("user").getInt("userID"), userResponse.getString("cookie")).getString("status"));
+	}
+
+	@Test
+	public void deleteFeelingInvalidUser() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+		JSONObject userResponse = Authentication.login("haavard@email.com", "password");
+		JSONObject userResponse2 = Authentication.login("petter@email.com", "password");
+		Assert.assertEquals("ERROR", Delete.deleteFeeling(1,userResponse.getJSONObject("user").getInt("userID"), userResponse2.getString("cookie")).getString("status"));
+	}
 	
 	@Test
 	public void tryToAddAdminAssPatient() throws IllegalAccessException, ClassNotFoundException, InstantiationException, NamingException, SQLException {

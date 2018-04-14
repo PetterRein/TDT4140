@@ -48,7 +48,7 @@ class Delete {
             SQL sql = new SQL();
             PreparedStatement statement = sql.connect()
                     .prepareStatement(
-                    "DELETE FROM ratings WHERE id = ?"
+                    "DELETE FROM patientData WHERE id = ?"
                     );
             statement.setInt(1, feelingID);
             Boolean isDeleted = statement.executeUpdate() > 0;
