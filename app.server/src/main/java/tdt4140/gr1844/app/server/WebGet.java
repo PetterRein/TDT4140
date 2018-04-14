@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.Map;
 
@@ -108,13 +107,11 @@ public class WebGet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response){
-        java.nio.file.Path currentRelativePath = Paths.get("");
-        String s = currentRelativePath.toAbsolutePath().toString();
-        System.out.println(s);
+        System.out.println("Request incoming");
         response.setContentType("application/json");
         try (PrintWriter out = response.getWriter()) {
             out.print(getResponse(
-                QueryString.parse("http://localhost:8080/api?" + request.getQueryString()))
+                QueryString.parse("http://api.moholt.me?" + request.getQueryString()))
             );
         } catch (InstantiationException | SQLException | ClassNotFoundException | IllegalAccessException | IOException e) {
             e.printStackTrace();
