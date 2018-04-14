@@ -91,8 +91,9 @@ class Retrieve {
             SQL sql = new SQL();
             PreparedStatement statement = sql.connect()
                     .prepareStatement(
-                            "SELECT id, name, email FROM users WHERE (role = patient)"
+                            "SELECT id, name, email FROM users WHERE role = ?"
                     );
+            statement.setString(1, "patient");
             statement.execute();
             ResultSet rs = statement.getResultSet();
             response = SQLToJSONArray(rs, "patients");
