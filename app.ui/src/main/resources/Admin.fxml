@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="720.0" prefWidth="1280.0" stylesheets="@MainTheme.css" xmlns="http://javafx.com/javafx/9"
+            prefHeight="720.0" prefWidth="1280.0" stylesheets="@MainTheme.css" xmlns="http://javafx.com/javafx/8"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="tdt4140.gr1844.app.ui.AdminController">
     <BorderPane prefHeight="720.0" prefWidth="1280.0">
         <left>

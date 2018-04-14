@@ -32,9 +32,13 @@ public class AdminController {
     @FXML
     private AnchorPane rootPane;
 
+    private void getInfo(){
+        shared.setInfo(deletePatientButton,deletePatientID,activePatientNameLabel,null,null,activePatientIDLabel,null,null,null,patientListBox,null);
+    }
 
     @FXML
     public void initialize() throws Exception {
+        getInfo();
         doctorLabel.setText("Welcome Admin " + main.getName());
         shared.updatePatientList();
     }

@@ -43,9 +43,17 @@ public class PatientController {
 
     Main main = new Main();
 
+    Shared shared = new Shared();
+
     private boolean hasInitialized = false;
 
+    private void getInfo(){
+        shared.setInfo(null,null,null,null,null,null,null,null,null,null,null);
+    }
+
+
     public void initialize() {
+        getInfo();
         hasInitialized = true;
     }
 
