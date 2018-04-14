@@ -39,7 +39,7 @@ public class Authentication {
 			getSalt.close();
 			sql.disconnect();
 			json.put("status", "ERROR");
-			json.put("message", "User does not exist");
+			json.put("message", "Wrong username or password");
 		} else {
 			rs.next();
 			String salt = rs.getString("salt");

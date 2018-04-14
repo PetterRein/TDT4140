@@ -6,65 +6,122 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import org.apache.http.Header;
-import org.apache.http.client.methods.CloseableHttpResponse;
+import org.json.JSONObject;
+import tdt4140.gr1844.app.client.WebCalls;
 import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
+import java.net.URLEncoder;
+import java.util.Objects;
 
 public class Main extends Application {
     /**public static List<Festival> festivals;
     public static List<Offer> offers;**/
+    private static String name;
+    private static String role;
+    private static String cookie;
+    private static int userID;
+    private static int doctorID;
+
 
     public static void main(String[] args) {
         launch(args);
     }
 
-    ArrayList<String> response = new ArrayList<>();
-
-    String SessionCookie = "123";
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        java.nio.file.Path currentRelativePath = Paths.get("");
-        String s = currentRelativePath.toAbsolutePath().toString();
-        //"/app.client/src/main/java/tdt4140/gr1844/app/client/"
-        System.out.println("Current relative path is: " + s);
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource( "Main.fxml"));
-        primaryStage.setTitle("Hvordan føler du deg?");
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("Main.fxml")));
+        primaryStage.setTitle("How do you feel?");
         primaryStage.setScene(new Scene(root, 1280, 720));
         primaryStage.show();
         primaryStage.setResizable(false);
-
-        Map<String, String> params = new HashMap<>();
-        params.put("action", "login");
-        //Send.sendGET(params);
     }
 
-    public void changeView(AnchorPane rootPane, String fxmlFile) {
-        fxmlFile = fxmlFile.replace("ø", "o");
-        fxmlFile = fxmlFile.replace("-", "");
-        try {
-            AnchorPane pane = FXMLLoader.load(getClass().getClassLoader().getResource(fxmlFile + ".fxml"));
-            rootPane.getChildren().setAll(pane);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    void changeView(AnchorPane rootPane, String fxmlFile) throws IOException {
+        AnchorPane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource(fxmlFile + ".fxml")));
+        rootPane.getChildren().setAll(pane);
     }
 
-    public void updateCookie(CloseableHttpResponse response){
-        Header[] ws = response.getAllHeaders();
-        String cookie1 = "non";
-        for (Header header: ws){
-            if (header.getName().equals("cookie")){
-                cookie1 = header.getValue();
-            }
-            System.out.println(header);
-        }
-        SessionCookie = cookie1;
+
+    JSONObject createPatient(String name, String email, String password, int doctorID) throws Exception {
+        return  WebCalls.sendGET(
+                "action=createPatient" +
+                        "&name=" + name +
+                        "&email=" + email +
+                        "&password=" + password +
+                        "&doctorID=" + doctorID
+        );
     }
+
+
+    JSONObject deletePatient(int userID) throws Exception {
+        return  WebCalls.sendGET(
+                "action=deleteUser&userID=" + userID +
+                        "&cookie=" + getCookie()
+        );
+    }
+
+    JSONObject sendFeedback(String feedback) throws Exception {
+        return WebCalls.sendGET("action=createFeedback&message=" + URLEncoder.encode(feedback, "UTF-8") +"&cookie=" + cookie);
+    }
+
+
+    void setUser(JSONObject userResponse) {
+        JSONObject user = userResponse.getJSONObject("user");
+        System.out.println(user);
+        name = user.getString("name");
+        userID = user.getInt("userID");
+        doctorID = user.getInt("doctorID");
+        role = user.getString("role");
+        setCookie(userResponse.getString("cookie"));
+    }
+
+    void logout() throws Exception {
+        WebCalls.sendGET("action=logout&cookie=" + cookie);
+    }
+
+
+
+    int getUserID() {
+        return userID;
+    }
+
+    void setUserID(String userID) {
+        userID = userID;
+    }
+
+
+    String getCookie() {
+        return cookie;
+    }
+
+    private void setCookie(String sessionCookie) {
+        cookie = sessionCookie;
+    }
+
+
+    String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public int getDoctorID() {
+        return doctorID;
+    }
+
+    public void setDoctorID(int doctorID) {
+        this.doctorID = doctorID;
+    }
+
+
 }

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="720.0" prefWidth="1280.0" stylesheets="@MainTheme.css" xmlns="http://javafx.com/javafx/9"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="tdt4140.gr1844.app.ui.AdminController">
+    <BorderPane prefHeight="720.0" prefWidth="1280.0">
+        <left>
+            <VBox fx:id="vboxBorderLeft" layoutX="200.0" layoutY="326.0" prefHeight="200.0" prefWidth="300.0"
+                  BorderPane.alignment="CENTER">
+                <BorderPane.margin>
+                    <Insets/>
+                </BorderPane.margin>
+                <Label text="Registered patients">
+                    <VBox.margin>
+                        <Insets/>
+                    </VBox.margin>
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                </Label>
+                <ScrollPane prefWidth="180.0">
+                    <VBox.margin>
+                        <Insets/>
+                    </VBox.margin>
+                    <AnchorPane minHeight="0.0" minWidth="0.0">
+                        <padding>
+                            <Insets bottom="10.0" left="5.0"/>
+                        </padding>
+                        <VBox fx:id="patientListBox" AnchorPane.bottomAnchor="0.0"
+                              AnchorPane.topAnchor="0.0">
+                            <padding>
+                                <Insets bottom="10.0" left="25.0" right="5.0" top="20.0"/>
+                            </padding>
+                        </VBox>
+                    </AnchorPane>
+                </ScrollPane>
+            </VBox>
+        </left>
+        <top>
+            <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                <buttons>
+                    <Label/>
+                    <Label fx:id="doctorLabel" text="Doctor"/>
+                    <Button fx:id="logout" mnemonicParsing="false" onAction="#logout" prefHeight="37.0"
+                            prefWidth="1290.0" text="Logout"/>
+                </buttons>
+                <BorderPane.margin>
+                    <Insets/>
+                </BorderPane.margin>
+                <padding>
+                    <Insets bottom="5.0" right="20.0" top="5.0"/>
+                </padding>
+            </ButtonBar>
+        </top>
+        <center>
+            <BorderPane id="borderCenter" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                <center>
+                    <AnchorPane BorderPane.alignment="CENTER">
+                        <BorderPane.margin>
+                            <Insets left="25.0"/>
+                        </BorderPane.margin>
+                        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <HBox>
+                                <VBox.margin>
+                                    <Insets top="10.0"/>
+                                </VBox.margin>
+                            </HBox>
+                        </VBox>
+                        <Label layoutX="50.0" layoutY="227.0" text="Delete patient"/>
+                        <TextField layoutX="50.0" layoutY="242.0" promptText="Patient's ID"
+                                   fx:id="deletePatientID"/>
+                        <Button layoutX="50.0" layoutY="265.0" mnemonicParsing="false" text="Delete patient"
+                                fx:id="deletePatientButton" onAction="#removePatient"/>
+                    </AnchorPane>
+                </center>
+                <left>
+                    <VBox id="1" prefWidth="300.0" spacing="5.0" BorderPane.alignment="CENTER">
+                        <VBox prefWidth="100.0">
+                            <VBox.margin>
+                                <Insets top="2.0"/>
+                            </VBox.margin>
+                            <Label fx:id="activePatientNameLabel" text="Patient's name">
+                                <VBox.margin>
+                                    <Insets/>
+                                </VBox.margin>
+                            </Label><Label fx:id="activePatientIDLabel" text="Patient's ID">
+                                <VBox.margin>
+                                    <Insets/>
+                                </VBox.margin>
+                            </Label>
+                        </VBox>
+                        <VBox prefWidth="100.0" spacing="5.0">
+                            <VBox.margin>
+                                <Insets top="25.0"/>
+                            </VBox.margin>
+                        </VBox>
+                        <VBox spacing="5.0">
+                            <VBox.margin>
+                                <Insets top="50.0"/>
+                            </VBox.margin>
+                        </VBox>
+                    </VBox>
+                </left>
+                <BorderPane.margin>
+                    <Insets/>
+                </BorderPane.margin>
+            </BorderPane>
+        </center>
+    </BorderPane>
+</AnchorPane>

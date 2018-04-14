@@ -39,7 +39,7 @@
 
 /* Buttons */
 
-#jobButt, #goHome {
+#jobButt, #logout {
     -fx-background-radius: 40;
     -fx-padding: 10, 10, 10, 10;
     -fx-background-color: #A6808C,
@@ -49,13 +49,14 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
 }
 
-#goHome {
+#logout, #doctorLabel {
     -fx-font-size: 18;
 }
 
-#tekButts, #arrScenes, #offerButt, #genres, #addHoy, #addMic, #addMon, #addSing, #delHoy, #delMic, #delMon, #delSing {
-    -fx-background-radius: 10;
-    -fx-padding: 10, 10, 10, 10;
+#tekButts, #arrScenes, #healthyRating, #genres, #addHoy, #addMic, #addMon, #addSing, #delHoy, #delMic, #delMon, #delSing {
+    -fx-background-radius: 5;
+    -fx-padding: 5;
+    -fx-end-margin: 10;
     -fx-background-color: #D9CAC2,
     linear-gradient(#D6C5CA, #B697A0);
     -fx-text-fill: #565264;
@@ -63,14 +64,33 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
 }
 
-#dangerPasient {
-    -fx-background-radius: 10;
-    -fx-padding: 10, 10, 10, 10;
-    -fx-background-color: #D9CAC2,
-    linear-gradient(#d90000, #B697A0);
-    -fx-text-fill: #565264;
+#unhealthyRating, #averageHealthRating, #healthyRating {
+    -fx-background-radius: 5;
+    -fx-padding: 5;
+    -fx-end-margin: 10;
+    -fx-text-fill: #ededed;
     -fx-font-size: 12;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+    -fx-border-insets: 5;
+
+}
+#unhealthyRating {
+    -fx-background-color: #88271e;
+
+}
+#unhealthyRating:hover, #unhealthyRating:focused {
+    -fx-background-color: #5c1a15;
+}
+#averageHealthRating {
+    -fx-background-color: #c2a12b;
+}
+#averageHealthRating:hover, #averageHealthRating:focused {
+    -fx-background-color: #847215;
+}
+#healthyRating {
+    -fx-background-color: #3da344;
+}
+#healthyRating:hover, #healthyRating:focused {
+    -fx-background-color: #325c25;
 }
 
 #tabButt {
@@ -97,20 +117,20 @@
 
 /* Button effects */
 
-#jobButt:hover, #goHome:hover {
+#jobButt:hover, #logout:hover {
     -fx-background-color: #A6808C,
     linear-gradient(#A6808C, #B697A0);
 }
 
-#arrScenes:focused, #tekButts:focused, #offerButt:focused, #genres:focused, #addNeed {
+#arrScenes:focused, #tekButts:focused, #genres:focused, #addNeed {
     -fx-background-color: #D9CAC2,
     linear-gradient(#AE8B96, #795E66);
 }
-#arrScenes:focused:hover, #tekButts:focused:hover, #offerButt:focused:hover, #genres:focused:hover, #addNeed:focused:hover {
+#arrScenes:focused:hover, #tekButts:focused:hover, #genres:focused:hover, #addNeed:focused:hover {
     -fx-background-color: #D9CAC2,
     linear-gradient(#AE8B96, #795E66);
 }
-#arrScenes:hover, #tekButts:hover, #offerButt:hover, #genres:hover, #addNeed:hover  {
+#arrScenes:hover, #tekButts:hover, #genres:hover, #addNeed:hover  {
     -fx-background-color: #D9CAC2,
     linear-gradient(#D9CAC2, #FBF9F8);
 }

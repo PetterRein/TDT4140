@@ -11,7 +11,7 @@ import javafx.scene.layout.VBox;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PasientController {
+public class PatientController {
     @FXML
     private CheckBox remove2017;
 
@@ -123,7 +123,7 @@ public class PasientController {
     }
 
     @FXML
-    private void goHome() throws Exception {
+    private void logout() throws Exception {
         //main.client.logoutUser();
         main.changeView(rootPane, "Main");
     }
