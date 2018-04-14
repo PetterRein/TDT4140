@@ -90,10 +90,15 @@ public class WebGet extends HttpServlet {
                 );
 
             case "listPatients":
-                return listPatients(
-                    toInt(params.get("doctorID")),
-                    params.get("cookie")
-                );
+                if(params.get("doctorID") != null) {
+                    return listPatients(
+                            toInt(params.get("doctorID")),
+                            params.get("cookie")
+                    );
+                    // Requires admin rights, will list all the patients in the database
+                } else {
+                    return listPatients(params.get("cookie"));
+                }
             default:
                 JSONObject response = new JSONObject();
                 response.put("status", "ERROR");
