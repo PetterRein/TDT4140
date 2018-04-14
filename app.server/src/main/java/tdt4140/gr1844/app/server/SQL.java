@@ -8,6 +8,7 @@ import java.sql.*;
 
 import static tdt4140.gr1844.app.server.Create.createAdminTestPurpose;
 import static tdt4140.gr1844.app.server.Create.createPatient;
+import static tdt4140.gr1844.app.server.Create.createAdminOrDoctor;
 
 class SQL {
 
@@ -44,6 +45,7 @@ class SQL {
 
         // TODO: Fix test
         createAdminTestPurpose();
+        createAdminOrDoctor("Petter", "petter@email.com", "password", "Doctor", "1");
         createPatient("Haavard", "haavard@email.com", "password", 2);
         createPatient("Balazs", "balazs@email.com", "password", 3);
         createPatient("Mats", "mats@email.com", "password", 1);

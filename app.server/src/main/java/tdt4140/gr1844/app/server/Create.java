@@ -97,6 +97,16 @@ class Create {
     // Create admin user for testing
     static void createAdminTestPurpose() throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException{
         create("admin", "Admin", "admin@email.com", "password", -1);
+        SQL sql = new SQL();
+        PreparedStatement setCookie = sql.connect()
+                .prepareStatement(
+                        "UPDATE users SET cookie = ? WHERE email = ?"
+                );
+        setCookie.setString(1, "1");
+        setCookie.setString(2, "admin@email.com");
+        setCookie.execute();
+        setCookie.close();
+        sql.disconnect();
     }
 
     private static JSONObject create(String role, String name, String email, String password, int doctorID) throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException{
