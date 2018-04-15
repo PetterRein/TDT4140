@@ -18,6 +18,7 @@ import static tdt4140.gr1844.app.server.Delete.deleteFeeling;
 import static tdt4140.gr1844.app.server.Delete.deleteUser;
 import static tdt4140.gr1844.app.server.Retrieve.listFeelings;
 import static tdt4140.gr1844.app.server.Retrieve.listPatients;
+import static tdt4140.gr1844.app.server.Retrieve.listFeedbacks;
 
 public class WebGet extends HttpServlet {
 
@@ -98,6 +99,11 @@ public class WebGet extends HttpServlet {
                 } else {
                     return listPatients(params.get("cookie"));
                 }
+            case "listFeedbacks":
+                return listFeedbacks(
+                        params.get("isRead"),
+                        params.get("cookie"
+                        ));
             default:
                 JSONObject response = new JSONObject();
                 response.put("status", "ERROR");
