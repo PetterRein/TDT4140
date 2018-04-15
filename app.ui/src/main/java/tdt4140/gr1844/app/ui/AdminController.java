@@ -8,7 +8,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import tdt4140.gr1844.app.client.WebCalls;
 
-import javax.swing.*;
 
 public class AdminController {
     public Label doctorLabel;
@@ -30,7 +29,6 @@ public class AdminController {
 
     private Main main = new Main();
 
-    private Shared shared = new Shared();
 
     @FXML
     private AnchorPane rootPane;
@@ -133,6 +131,8 @@ public class AdminController {
             updateList(feedbacksContainer, "feedbacks", getFeedbacks("false"));
             notification.setText("Feedback read.");
             this.activeFeedbackID = -1;
+            activeFeedbackIDLabel.setText("");
+            activeFeedbackMessage.setText("");
         } else {
             notification.setText("ERROR: " + response.getString("message"));
         }
