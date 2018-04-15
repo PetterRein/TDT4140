@@ -102,8 +102,15 @@ public class WebGet extends HttpServlet {
             case "listFeedbacks":
                 return listFeedbacks(
                         params.get("isRead"),
-                        params.get("cookie"
-                        ));
+                        params.get("cookie")
+                );
+
+            case "updatePatientDoctor":
+                return updatePatientDoctor(
+                        toInt(params.get("patientID")),
+                        toInt(params.get("doctorID")),
+                        params.get("cookie")
+                );
             default:
                 JSONObject response = new JSONObject();
                 response.put("status", "ERROR");

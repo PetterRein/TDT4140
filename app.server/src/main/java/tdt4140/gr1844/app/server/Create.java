@@ -203,4 +203,32 @@ class Create {
         return response;
     }
 
+    //TODO add check for that doctor exists
+    static JSONObject updatePatientDoctor(int patientID, int newDoctorID, String updatersCookie) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+        JSONObject response = new JSONObject();
+        if (Authentication.isAuthenticated(updatersCookie, "admin") || Authentication.isAuthenticated(updatersCookie, "doctor") || Authentication.isAuthenticated(updatersCookie, "patient")){
+            SQL sql = new SQL();
+            PreparedStatement updateDoctorID = sql.connect()
+                    .prepareStatement(
+                            "UPDATE users SET doctorID = ? WHERE id = ?"
+                    );
+            updateDoctorID.setInt(1, newDoctorID);
+            updateDoctorID.setInt(2, patientID);
+            boolean IsDoctorUpdatedID = updateDoctorID.executeUpdate() > 0;
+            if (IsDoctorUpdatedID){
+                response.put("status", "OK");
+            }
+            else {
+                response.put("status", "ERROR");
+                response.put("message", "DoctorID could not be updated.");
+            }
+            sql.disconnect();
+        }
+        else {
+            response.put("status", "ERROR");
+            response.put("message", "You are not authorized for that action.");
+        }
+        return response;
+    }
+
 }

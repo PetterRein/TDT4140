@@ -16,7 +16,7 @@ public class CreateTest {
     @Test
     public void createFeeling() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         JSONObject userResponse = Authentication.login("haavard@email.com", "password");
-        Assert.assertEquals("OK",Create.createFeeling(userResponse.getJSONObject("user").getInt("userID"), 5, "Føler meg bra", userResponse.getString("cookie")).getString("status"));
+        Assert.assertEquals("OK", Create.createFeeling(userResponse.getJSONObject("user").getInt("userID"), 5, "Føler meg bra", userResponse.getString("cookie")).getString("status"));
     }
 
     @Test
@@ -41,11 +41,25 @@ public class CreateTest {
         Assert.assertEquals("OK", response.getString("status"));
     }
 
-     @Test
-     public void feedbackReadInvlidUser() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
-         JSONObject doctorResponse = Authentication.login("petter@email.com", "password");
-         Create.createFeedback("Hei kan du slette", doctorResponse.getString("cookie")).getString("status");
-         JSONObject response = Create.markFeedbackRead(1, "2");
-         Assert.assertEquals("ERROR", response.getString("status"));
-     }
+    @Test
+    public void feedbackReadInvlidUser() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+        JSONObject doctorResponse = Authentication.login("petter@email.com", "password");
+        Create.createFeedback("Hei kan du slette", doctorResponse.getString("cookie")).getString("status");
+        JSONObject response = Create.markFeedbackRead(1, "2");
+        Assert.assertEquals("ERROR", response.getString("status"));
+    }
+
+    @Test
+    public void updatePatientDoctor() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+        JSONObject userResponse = Authentication.login("haavard@email.com", "password");
+        Assert.assertEquals("OK", Create.updatePatientDoctor(userResponse.getJSONObject("user").getInt("userID"), 2, userResponse.getString("cookie")).getString("status"));
+
+    }
+
+    @Test
+    public void updatePatientDoctorInvalidCookie() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+        JSONObject userResponse = Authentication.login("haavard@email.com", "password");
+        Assert.assertEquals("ERROR", Create.updatePatientDoctor(userResponse.getJSONObject("user").getInt("userID"), 2, "5").getString("status"));
+
+    }
 }
