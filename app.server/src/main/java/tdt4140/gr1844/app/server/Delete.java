@@ -66,8 +66,4 @@ class Delete {
         }
         return response;
     }
-
-
-
-
 }
