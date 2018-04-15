@@ -123,7 +123,7 @@ public class WebGetTest extends Mockito {
     public void doGetListPatientsAdmin() throws IOException, ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         JSONObject userLogin = Authentication.login("admin@email.com", "password");
         JSONObject createFeedback = mockRequest("action=listPatients&" + "&cookie=" + userLogin.getString("cookie"));
-        Assert.assertEquals("Admin", createFeedback.getJSONArray("patients").getJSONObject(0).getString("name"));
+        Assert.assertEquals(1, createFeedback.getJSONArray("patients").getJSONObject(0).getInt("id"));
     }
 
     @Test
