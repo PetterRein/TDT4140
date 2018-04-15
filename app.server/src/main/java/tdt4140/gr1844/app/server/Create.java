@@ -158,10 +158,10 @@ class Create {
             SQL sql = new SQL();
             PreparedStatement createFeedbackQuery = sql.connect()
                     .prepareStatement(
-                    "INSERT INTO feedback(message, isRead) VALUES (?, ?)"
+                    "INSERT INTO feedbacks(message, isRead) VALUES (?, ?)"
                     );
             createFeedbackQuery.setString(1, message);
-            createFeedbackQuery.setInt(2, -1);
+            createFeedbackQuery.setInt(2, 0);
             boolean isFeedbackCreated = createFeedbackQuery.executeUpdate() > 0;
             if (isFeedbackCreated) {
                 response.put("status", "OK");
@@ -184,7 +184,7 @@ class Create {
             SQL sql = new SQL();
             PreparedStatement createFeedbackQuery = sql.connect()
                     .prepareStatement(
-                    "UPDATE feedback SET isRead = 1 WHERE id = ?"
+                    "UPDATE feedbacks SET isRead = 1 WHERE id = ?"
                     );
             createFeedbackQuery.setInt(1, feedbackID);
             boolean isFeedbackSetToRead = createFeedbackQuery.executeUpdate() > 0;

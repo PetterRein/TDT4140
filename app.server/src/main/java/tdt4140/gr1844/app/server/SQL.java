@@ -34,7 +34,7 @@ class SQL {
                 "(id INTEGER PRIMARY KEY, patientID int not null, rating int, message text," +
                 "timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP not null," +
                 "FOREIGN KEY (patientID) REFERENCES users(id))");
-        PreparedStatement statement3 = conn.connect().prepareStatement("CREATE TABLE IF NOT EXISTS feedback" +
+        PreparedStatement statement3 = conn.connect().prepareStatement("CREATE TABLE IF NOT EXISTS feedbacks" +
                 "(id INTEGER PRIMARY KEY, message VARCHAR (20000000), isRead BIT )");
 
 
