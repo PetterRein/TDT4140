@@ -111,10 +111,10 @@ class Retrieve {
             SQL sql = new SQL();
             String query;
             if (isRead.equals("true")) {
-                query = "SELECT * FROM feedback WHERE isRead = 1";
+                query = "SELECT * FROM feedbacks WHERE isRead = 1";
             }
             else {
-                query = "SELECT * FROM feedback WHERE isRead = -1 OR isRead = null";
+                query = "SELECT * FROM feedbacks WHERE isRead = 0 OR isRead = null";
             }
             PreparedStatement statement = sql.connect()
                     .prepareStatement(query);
