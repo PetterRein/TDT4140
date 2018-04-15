@@ -60,11 +60,14 @@ public class MainController {
                     loginError.setText("No such role");
                     break;
             }
+            emailTextField.clear();
+            passwordTextField.clear();
         }
         else {
             loginError.setVisible(true);
-            loginError.setText(userResponse.getString("message"));
+            loginError.setText("ERROR: " + userResponse.getString("message"));
         }
     }
+
 
 }

@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import tdt4140.gr1844.app.client.WebCalls;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.IdentityHashMap;
 import java.util.Objects;
 
 public class Main extends Application {
@@ -20,7 +21,6 @@ public class Main extends Application {
     private static String cookie;
     private static int userID;
     private static int doctorID;
-
 
     public static void main(String[] args) {
         launch(args);
@@ -53,11 +53,21 @@ public class Main extends Application {
     }
 
 
-    JSONObject deletePatient(int userID) throws Exception {
+    JSONObject deleteUser(int userID) throws Exception {
         return  WebCalls.sendGET(
                 "action=deleteUser&userID=" + userID +
                         "&cookie=" + getCookie()
         );
+    }
+
+    JSONObject markAsRead(int feedbackID) throws Exception {
+        JSONObject response =
+        WebCalls.sendGET(
+                "action=markFeedbackRead&feedbackID=" + feedbackID +
+                        "&cookie=" + getCookie()
+        );
+        System.out.println(response);
+        return response;
     }
 
     JSONObject sendFeedback(String feedback) throws Exception {
@@ -122,6 +132,7 @@ public class Main extends Application {
     public void setDoctorID(int doctorID) {
         this.doctorID = doctorID;
     }
+
 
 
 }
