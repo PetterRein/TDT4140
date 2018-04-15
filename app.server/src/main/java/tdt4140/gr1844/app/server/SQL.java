@@ -45,7 +45,7 @@ class SQL {
 
         // TODO: Fix test
         createAdminTestPurpose();
-        createAdminOrDoctor("Petter", "petter@email.com", "password", "Doctor", "1");
+        createAdminOrDoctor("Petter", "petter@email.com", "password", "doctor", "1");
         createPatient("Haavard", "haavard@email.com", "password", 2);
         createPatient("Balazs", "balazs@email.com", "password", 3);
         createPatient("Mats", "mats@email.com", "password", 1);

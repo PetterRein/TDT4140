@@ -24,12 +24,11 @@ class Retrieve {
 
         if ((Authentication.isAuthenticated(cookie, "doctor") && Authentication.isDoctorsPatient(cookie, patientID)) || Authentication.isDataOwner(patientID, cookie)) {
             SQL sql = new SQL();
-            System.out.println("YO");
             String query;
             if (orderBy.equals("asc")) {
-                query = "SELECT * FROM ratings WHERE patientID = ? ORDER BY timestamp ASC";
+                query = "SELECT * FROM patientData WHERE patientID = ? ORDER BY timestamp ASC";
             } else {
-                query = "SELECT * FROM ratings WHERE patientID = ? ORDER BY timestamp DESC";
+                query = "SELECT * FROM patientData WHERE patientID = ? ORDER BY timestamp DESC";
             }
             PreparedStatement statement = sql.connect()
                     .prepareStatement(query);

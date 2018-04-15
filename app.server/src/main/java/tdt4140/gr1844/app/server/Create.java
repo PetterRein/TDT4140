@@ -154,7 +154,7 @@ class Create {
 
     static JSONObject createFeedback(String message, String cookie) throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
         JSONObject response = new JSONObject();
-        if (Authentication.isAuthenticated(cookie, "Doctor")) {
+        if (Authentication.isAuthenticated(cookie, "doctor")) {
             SQL sql = new SQL();
             PreparedStatement createFeedbackQuery = sql.connect()
                     .prepareStatement(

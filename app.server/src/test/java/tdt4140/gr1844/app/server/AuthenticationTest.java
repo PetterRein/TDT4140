@@ -83,7 +83,6 @@ public class AuthenticationTest {
 	@Test
 	public void isDoctorsPatient() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
 		JSONObject userResponse = Authentication.login("petter@email.com", "password");
-		System.out.println(userResponse);
 		Assert.assertTrue(Authentication.isDoctorsPatient(userResponse.getString("cookie"),3));
 	}
 }
