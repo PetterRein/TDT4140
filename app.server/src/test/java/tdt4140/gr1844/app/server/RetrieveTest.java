@@ -36,7 +36,7 @@ public class RetrieveTest {
     @Test
     public void listPatientValidAdmin() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         JSONObject loginAdmin = Authentication.login("admin@email.com", "password");
-        Assert.assertEquals("Haavard",Retrieve.listPatients(loginAdmin.getString("cookie")).getJSONArray("patients").getJSONObject(0).getString("name"));
+        Assert.assertEquals("Admin",Retrieve.listPatients(loginAdmin.getString("cookie")).getJSONArray("patients").getJSONObject(0).getString("name"));
     }
 
     @Test
