@@ -93,6 +93,18 @@ class Create {
         return create("patient", name,email,password,doctorID);
     }
 
+    static JSONObject createAdmin(String name, String email, String password, int doctorID, String cookie, String role) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+        JSONObject response = new JSONObject();
+        if(Authentication.isAuthenticated(cookie, "admin")){
+           return create(role, name, email, password, doctorID);
+        }
+        else {
+            response.put("status", "ERROR");
+            response.put("message", "You are not authorized for that action.");
+        }
+        return response;
+    }
+
 
     // Create admin user for testing
     static void createAdminTestPurpose() throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException{
@@ -230,5 +242,4 @@ class Create {
         }
         return response;
     }
-
 }

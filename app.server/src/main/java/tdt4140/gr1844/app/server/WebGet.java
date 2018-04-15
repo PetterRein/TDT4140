@@ -111,6 +111,16 @@ public class WebGet extends HttpServlet {
                         toInt(params.get("doctorID")),
                         params.get("cookie")
                 );
+
+            case "createAdmin":
+                return createAdmin(
+                        params.get("name"),
+                        params.get("email"),
+                        params.get("password"),
+                        toInt(params.get("doctorID")),
+                        params.get("cookie"),
+                        params.get("role")
+                );
             default:
                 JSONObject response = new JSONObject();
                 response.put("status", "ERROR");

@@ -62,4 +62,15 @@ public class CreateTest {
         Assert.assertEquals("ERROR", Create.updatePatientsDoctor(userResponse.getJSONObject("user").getInt("userID"), 2, "5").getString("status"));
 
     }
+
+    @Test
+    public void createAdminValid() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+        JSONObject userResponse = Authentication.login("admin@email.com", "password");
+        Assert.assertEquals("OK", Create.createAdmin("Test", "test@email.com", "password", 1, userResponse.getString("cookie"), "patient").getString("status"));
+    }
+
+    @Test
+    public void createAdminInvalid() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+        Assert.assertEquals("ERROR", Create.createAdmin("Test", "test@email.com", "password", 1, "3", "patient").getString("status"));
+    }
 }

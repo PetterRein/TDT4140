@@ -17,7 +17,6 @@ class Retrieve {
      * @param cookie The logged in user's cookie
      * @return {JSONObject}
      * @throws SQLException
-     * TODO: Only your own doctor should see your data
      */
     static JSONObject listFeelings(int patientID, String orderBy, String cookie) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         JSONObject response = new JSONObject();
@@ -90,9 +89,11 @@ class Retrieve {
             SQL sql = new SQL();
             PreparedStatement statement = sql.connect()
                     .prepareStatement(
-                            "SELECT id, name, email FROM users WHERE role = ?"
+                            "SELECT id, name, email FROM users WHERE role = ? OR WHERE role = ? or WHERE role = ?"
                     );
             statement.setString(1, "patient");
+            statement.setString(2, "doctor");
+            statement.setString(3, "admin");
             statement.execute();
             ResultSet rs = statement.getResultSet();
             response = SQLToJSONArray(rs, "patients");
