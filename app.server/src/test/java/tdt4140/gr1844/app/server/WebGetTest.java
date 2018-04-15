@@ -130,8 +130,15 @@ public class WebGetTest extends Mockito {
     public void doGetListFeedBacks() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException, IOException {
         JSONObject userResponse = Authentication.login("petter@email.com", "password");
         Create.createFeedback("Hei kan du slette", userResponse.getString("cookie"));
-        JSONObject fetchFeedbacks = mockRequest("action=listFeedbacks&" + "&cookie=" + "1&isRead=-1");
+        JSONObject fetchFeedbacks = mockRequest("action=listFeedbacks&" + "&cookie=" + "1&isRead=false");
         Assert.assertEquals("Hei kan du slette", fetchFeedbacks.getJSONArray("feedbacks").getJSONObject(0).getString("message"));
+    }
+
+    @Test
+    public void doGetUpdatePatientsDoctor() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException, IOException {
+        JSONObject userResponse = Authentication.login("haavard@email.com", "password");
+        JSONObject updateDoctorID = mockRequest("action=updatePatientsDoctor&" + "&cookie=" + userResponse.getString("cookie") + "&patientID=" + userResponse.getJSONObject("user").getInt("userID") + "&doctorID=2");
+        Assert.assertEquals("OK", updateDoctorID.getString("status"));
     }
 
 }

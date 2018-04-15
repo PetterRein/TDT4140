@@ -204,7 +204,7 @@ class Create {
     }
 
     //TODO add check for that doctor exists
-    static JSONObject updatePatientDoctor(int patientID, int newDoctorID, String updatersCookie) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+    static JSONObject updatePatientsDoctor(int patientID, int newDoctorID, String updatersCookie) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         JSONObject response = new JSONObject();
         if (Authentication.isAuthenticated(updatersCookie, "admin") || Authentication.isAuthenticated(updatersCookie, "doctor") || Authentication.isAuthenticated(updatersCookie, "patient")){
             SQL sql = new SQL();

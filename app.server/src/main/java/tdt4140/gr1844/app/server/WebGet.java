@@ -105,8 +105,8 @@ public class WebGet extends HttpServlet {
                         params.get("cookie")
                 );
 
-            case "updatePatientDoctor":
-                return updatePatientDoctor(
+            case "updatePatientsDoctor":
+                return updatePatientsDoctor(
                         toInt(params.get("patientID")),
                         toInt(params.get("doctorID")),
                         params.get("cookie")

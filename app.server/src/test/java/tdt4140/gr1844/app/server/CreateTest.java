@@ -50,16 +50,16 @@ public class CreateTest {
     }
 
     @Test
-    public void updatePatientDoctor() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+    public void updatePatientsDoctor() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         JSONObject userResponse = Authentication.login("haavard@email.com", "password");
-        Assert.assertEquals("OK", Create.updatePatientDoctor(userResponse.getJSONObject("user").getInt("userID"), 2, userResponse.getString("cookie")).getString("status"));
+        Assert.assertEquals("OK", Create.updatePatientsDoctor(userResponse.getJSONObject("user").getInt("userID"), 2, userResponse.getString("cookie")).getString("status"));
 
     }
 
     @Test
-    public void updatePatientDoctorInvalidCookie() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+    public void updatePatientsDoctorInvalidCookie() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         JSONObject userResponse = Authentication.login("haavard@email.com", "password");
-        Assert.assertEquals("ERROR", Create.updatePatientDoctor(userResponse.getJSONObject("user").getInt("userID"), 2, "5").getString("status"));
+        Assert.assertEquals("ERROR", Create.updatePatientsDoctor(userResponse.getJSONObject("user").getInt("userID"), 2, "5").getString("status"));
 
     }
 }
