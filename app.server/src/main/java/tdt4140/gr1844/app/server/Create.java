@@ -183,7 +183,7 @@ class Create {
             SQL sql = new SQL();
             PreparedStatement createFeedbackQuery = sql.connect()
                     .prepareStatement(
-                    "UPDATE feedbacks SET isRead = TRUE WHERE id = ?"
+                    "UPDATE feedback SET isRead = 1 WHERE id = ?"
                     );
             createFeedbackQuery.setInt(1, feedbackID);
             boolean isFeedbackSetToRead = createFeedbackQuery.executeUpdate() > 0;

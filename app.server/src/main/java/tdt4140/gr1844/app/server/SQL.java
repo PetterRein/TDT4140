@@ -35,7 +35,7 @@ class SQL {
                 "timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP not null," +
                 "FOREIGN KEY (patientID) REFERENCES users(id))");
         PreparedStatement statement3 = conn.connect().prepareStatement("CREATE TABLE IF NOT EXISTS feedback" +
-                "(id INTEGER PRIMARY KEY, message VARCHAR (20000000))");
+                "(id INTEGER PRIMARY KEY, message VARCHAR (20000000), isRead BIT )");
 
 
         statement1.execute();
@@ -107,7 +107,7 @@ class SQL {
     }
 
 
-    static JSONObject SQLToJSON (ResultSet rs) throws SQLException {
+    /**static JSONObject SQLToJSON (ResultSet rs) throws SQLException {
         JSONObject json = new JSONObject();
         ResultSetMetaData rsmd = rs.getMetaData();
         while(rs.next()) {
@@ -118,5 +118,5 @@ class SQL {
             }
         }
         return json;
-    }
+    }**/
 }
