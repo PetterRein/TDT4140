@@ -58,75 +58,8 @@ public class Shared {
         this.feedbackTextField = feedbackTextField;
     }
 
-    void updatePatientList(JSONArray patients) throws Exception {
-        listPatients(patients);
-    }
 
 
-
-    private void listPatients(JSONArray patients) throws Exception {
-        patientListBox.getChildren().clear();
-        for(Object patient : patients){
-            Button btnNumber = createPatient((JSONObject) patient);
-            patientListBox.getChildren().add(btnNumber);
-        }
-    }
-
-    private Button createPatient(JSONObject patient) throws Exception {
-        final Button button = new Button(patient.getString("name"));
-        JSONArray feelings = WebCalls.sendGET(
-                "action=listFeelings" +
-                        "&patientID=" + patient.getInt("id") +
-                        "&orderBy=desc" +
-                        "&cookie=" + main.getCookie()
-        ).getJSONArray("feelings");
-
-        int lastRating = 0;
-        int ratingAvg = 0;
-        if (feelings.length() != 0) {
-            ratingAvg = getAverageRating(feelings);
-            lastRating = feelings.getJSONObject(0).getInt("rating");
-            if (ratingAvg < 2) {
-                button.setId("unhealthyRating");
-            } else if(ratingAvg < 3.5) {
-                button.setId("averageHealthRating");
-            } else {
-                button.setId("healthyRating");
-            }
-
-        }
-        button.setPrefSize(200, 20);
-        int finalRatingAvg = ratingAvg;
-        int finalLastRating = lastRating;
-        button.setOnMouseClicked(event -> {
-            buttonName = button;
-            updateActivePatient(
-                    patient.getString("name"),
-                    patient.getInt("id"),
-                    finalLastRating,
-                    finalRatingAvg
-            );
-        });
-        return button;
-    }
-
-    private int getAverageRating(JSONArray feelings) {
-        int sum = 0;
-        for (Object feelingObject : feelings) {
-            JSONObject feeling = (JSONObject) feelingObject;
-            sum += feeling.getInt("rating");
-        }
-        return sum/feelings.length();
-    }
-
-    private void updateActivePatient(String patientName, int patientID, int lastRating, int ratingAvg){
-        activePatientNameLabel.setText("Patient's name: " + patientName);
-        activePatientIDLabel.setText("Patients's ID: " + patientID);
-        String finalLastRating = lastRating == 0 ? "no ratings yet" : Integer.toString(lastRating);
-        String finalRatingAvg = ratingAvg== 0 ? "no ratings yet" : Integer.toString(ratingAvg);
-        lastRatingLabel.setText("Last rating: " + finalLastRating);
-        ratingAvgLabel.setText("Rating average: " + finalRatingAvg);
-    }
 
     void registerPatient() throws Exception {
         String userEmail = patientEmail.getText();
@@ -150,15 +83,7 @@ public class Shared {
     }
 
 
-    void sendFeedback() throws Exception {
-        JSONObject response = main.sendFeedback(feedbackTextField.getText());
-        if (response.getString("status").equals("OK")) {
-            System.out.println("Feedback sent");
-            feedbackTextField.clear();
-        } else {
-            System.out.println(response.getString("message"));
-        }
-    }
+
 
     void setPatientListBox(VBox patientListBox) {
         this.patientListBox = patientListBox;
