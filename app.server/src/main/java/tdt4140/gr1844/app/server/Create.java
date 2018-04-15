@@ -16,7 +16,7 @@ class Create {
                 SQL sql = new SQL();
                 PreparedStatement createFeelingQuery = sql.connect()
                         .prepareStatement(
-                        "INSERT INTO ratings(patientID, rating, message)  VALUES(?,?,?)"
+                        "INSERT INTO patientData(patientID, rating, message)  VALUES(?,?,?)"
                         );
                 createFeelingQuery.setInt(1,patientID);
                 createFeelingQuery.setInt(2, rating);
@@ -97,6 +97,16 @@ class Create {
     // Create admin user for testing
     static void createAdminTestPurpose() throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException{
         create("admin", "Admin", "admin@email.com", "password", -1);
+        SQL sql = new SQL();
+        PreparedStatement setCookie = sql.connect()
+                .prepareStatement(
+                        "UPDATE users SET cookie = ? WHERE email = ?"
+                );
+        setCookie.setString(1, "1");
+        setCookie.setString(2, "admin@email.com");
+        setCookie.execute();
+        setCookie.close();
+        sql.disconnect();
     }
 
     private static JSONObject create(String role, String name, String email, String password, int doctorID) throws SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException{
@@ -148,7 +158,7 @@ class Create {
             SQL sql = new SQL();
             PreparedStatement createFeedbackQuery = sql.connect()
                     .prepareStatement(
-                    "INSERT INTO feedbacks(message) VALUES (?)"
+                    "INSERT INTO feedback(message) VALUES (?)"
                     );
             createFeedbackQuery.setString(1, message);
             boolean isFeedbackCreated = createFeedbackQuery.executeUpdate() > 0;
@@ -173,7 +183,7 @@ class Create {
             SQL sql = new SQL();
             PreparedStatement createFeedbackQuery = sql.connect()
                     .prepareStatement(
-                    "UPDATE feedbacks SET isRead = TRUE WHERE id = ?"
+                    "UPDATE feedback SET isRead = 1 WHERE id = ?"
                     );
             createFeedbackQuery.setInt(1, feedbackID);
             boolean isFeedbackSetToRead = createFeedbackQuery.executeUpdate() > 0;

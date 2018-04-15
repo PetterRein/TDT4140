@@ -9,15 +9,6 @@ import java.util.Map;
 
 public class QueryString {
 
-
-    public static String stringify(Map<?, ?> params) {
-        return params.entrySet().stream()
-                .map(p -> p.getKey() + "=" + p.getValue())
-                .reduce((p1, p2) -> p1 + "&" + p2)
-                .map(s -> "?" + s)
-                .orElse("");
-    }
-
     public static Map<String, String> parse(String queryString) throws UnsupportedEncodingException, MalformedURLException {
         URL url = new URL("http://api.moholt.me/" + queryString);
         final Map<String, String> query_pairs = new LinkedHashMap<>();

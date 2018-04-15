@@ -8,6 +8,7 @@ import java.sql.*;
 
 import static tdt4140.gr1844.app.server.Create.createAdminTestPurpose;
 import static tdt4140.gr1844.app.server.Create.createPatient;
+import static tdt4140.gr1844.app.server.Create.createAdminOrDoctor;
 
 class SQL {
 
@@ -18,8 +19,8 @@ class SQL {
         // drop tables if they exist
         System.out.println("Dropping all tables...");
         PreparedStatement usersTable = conn.connect().prepareStatement("DROP TABLE IF EXISTS users");
-        PreparedStatement patientDataTable = conn.connect().prepareStatement("DROP TABLE IF EXISTS ratings");
-        PreparedStatement feedback = conn.connect().prepareStatement("DROP TABLE IF EXISTS feedbacks");
+        PreparedStatement patientDataTable = conn.connect().prepareStatement("DROP TABLE IF EXISTS patientData");
+        PreparedStatement feedback = conn.connect().prepareStatement("DROP TABLE IF EXISTS feedback");
         usersTable.execute();
         patientDataTable.execute();
         feedback.execute();
@@ -34,7 +35,7 @@ class SQL {
                 "timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP not null," +
                 "FOREIGN KEY (patientID) REFERENCES users(id))");
         PreparedStatement statement3 = conn.connect().prepareStatement("CREATE TABLE IF NOT EXISTS feedback" +
-                "(id INTEGER PRIMARY KEY, message VARCHAR (20000000))");
+                "(id INTEGER PRIMARY KEY, message VARCHAR (20000000), isRead BIT )");
 
 
         statement1.execute();
@@ -44,6 +45,7 @@ class SQL {
 
         // TODO: Fix test
         createAdminTestPurpose();
+        createAdminOrDoctor("Petter", "petter@email.com", "password", "doctor", "1");
         createPatient("Haavard", "haavard@email.com", "password", 2);
         createPatient("Balazs", "balazs@email.com", "password", 3);
         createPatient("Mats", "mats@email.com", "password", 1);
@@ -105,7 +107,7 @@ class SQL {
     }
 
 
-    static JSONObject SQLToJSON (ResultSet rs) throws SQLException {
+    /**static JSONObject SQLToJSON (ResultSet rs) throws SQLException {
         JSONObject json = new JSONObject();
         ResultSetMetaData rsmd = rs.getMetaData();
         while(rs.next()) {
@@ -116,5 +118,5 @@ class SQL {
             }
         }
         return json;
-    }
+    }**/
 }
