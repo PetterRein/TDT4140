@@ -4,6 +4,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import org.json.JSONArray;
+import tdt4140.gr1844.app.client.WebCalls;
 
 public class DoctorController {
     public Label doctorLabel;
@@ -37,17 +39,25 @@ public class DoctorController {
 
     private Main main = new Main();
 
-    private Shared comFun = new Shared();
+    private Shared shared = new Shared();
 
     private void getInfo(){
-        comFun.setInfo(deletePatientButton,deletePatientID,activePatientNameLabel,lastRatingLabel,ratingAvgLabel,activePatientIDLabel,patientName,patientEmail,patientPassword,patientListBox,feedbackTextField);
+        shared.setInfo(deletePatientButton,deletePatientID,activePatientNameLabel,lastRatingLabel,ratingAvgLabel,activePatientIDLabel,patientName,patientEmail,patientPassword,patientListBox,feedbackTextField);
     }
 
     @FXML
     public void initialize() throws Exception {
         doctorLabel.setText("Welcome Dr. " + main.getName());
         getInfo();
-        comFun.updatePatientList();
+        shared.updatePatientList(getPatients());
+    }
+
+    private JSONArray getPatients() throws Exception {
+        return WebCalls.sendGET(
+                "action=listPatients&" +
+                        "doctorID=" + main.getUserID() +
+                        "&cookie=" + main.getCookie()
+        ).getJSONArray("patients");
     }
 
     @FXML
@@ -58,17 +68,18 @@ public class DoctorController {
 
     @FXML
     private void registerPatient() throws Exception {
-        comFun.registerPatient();
+        shared.registerPatient();
+        shared.updatePatientList(getPatients());
     }
 
     @FXML
-    private void removePatient() throws Exception {
-        comFun.removePatient();
+    private void updateDoctor() throws Exception {
+        // TODO: Update doctorID to null
     }
 
     @FXML
     private void sendFeedback() throws Exception {
-        comFun.sendFeedback();
+        shared.sendFeedback();
     }
 
 }

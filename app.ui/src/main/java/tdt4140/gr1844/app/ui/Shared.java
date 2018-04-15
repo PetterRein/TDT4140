@@ -58,17 +58,11 @@ public class Shared {
         this.feedbackTextField = feedbackTextField;
     }
 
-    void updatePatientList() throws Exception {
-        listPatients(getPatients());
+    void updatePatientList(JSONArray patients) throws Exception {
+        listPatients(patients);
     }
 
-    private JSONArray getPatients() throws Exception {
-        return WebCalls.sendGET(
-                "action=listPatients&" +
-                        "doctorID=" + main.getUserID() +
-                        "&cookie=" + main.getCookie()
-        ).getJSONArray("patients");
-    }
+
 
     private void listPatients(JSONArray patients) throws Exception {
         patientListBox.getChildren().clear();
@@ -147,7 +141,6 @@ public class Shared {
         );
         //TODO Lag at det kommer en alert om det var sukssess eller ikke
         if (response.getString("status").equals("OK")) {
-            updatePatientList();
             patientEmail.clear();
             patientName.clear();
             patientPassword.clear();
@@ -156,17 +149,6 @@ public class Shared {
         }
     }
 
-    void removePatient() throws Exception {
-        int userID = Integer.parseInt(deletePatientID.getText());
-        JSONObject response = main.deletePatient(userID);
-        //TODO Lag at det kommer en alert om det var sukssess eller ike
-        if (response.getString("status").equals("OK")) {
-            updatePatientList();
-            System.out.println("Patient removed.");
-        } else {
-            System.out.println(response.getString("message"));
-        }
-    }
 
     void sendFeedback() throws Exception {
         JSONObject response = main.sendFeedback(feedbackTextField.getText());
@@ -176,5 +158,9 @@ public class Shared {
         } else {
             System.out.println(response.getString("message"));
         }
+    }
+
+    void setPatientListBox(VBox patientListBox) {
+        this.patientListBox = patientListBox;
     }
 }
