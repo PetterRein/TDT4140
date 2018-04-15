@@ -31,16 +31,21 @@ public class CreateTest {
         Assert.assertEquals("ERROR", Create.createFeedback("Hei kan du slette", userResponse.getString("cookie")).getString("status"));
     }
 
-    /**TODO Make getFeedbacks
     @Test
     public void feedbackReadValidUser() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
-        JSONObject userResponse = Authentication.login("admin@email.com", "password");
-        Assert.assertEquals("OK", Create.markFeedbackRead("Hei kan du slette", userResponse.getString("cookie")).getString("status"));
+        JSONObject adminResponse = Authentication.login("admin@email.com", "password");
+        JSONObject doctorResponse = Authentication.login("petter@email.com", "password");
+        Create.createFeedback("Hei kan du slette", doctorResponse.getString("cookie")).getString("status");
+        JSONObject feedbacksNotRead = Retrieve.listFeedbacks("false", adminResponse.getString("cookie"));
+        JSONObject response = Create.markFeedbackRead(feedbacksNotRead.getJSONArray("feedbacks").getJSONObject(0).getInt("id"), adminResponse.getString("cookie"));
+        Assert.assertEquals("OK", response.getString("status"));
     }
 
      @Test
      public void feedbackReadInvlidUser() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
-     JSONObject userResponse = Authentication.login("haavard@email.com", "password");
-     Assert.assertEquals("ERROR", Create.markFeedbackRead("Hei kan du slette", userResponse.getString("cookie")).getString("status"));
-     }**/
+         JSONObject doctorResponse = Authentication.login("petter@email.com", "password");
+         Create.createFeedback("Hei kan du slette", doctorResponse.getString("cookie")).getString("status");
+         JSONObject response = Create.markFeedbackRead(1, "2");
+         Assert.assertEquals("ERROR", response.getString("status"));
+     }
 }

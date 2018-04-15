@@ -1,5 +1,6 @@
 package tdt4140.gr1844.app.server;
 
+import com.sun.org.apache.regexp.internal.RE;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Assert;
@@ -60,6 +61,15 @@ public class RetrieveTest {
     public void listFeelingsInvalidDoctor() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         JSONObject feelings = Retrieve.listFeelings(3,"asc", "1");
         Assert.assertEquals("ERROR", feelings.getString("status"));
+    }
+
+    @Test
+    public void listFeedbacksNotRead() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+        JSONObject userResponse = Authentication.login("admin@email.com", "password");
+        JSONObject doctorResponse = Authentication.login("petter@email.com", "password");
+        Create.createFeedback("Hei kan du slette", doctorResponse.getString("cookie")).getString("status");
+        JSONObject feedbacksNotRead = Retrieve.listFeedbacks("false", userResponse.getString("cookie"));
+        Assert.assertEquals("Hei kan du slette", feedbacksNotRead.getJSONArray("feedbacks").getJSONObject(0).getString("message"));
     }
 
 

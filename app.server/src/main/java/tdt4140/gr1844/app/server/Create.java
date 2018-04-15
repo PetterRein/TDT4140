@@ -158,9 +158,10 @@ class Create {
             SQL sql = new SQL();
             PreparedStatement createFeedbackQuery = sql.connect()
                     .prepareStatement(
-                    "INSERT INTO feedback(message) VALUES (?)"
+                    "INSERT INTO feedback(message, isRead) VALUES (?, ?)"
                     );
             createFeedbackQuery.setString(1, message);
+            createFeedbackQuery.setInt(2, -1);
             boolean isFeedbackCreated = createFeedbackQuery.executeUpdate() > 0;
             if (isFeedbackCreated) {
                 response.put("status", "OK");

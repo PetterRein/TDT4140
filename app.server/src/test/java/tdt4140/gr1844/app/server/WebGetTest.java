@@ -126,4 +126,12 @@ public class WebGetTest extends Mockito {
         Assert.assertEquals("Haavard", createFeedback.getJSONArray("patients").getJSONObject(0).getString("name"));
     }
 
+    @Test
+    public void doGetListFeedBacks() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException, IOException {
+        JSONObject userResponse = Authentication.login("petter@email.com", "password");
+        Create.createFeedback("Hei kan du slette", userResponse.getString("cookie"));
+        JSONObject fetchFeedbacks = mockRequest("action=listFeedbacks&" + "&cookie=" + "1&isRead=-1");
+        Assert.assertEquals("Hei kan du slette", fetchFeedbacks.getJSONArray("feedbacks").getJSONObject(0).getString("message"));
+    }
+
 }
