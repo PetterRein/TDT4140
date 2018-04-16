@@ -80,6 +80,11 @@
                                   </Label>
                                   <Button fx:id="deletePatientButton" layoutX="50.0" layoutY="265.0" mnemonicParsing="false" onAction="#updateDoctor" text="Remove patient from my patient list" />
                               </VBox>
+                        <VBox prefHeight="490.0" prefWidth="750.0" style="-fx-background-color: #666;">
+                           <VBox.margin>
+                              <Insets bottom="32.0" left="32.0" right="32.0" top="32.0" />
+                           </VBox.margin>
+                        </VBox>
                           </VBox>
                   </children>
                </HBox>
