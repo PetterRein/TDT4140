@@ -1,14 +1,21 @@
 package tdt4140.gr1844.app.ui;
 
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import tdt4140.gr1844.app.client.WebCalls;
 
 import javax.swing.*;
+import java.util.Collection;
 
 public class DoctorController {
     public Label doctorLabel;
@@ -47,6 +54,11 @@ public class DoctorController {
     @FXML
     private Label notification;
 
+    @FXML
+    private VBox showPatientCharts;
+
+    private JSONObject patientFeelings;
+
 
     @FXML
     public void initialize() throws Exception {
@@ -78,6 +90,11 @@ public class DoctorController {
                         "&orderBy=desc" +
                         "&cookie=" + main.getCookie()
         ).getJSONArray("feelings");
+
+        String patientID = patient.getString("id");
+        if (!patientFeelings.keySet().contains(patientID)) {
+            patientFeelings.put(patient.getString("id"), feelings);
+        }
 
         int lastRating = 0;
         float ratingAvg = 0;
@@ -114,6 +131,9 @@ public class DoctorController {
         lastRatingLabel.setText("Last rating: " + finalLastRating);
         ratingAvgLabel.setText("Rating average: " + finalRatingAvg);
         this.activePatientID = patientID;
+        showPatientCharts.getChildren().clear();
+        String id = String.valueOf(patientID);
+        showCharts(patientFeelings.getJSONArray(id));
     }
 
     private float getAverageRating(JSONArray feelings) {
@@ -190,6 +210,37 @@ public class DoctorController {
         } else {
             notification.setText("Please write a feedback!");
         }
+    }
+
+    @FXML
+    public void showCharts(JSONArray patientFeelings) {
+        //defining the axes
+        final NumberAxis xAxis = new NumberAxis();
+        final NumberAxis yAxis = new NumberAxis();
+        xAxis.setLabel("Days in recovery");
+        //creating the chart
+        final LineChart<Number,Number> lineChart =
+                new LineChart<Number,Number>(xAxis,yAxis);
+
+        lineChart.setTitle("Patient Data for Doctor X");
+        //defining a series
+        XYChart.Series series = new XYChart.Series();
+        series.setName("Physical recovery of " + patientName);
+        //populating the series with data
+
+        for (int i = 1; i < patientFeelings.length(); i++) {
+            //series.getData().add(new XYChart.Data(i, (relation)));
+            series.getData().add(new XYChart.Data(i, patientFeelings.getInt(Integer.parseInt("rating"))));
+        }
+
+//        for (Object feelingObject : patientFeelings) {
+//            JSONObject feeling = (JSONObject) feelingObject;
+//            feeling.getInt("rating");
+//        }
+
+        lineChart.getData().add(series);
+        showPatientCharts.getChildren().addAll(lineChart);
+
     }
 
 }
