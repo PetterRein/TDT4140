@@ -11,14 +11,10 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.Map;
 
-import static tdt4140.gr1844.app.server.Authentication.login;
-import static tdt4140.gr1844.app.server.Authentication.logout;
+import static tdt4140.gr1844.app.server.Authentication.*;
 import static tdt4140.gr1844.app.server.Create.*;
-import static tdt4140.gr1844.app.server.Delete.deleteFeeling;
-import static tdt4140.gr1844.app.server.Delete.deleteUser;
-import static tdt4140.gr1844.app.server.Retrieve.listFeelings;
-import static tdt4140.gr1844.app.server.Retrieve.listPatients;
-import static tdt4140.gr1844.app.server.Retrieve.listFeedbacks;
+import static tdt4140.gr1844.app.server.Delete.*;
+import static tdt4140.gr1844.app.server.Retrieve.*;
 
 public class WebGet extends HttpServlet {
 
@@ -102,24 +98,18 @@ public class WebGet extends HttpServlet {
             case "listFeedbacks":
                 return listFeedbacks(
                         params.get("isRead"),
+                        params.get("cookie"
+                        ));
+            case "removeDoctor":
+                return removeDoctor(
+                        toInt(params.get("patientID")),
                         params.get("cookie")
                 );
-
             case "updatePatientsDoctor":
                 return updatePatientsDoctor(
                         toInt(params.get("patientID")),
                         toInt(params.get("doctorID")),
                         params.get("cookie")
-                );
-
-            case "createAdmin":
-                return createAdmin(
-                        params.get("name"),
-                        params.get("email"),
-                        params.get("password"),
-                        toInt(params.get("doctorID")),
-                        params.get("cookie"),
-                        params.get("role")
                 );
             default:
                 JSONObject response = new JSONObject();
