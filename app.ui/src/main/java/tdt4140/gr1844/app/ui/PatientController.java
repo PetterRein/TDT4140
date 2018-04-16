@@ -8,6 +8,10 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import tdt4140.gr1844.app.client.WebCalls;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +43,9 @@ public class PatientController {
     @FXML
     private  TextField foleFelt;
 
+    @FXML
+    private VBox listFeelings;
+
 
 
     Main main = new Main();
@@ -52,9 +59,34 @@ public class PatientController {
     }
 
 
-    public void initialize() {
+    public void initialize() throws Exception {
         getInfo();
         hasInitialized = true;
+        listFeelings(getFeelings());
+    }
+
+    private void listFeelings(JSONArray feelings) throws Exception {
+        listFeelings.getChildren().clear();
+        for(Object feeling : feelings){
+            Button btnNumber = createFeeling((JSONObject) feeling);
+            listFeelings.getChildren().add(btnNumber);
+        }
+    }
+
+    private Button createFeeling(JSONObject feeling) {
+        System.out.println(feeling);
+        Button button = new Button("Rating: " + feeling.getInt("rating") + ", Message: " + feeling.getString("message") + ", Time:" + feeling.get("timestamp"));
+        button.setId("healthyRating");
+        return button;
+    }
+
+    private JSONArray getFeelings() throws Exception {
+        return WebCalls.sendGET(
+                "action=listFeelings&" +
+                        "patientID=" + main.getUserID() +
+                        "&cookie=" + main.getCookie() +
+                        "&orderBy=desc"
+        ).getJSONArray("feelings");
     }
 
     private void repeatFocus(Node node) {

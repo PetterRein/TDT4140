@@ -20,7 +20,7 @@ class SQL {
         System.out.println("Dropping all tables...");
         PreparedStatement usersTable = conn.connect().prepareStatement("DROP TABLE IF EXISTS users");
         PreparedStatement patientDataTable = conn.connect().prepareStatement("DROP TABLE IF EXISTS patientData");
-        PreparedStatement feedback = conn.connect().prepareStatement("DROP TABLE IF EXISTS feedback");
+        PreparedStatement feedback = conn.connect().prepareStatement("DROP TABLE IF EXISTS feedbacks");
         usersTable.execute();
         patientDataTable.execute();
         feedback.execute();
