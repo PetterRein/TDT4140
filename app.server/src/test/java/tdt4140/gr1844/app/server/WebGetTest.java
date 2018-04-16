@@ -140,12 +140,4 @@ public class WebGetTest extends Mockito {
         JSONObject updateDoctorID = mockRequest("action=updatePatientsDoctor&" + "&cookie=" + userResponse.getString("cookie") + "&patientID=" + userResponse.getJSONObject("user").getInt("userID") + "&doctorID=2");
         Assert.assertEquals("OK", updateDoctorID.getString("status"));
     }
-
-    @Test
-    public void createAdmin() throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException, IOException {
-        JSONObject userResponse = Authentication.login("admin@email.com", "password");
-        JSONObject createAdmin = mockRequest("action=createAdmin&" + "&cookie=" + userResponse.getString("cookie") + "&doctorID=" + 2 + "&name=test&email=test@email.com&password=password&role=patient");
-        Assert.assertEquals("OK", createAdmin.getString("status"));
-    }
-
 }
