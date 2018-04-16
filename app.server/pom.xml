@@ -4,7 +4,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>tdt4140-gr1844.app.server</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
 
 
@@ -15,12 +14,12 @@
     </parent>
 
     <dependencies>
-        <dependency>
-            <groupId>org.mortbay.jetty</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>3.0.20100224</version>
-            <scope>provided</scope>
-        </dependency>
+    	<dependency>
+    	    <groupId>javax.servlet</groupId>
+    		<artifactId>servlet-api</artifactId>
+   			<version>2.5</version>
+    		<scope>provided</scope>
+    	</dependency>
         <dependency>
             <groupId>org.mindrot</groupId>
             <artifactId>jbcrypt</artifactId>
