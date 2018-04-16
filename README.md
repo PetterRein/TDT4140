@@ -4,7 +4,7 @@ For å se prosjektet som det var ved innlevering sprint 3 se tag V.3
 
 # How Are You Feeling
 
-Prosjektet er opprettet som en del av faget TDT4140 våren 2018.
+Prosjektet er opprettet som en del av faget TDT4140 våren 2018. Prosjektet er laget ved bruk av smidig utvikling aka Scrum. Der prosjektet har gått ut på å lære seg metoder, teknikker og verktøy for utvilking.
 
 Vi skal lage et program for helsepersonell som har mulighet til å samle data om hvordan en pasient føler seg, og som analyserer og presenterer dette for relevant helsepersonell. Dette kan brukes i mange ulike deler av helsesektoren hvor det er behov for å spore en pasients behandlingsprosess. 
 Pasienten velger selv hvor mye data som skal samles og hva som skal presenteres for helsepersonellet. 
