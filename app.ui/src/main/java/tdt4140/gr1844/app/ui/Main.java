@@ -33,6 +33,7 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 1280, 720));
         primaryStage.show();
         primaryStage.setResizable(false);
+
     }
 
     void changeView(AnchorPane rootPane, String fxmlFile) throws IOException {
@@ -51,6 +52,17 @@ public class Main extends Application {
         );
     }
 
+    JSONObject createUser(String name, String email, String password, String role) throws Exception {
+        return  WebCalls.sendGET(
+                "action=createPatient" +
+                        "&name=" + name +
+                        "&email=" + email +
+                        "&password=" + password +
+                        "&doctorID=-1"  +
+                        "&cookie=" + getCookie() +
+                        "&role=" + role
+        );
+    }
 
     JSONObject deleteUser(int userID) throws Exception {
         return  WebCalls.sendGET(
@@ -81,7 +93,7 @@ public class Main extends Application {
 
     JSONObject updateDoctor(int patientID) throws Exception {
         return WebCalls.sendGET(
-                "action=updateDoctor" +
+                "action=removeDoctor" +
                         "&patientID=" + patientID +
                         "&cookie=" + cookie
         );

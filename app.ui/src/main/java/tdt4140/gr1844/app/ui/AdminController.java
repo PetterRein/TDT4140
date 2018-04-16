@@ -27,6 +27,17 @@ public class AdminController {
     private VBox patientsContainer;
 
 
+    @FXML
+    private TextField userName;
+    @FXML
+    private TextField userEmail;
+    @FXML
+    private TextField userPassword;
+
+    @FXML
+    private TextField userRole;
+
+
     private Main main = new Main();
 
 
@@ -82,12 +93,44 @@ public class AdminController {
         return button;
     }
 
+
+
+    @FXML
+    void registerPatient() throws Exception {
+        String userEmailText = userEmail.getText();
+        String userNameText = userName.getText();
+        String userPasswordText = userPassword.getText();
+        String roleText = userRole.getText();
+
+        JSONObject response = main.createUser(
+                userNameText,
+                userEmailText,
+                userPasswordText,
+                roleText
+        );
+
+        if (response.getString("status").equals("OK")) {
+            userEmail.clear();
+            userName.clear();
+            userPassword.clear();
+            userRole.clear();
+            notification.setText("User was created");
+            updateList(patientsContainer, "patients", getPatients());
+        } else {
+            notification.setText(response.getString("message"));
+        }
+    }
+
+
+
     private void updateActivePatient(String patientName, int patientID){
         activePatientNameLabel.setText("Patient's name: " + patientName);
         activePatientIDLabel.setText("Patients's ID: " + patientID);
         this.activeUserID = patientID;
 
-    }private void updateActiveFeedback(String message, int feedbackID){
+    }
+
+    private void updateActiveFeedback(String message, int feedbackID){
         activeFeedbackIDLabel.setText("Feedback ID: " + feedbackID);
         activeFeedbackMessage.setText(message);
         this.activeFeedbackID = feedbackID;
@@ -137,4 +180,7 @@ public class AdminController {
             notification.setText("ERROR: " + response.getString("message"));
         }
     }
+
+
+
 }
