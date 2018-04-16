@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@MainTheme.css" xmlns="http://javafx.com/javafx/9.0.4" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tdt4140.gr1844.app.ui.AdminController">
+    <BorderPane prefHeight="720.0" prefWidth="1280.0">
+        <top>
+         <HBox BorderPane.alignment="CENTER">
+            <children>
+                  <Label fx:id="doctorLabel" contentDisplay="TOP" prefHeight="32.0" prefWidth="1136.0" />
+                  <Button onMouseClicked="#logout" prefHeight="32.0" prefWidth="113.0" text="Logout" />
+            </children>
+            <padding>
+               <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+            </padding>
+         </HBox>
+        </top>
+      <padding>
+         <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+      </padding>
+      <center>
+         <HBox BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+               <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+            </BorderPane.margin>
+            <children>
+                  <VBox prefHeight="669.0" prefWidth="307.0">
+                      <ScrollPane fitToWidth="true">
+                          <VBox fx:id="patientsContainer" />
+                      </ScrollPane>
+                  </VBox>
+                     <VBox prefWidth="100.0">
+                         <Label fx:id="activePatientNameLabel" text="User's name">
+                             <VBox.margin>
+                                 <Insets />
+                             </VBox.margin>
+                     <padding>
+                        <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+                     </padding>
+                         </Label>
+                  <Label fx:id="activePatientIDLabel" minWidth="320.0" text="Patient's ID">
+                             <VBox.margin>
+                                 <Insets />
+                             </VBox.margin>
+                     <padding>
+                        <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+                     </padding>
+                         </Label>
+                        <Button fx:id="deletePatientButton" mnemonicParsing="false" onAction="#deletePatient" text="Delete patient">
+                     <VBox.margin>
+                        <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+                     </VBox.margin>
+                  </Button>
+                     </VBox>
+               <VBox layoutX="10.0" layoutY="10.0" prefHeight="669.0" prefWidth="307.0">
+                  <children>
+                     <ScrollPane fitToWidth="true">
+                        <content>
+                           <VBox fx:id="feedbacksContainer" />
+                        </content>
+                     </ScrollPane>
+                  </children>
+               </VBox>
+               <VBox layoutX="317.0" layoutY="10.0" prefWidth="100.0">
+                  <children>
+                     <Label fx:id="activeFeedbackIDLabel" minWidth="320.0" text="Message:">
+                        <VBox.margin>
+                           <Insets />
+                        </VBox.margin>
+                        <padding>
+                           <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+                        </padding>
+                     </Label>
+                      <Label fx:id="activeFeedbackMessage" minWidth="320.0" text="Message:">
+                          <VBox.margin>
+                              <Insets />
+                          </VBox.margin>
+                          <padding>
+                              <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+                          </padding>
+                      </Label>
+                     <Button fx:id="markAsReadButton" mnemonicParsing="false" onAction="#markAsRead" text="Mark as read">
+                        <VBox.margin>
+                           <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+                        </VBox.margin>
+                     </Button>
+                  </children>
+               </VBox>
+            </children>
+         </HBox>
+      </center>
+      <bottom>
+         <VBox alignment="CENTER" prefHeight="64.0" prefWidth="1248.0" BorderPane.alignment="CENTER">
+            <children>
+               <Label fx:id="notification" text="Label" />
+            </children>
+         </VBox>
+      </bottom>
+    </BorderPane>
+</AnchorPane>
