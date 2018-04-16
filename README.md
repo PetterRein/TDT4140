@@ -1,6 +1,6 @@
 ## Melding til studass
 
-For å se prosjektet som det var ved innlevering sprint 2 se tag V.2
+For å se prosjektet som det var ved innlevering sprint 3 se tag V.3
 
 # How Are You Feeling
 
@@ -54,8 +54,11 @@ To test all of the sub-modules in our project you can simply run _mvn test_ or _
 ## Built With
 
 * [JSON In Java](https://mvnrepository.com/artifact/org.json/json) - Data interchange format
-* [TestFX](https://mvnrepository.com/artifact/org.testfx/testfx-core/4.0.1-alpha) - test framework for JavaFX apps
+* [JavaFX](www.ntnu.no/wiki/display/tdt4100/JavaFX) - GUI Framework for building GUIs
 * [SQLite](https://www.sqlite.org/index.html) - Embedded SQL database
 * [Tomcat](http://tomcat.apache.org/) - Web Deployment Service
 * [Maven](https://maven.apache.org/) - Dependency Management
+* [Apache HttpComponents] (hc.apache.org) - The Apache HttpComponents™ project is responsible for creating and maintaining a toolset of low level Java components focused on HTTP and associated protocols.
+* [jBCrypt] (https://github.com/jeremyh/jBCrypt) - jBCrypt is an implementation the OpenBSD Blowfish password hashing algorithm, as described in "A Future-Adaptable Password Scheme" by Niels Provos and David Mazieres.
+* [JavaServlet] (https://mvnrepository.com/artifact/javax.servlet/servlet-api) - 
 
