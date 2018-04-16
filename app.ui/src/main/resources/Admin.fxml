@@ -99,7 +99,7 @@
       <bottom>
          <VBox alignment="CENTER" prefHeight="64.0" prefWidth="1248.0" BorderPane.alignment="CENTER">
             <children>
-               <Label fx:id="notification" text="Label" />
+               <Label fx:id="notification"/>
             </children>
          </VBox>
       </bottom>

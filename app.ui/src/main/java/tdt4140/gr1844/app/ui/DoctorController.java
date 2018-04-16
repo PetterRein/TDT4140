@@ -50,6 +50,8 @@ public class DoctorController {
     private VBox showPatientCharts;
 
     private JSONObject patientFeelings = new JSONObject();
+    @FXML
+    private VBox feelingsList;
 
 
     @FXML
@@ -135,7 +137,21 @@ public class DoctorController {
         this.activePatientID = patientID;
         showPatientCharts.getChildren().clear();
         String id = String.valueOf(patientID);
-        showCharts(patientFeelings.getJSONArray(id));
+        JSONArray patientsFeelings = patientFeelings.getJSONArray(id);
+        showCharts(patientsFeelings);
+        updateActiveFeelings(patientsFeelings);
+    }
+
+    private void updateActiveFeelings(JSONArray patientsFeelings) {
+        feelingsList.getChildren().clear();
+        for (Object feelingObject: patientsFeelings) {
+            JSONObject feeling = (JSONObject) feelingObject;
+            int rating = feeling.getInt("rating");
+            String message = feeling.getString("message");
+            Label feelingLabel = new Label();
+            feelingLabel.setText(rating + ": " + message);
+            feelingsList.getChildren().add(feelingLabel);
+        }
     }
 
     private float getAverageRating(JSONArray feelings) {
@@ -193,6 +209,7 @@ public class DoctorController {
             notification.setText("Patient removed");
             activePatient.getChildren().clear();
             showPatientCharts.getChildren().clear();
+            feelingsList.getChildren().clear();
             this.activePatientID = -1;
         } else {
             notification.setText(response.getString("message"));
