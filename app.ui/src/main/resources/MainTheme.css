@@ -32,3 +32,14 @@ Button {
 #patientsContainer {
     -fx-spacing: 10;
 }
+
+
+#unhealthyRating {
+    -fx-background-color: #8c2f2a;
+}
+#averageHealthRating{
+    -fx-background-color: #b39b00;
+}
+#healthyRating {
+    -fx-background-color: #1b8c0a;
+}

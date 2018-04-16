@@ -35,15 +35,14 @@
             </VBox>
         </left>
         <top>
-         <HBox BorderPane.alignment="CENTER">
-            <BorderPane.margin>
-               <Insets />
-            </BorderPane.margin>
-            <children>
-                    <Label fx:id="doctorLabel" prefHeight="59.0" prefWidth="1153.0" text="Doctor" />
-                    <Button fx:id="logout" alignment="CENTER" mnemonicParsing="false" onAction="#logout" prefHeight="37.0" prefWidth="128.0" text="Logout" />
-            </children>
-         </HBox>
+            <HBox BorderPane.alignment="CENTER">
+                <BorderPane.margin>
+                    <Insets/>
+                </BorderPane.margin>
+                <Label fx:id="doctorLabel" prefHeight="59.0" prefWidth="1153.0" text="Doctor"/>
+                <Button fx:id="logout" alignment="CENTER" mnemonicParsing="false" onAction="#logout" prefHeight="37.0"
+                        prefWidth="128.0" text="Logout"/>
+            </HBox>
         </top>
         <center>
             <BorderPane id="borderCenter" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
@@ -51,78 +50,49 @@
                     <Insets />
                 </BorderPane.margin>
             <center>
-               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                  <children>
-                          <VBox id="1" prefHeight="678.0" prefWidth="750.0" spacing="5.0">
-                              <VBox prefWidth="320.0">
-                                  <VBox.margin>
-                                      <Insets top="2.0" />
-                                  </VBox.margin>
-                                  <Label fx:id="activePatientNameLabel" text="Patient's name">
-                                      <VBox.margin>
-                                          <Insets />
-                                      </VBox.margin>
-                                  </Label>
-                           <Label fx:id="activePatientIDLabel" text="Patient's ID">
-                                      <VBox.margin>
-                                          <Insets />
-                                      </VBox.margin>
-                                  </Label>
-                                  <Label fx:id="lastRatingLabel" text="Last rating">
-                                      <VBox.margin>
-                                          <Insets />
-                                      </VBox.margin>
-                                  </Label>
-                                  <Label fx:id="ratingAvgLabel" text="Rating score">
-                                      <VBox.margin>
-                                          <Insets />
-                                      </VBox.margin>
-                                  </Label>
-                                  <Button fx:id="deletePatientButton" layoutX="50.0" layoutY="265.0" mnemonicParsing="false" onAction="#updateDoctor" text="Remove patient from my patient list" />
-                              </VBox>
-                        <VBox fx:id="showPatientCharts" prefHeight="490.0" prefWidth="750.0" style="-fx-background-color: #666;">
-                           <VBox.margin>
-                              <Insets bottom="32.0" left="32.0" right="32.0" top="32.0" />
-                           </VBox.margin>
+                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                    <VBox id="1" prefHeight="678.0" prefWidth="750.0" spacing="5.0">
+                        <VBox fx:id="activePatient" prefWidth="320.0">
+                            <VBox.margin>
+                                <Insets top="2.0"/>
+                            </VBox.margin>
                         </VBox>
-                          </VBox>
-                  </children>
-               </HBox>
+                        <Button fx:id="deletePatientButton" layoutX="50.0" layoutY="265.0" mnemonicParsing="false"
+                                onAction="#updateDoctor" text="Remove patient from my patient list"/>
+                        <VBox fx:id="showPatientCharts" prefHeight="490.0" prefWidth="750.0"
+                              style="-fx-background-color: #ddd;">
+                            <VBox.margin>
+                                <Insets bottom="32.0" left="32.0" right="32.0" top="32.0"/>
+                            </VBox.margin>
+                        </VBox>
+                    </VBox>
+                </HBox>
             </center>
             <right>
-               <VBox BorderPane.alignment="CENTER">
-                  <children>
-                     <VBox>
-                        <children>
-                           <VBox alignment="BASELINE_LEFT" prefHeight="366.0" prefWidth="210.0">
-                              <children>
-                                       <Label text="Create a new patient" />
-                                       <TextField fx:id="patientName" promptText="name" />
-                                       <TextField fx:id="patientEmail" promptText="email" />
-                                       <TextField fx:id="patientPassword" promptText="password" />
-                                       <Button id="createPatientButton" mnemonicParsing="false" onAction="#registerPatient" text="Create patient" />
-                              </children>
-                           </VBox>
-                           <VBox>
-                              <children>
-                                       <Label text="Feedback to the Admin" />
-                                       <TextArea fx:id="feedbackTextField" prefHeight="200.0" prefWidth="200.0" />
-                                       <Button mnemonicParsing="false" onAction="#sendFeedback" text="Send feedback" />
-                              </children>
-                           </VBox>
-                        </children>
-                     </VBox>
-                  </children>
-               </VBox>
+                <VBox BorderPane.alignment="CENTER">
+                    <VBox>
+                        <VBox alignment="BASELINE_LEFT" prefHeight="366.0" prefWidth="210.0">
+                            <Label text="Create a new patient"/>
+                            <TextField fx:id="patientName" promptText="name"/>
+                            <TextField fx:id="patientEmail" promptText="email"/>
+                            <TextField fx:id="patientPassword" promptText="password"/>
+                            <Button id="createPatientButton" mnemonicParsing="false" onAction="#registerPatient"
+                                    text="Create patient"/>
+                        </VBox>
+                        <VBox>
+                            <Label text="Feedback to the Admin"/>
+                            <TextArea fx:id="feedbackTextField" prefHeight="200.0" prefWidth="200.0"/>
+                            <Button mnemonicParsing="false" onAction="#sendFeedback" text="Send feedback"/>
+                        </VBox>
+                    </VBox>
+                </VBox>
             </right>
             </BorderPane>
         </center>
       <bottom>
-         <VBox alignment="CENTER" prefHeight="54.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
-            <children>
-               <Label fx:id="notification" contentDisplay="CENTER" text="Label" />
-            </children>
-         </VBox>
+          <VBox alignment="CENTER" prefHeight="54.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
+              <Label fx:id="notification" contentDisplay="CENTER"/>
+          </VBox>
       </bottom>
     </BorderPane>
 </AnchorPane>
