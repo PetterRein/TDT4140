@@ -20,17 +20,10 @@ import java.util.Collection;
 public class DoctorController {
     public Label doctorLabel;
     public Button deletePatientButton;
-    public TextField deletePatientID;
 
     // Active user panel
     @FXML
-    private Label activePatientNameLabel;
-    @FXML
-    private Label lastRatingLabel;
-    @FXML
-    private Label ratingAvgLabel;
-    @FXML
-    private  Label activePatientIDLabel;
+    private VBox activePatient;
     @FXML
     private TextField patientName;
     @FXML
@@ -49,7 +42,6 @@ public class DoctorController {
 
     private Main main = new Main();
 
-    private Shared shared = new Shared();
     private int activePatientID;
     @FXML
     private Label notification;
@@ -57,7 +49,7 @@ public class DoctorController {
     @FXML
     private VBox showPatientCharts;
 
-    private JSONObject patientFeelings;
+    private JSONObject patientFeelings = new JSONObject();
 
 
     @FXML
@@ -83,17 +75,18 @@ public class DoctorController {
 
     private Button createPatient(JSONObject patient) throws Exception {
         System.out.println(patient);
+        String patientID = String.valueOf(patient.getInt("id"));
         Button button = new Button(patient.getString("name"));
         JSONArray feelings = WebCalls.sendGET(
                 "action=listFeelings" +
-                        "&patientID=" + patient.getInt("id") +
+                        "&patientID=" + patientID +
                         "&orderBy=desc" +
                         "&cookie=" + main.getCookie()
         ).getJSONArray("feelings");
 
-        String patientID = patient.getString("id");
+        System.out.println(patientFeelings);
         if (!patientFeelings.keySet().contains(patientID)) {
-            patientFeelings.put(patient.getString("id"), feelings);
+            patientFeelings.put(patientID, feelings);
         }
 
         int lastRating = 0;
@@ -116,6 +109,7 @@ public class DoctorController {
             updateActivePatient(
                     patient.getString("name"),
                     patient.getInt("id"),
+                    patient.getString("email"),
                     finalLastRating,
                     finalRatingAvg
             );
@@ -123,13 +117,21 @@ public class DoctorController {
         return button;
     }
 
-    private void updateActivePatient(String patientName, int patientID, int lastRating, float ratingAvg){
-        activePatientNameLabel.setText("Patient's name: " + patientName);
-        activePatientIDLabel.setText("Patients's ID: " + patientID);
+    private void updateActivePatient(String patientName, int patientID, String emailAddress, int lastRating, float ratingAvg){
+        Label name = new Label();
+                name.setText("Patient's name: " + patientName);
+        Label email = new Label();
+                email.setText("Email: " + emailAddress);
+        Label idLabel = new Label();
+                idLabel.setText("Patient's id: " + patientID);
+        activePatient.getChildren().clear();
         String finalLastRating = lastRating == 0 ? "no ratings yet" : Integer.toString(lastRating);
         String finalRatingAvg = ratingAvg== 0 ? "no ratings yet" : Float.toString(ratingAvg);
+        Label lastRatingLabel = new Label();
+        Label avgRatingLabel = new Label();
         lastRatingLabel.setText("Last rating: " + finalLastRating);
-        ratingAvgLabel.setText("Rating average: " + finalRatingAvg);
+        avgRatingLabel.setText("Rating average: " + finalRatingAvg);
+        activePatient.getChildren().addAll(name, email, idLabel, lastRatingLabel, avgRatingLabel);
         this.activePatientID = patientID;
         showPatientCharts.getChildren().clear();
         String id = String.valueOf(patientID);
@@ -172,14 +174,14 @@ public class DoctorController {
                 userPassword,
                 main.getUserID()
         );
-        //TODO Lag at det kommer en alert om det var sukssess eller ikke
         if (response.getString("status").equals("OK")) {
             patientEmail.clear();
             patientName.clear();
             patientPassword.clear();
             updatePatientList(getPatients());
+            notification.setText("Patient was created");
         } else {
-            System.out.println(response.getString("message"));
+            notification.setText(response.getString("message"));
         }
     }
 
@@ -189,6 +191,8 @@ public class DoctorController {
         if (response.getString("status").equals("OK")) {
             updatePatientList(getPatients());
             notification.setText("Patient removed");
+            activePatient.getChildren().clear();
+            showPatientCharts.getChildren().clear();
             this.activePatientID = -1;
         } else {
             notification.setText(response.getString("message"));
@@ -217,20 +221,21 @@ public class DoctorController {
         //defining the axes
         final NumberAxis xAxis = new NumberAxis();
         final NumberAxis yAxis = new NumberAxis();
-        xAxis.setLabel("Days in recovery");
         //creating the chart
         final LineChart<Number,Number> lineChart =
-                new LineChart<Number,Number>(xAxis,yAxis);
+                new LineChart<>(xAxis, yAxis);
 
-        lineChart.setTitle("Patient Data for Doctor X");
         //defining a series
         XYChart.Series series = new XYChart.Series();
-        series.setName("Physical recovery of " + patientName);
         //populating the series with data
 
         for (int i = 1; i < patientFeelings.length(); i++) {
             //series.getData().add(new XYChart.Data(i, (relation)));
-            series.getData().add(new XYChart.Data(i, patientFeelings.getInt(Integer.parseInt("rating"))));
+            series.getData().add(
+                    new XYChart.Data(i, patientFeelings
+                            .getJSONObject(i)
+                            .getInt("rating")
+                    ));
         }
 
 //        for (Object feelingObject : patientFeelings) {
