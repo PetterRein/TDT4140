@@ -28,7 +28,7 @@ A step by step guide to run the server and UI
 Install Tomcat 8 or 9.
 ```
 ```
-Download release and extract, see releasev2.0gr44.zip in root of master.
+Download release and extract, see releasev3.0gr44.zip in root of master.
 ```
 ```
 Move sample.db to tomcat\bin
@@ -40,7 +40,7 @@ Move java.war to tomcat\webapps
 Run script in tomcat\bin catalina.bat or catalina.sh with the args start or stop
 ```
 ```
-The need to run your own tomcat is no more because a running server is up at api.moholt.me but the instructions remain if you want to, but then you have to change the url in to source code
+The need to run your own tomcat is no more because a running server is up at api.moholt.me but the instructions remain if you want to, but then you have to change the url in the source code
 ```
 ```
 Run 44.jar
@@ -49,7 +49,7 @@ You should now have server running and see the login page.
 Available users in sample.db is:
 petter@email.com with password password,
 admin@email.com with password password,
-haavard@mail.com with password password, remember that the patient ui is not a part of the project but is here if you want to check a patients data. The api supports every function a patient needs so a application can be used for rapporting.
+haavard@mail.com with password password, remember that the patient ui is not a part of the project but is here if you want to check a patients data. The api supports every function a patient needs so any application that implement the api can be used by a patient for rapporting.
 
 ## Running the tests
 To test all of the sub-modules in our project you can simply run _mvn test_ or _mvn install_
