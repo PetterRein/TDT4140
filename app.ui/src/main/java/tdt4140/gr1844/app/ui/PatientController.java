@@ -76,7 +76,6 @@ public class PatientController {
     private Button createFeeling(JSONObject feeling) {
         System.out.println(feeling);
         Button button = new Button("Rating: " + feeling.getInt("rating") + ", Message: " + feeling.getString("message") + ", Time:" + feeling.get("timestamp"));
-        button.setId("healthyRating");
         return button;
     }
 
