@@ -81,7 +81,7 @@ public class Main extends Application {
 
     JSONObject updateDoctor(int patientID) throws Exception {
         return WebCalls.sendGET(
-                "action=updateDoctor" +
+                "action=removeDoctor" +
                         "&patientID=" + patientID +
                         "&cookie=" + cookie
         );

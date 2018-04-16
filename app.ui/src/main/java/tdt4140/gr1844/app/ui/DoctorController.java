@@ -80,7 +80,7 @@ public class DoctorController {
         ).getJSONArray("feelings");
 
         int lastRating = 0;
-        int ratingAvg = 0;
+        float ratingAvg = 0;
         if (feelings.length() != 0) {
             ratingAvg = getAverageRating(feelings);
             lastRating = feelings.getJSONObject(0).getInt("rating");
@@ -93,7 +93,7 @@ public class DoctorController {
             }
 
         }
-        int finalRatingAvg = ratingAvg;
+        float finalRatingAvg = ratingAvg;
         int finalLastRating = lastRating;
         button.setOnMouseClicked(event -> {
             updateActivePatient(
@@ -106,18 +106,18 @@ public class DoctorController {
         return button;
     }
 
-    private void updateActivePatient(String patientName, int patientID, int lastRating, int ratingAvg){
+    private void updateActivePatient(String patientName, int patientID, int lastRating, float ratingAvg){
         activePatientNameLabel.setText("Patient's name: " + patientName);
         activePatientIDLabel.setText("Patients's ID: " + patientID);
         String finalLastRating = lastRating == 0 ? "no ratings yet" : Integer.toString(lastRating);
-        String finalRatingAvg = ratingAvg== 0 ? "no ratings yet" : Integer.toString(ratingAvg);
+        String finalRatingAvg = ratingAvg== 0 ? "no ratings yet" : Float.toString(ratingAvg);
         lastRatingLabel.setText("Last rating: " + finalLastRating);
         ratingAvgLabel.setText("Rating average: " + finalRatingAvg);
         this.activePatientID = patientID;
     }
 
-    private int getAverageRating(JSONArray feelings) {
-        int sum = 0;
+    private float getAverageRating(JSONArray feelings) {
+        float sum = 0;
         for (Object feelingObject : feelings) {
             JSONObject feeling = (JSONObject) feelingObject;
             sum += feeling.getInt("rating");
@@ -139,10 +139,28 @@ public class DoctorController {
         main.changeView(rootPane, "Main");
     }
 
+
     @FXML
-    private void registerPatient() throws Exception {
-        shared.registerPatient();
-        updatePatientList(getPatients());
+    void registerPatient() throws Exception {
+        String userEmail = patientEmail.getText();
+        String userName = patientName.getText();
+        String userPassword = patientPassword.getText();
+
+        JSONObject response = main.createPatient(
+                userName,
+                userEmail,
+                userPassword,
+                main.getUserID()
+        );
+        //TODO Lag at det kommer en alert om det var sukssess eller ikke
+        if (response.getString("status").equals("OK")) {
+            patientEmail.clear();
+            patientName.clear();
+            patientPassword.clear();
+            updatePatientList(getPatients());
+        } else {
+            System.out.println(response.getString("message"));
+        }
     }
 
     @FXML
