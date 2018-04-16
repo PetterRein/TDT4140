@@ -66,4 +66,34 @@ class Delete {
         }
         return response;
     }
+
+
+    static JSONObject removeDoctor(int patientID, String cookie) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
+        JSONObject response = new JSONObject();
+        if (Authentication.isAuthenticated(cookie, "doctor")) {
+            SQL sql = new SQL();
+            PreparedStatement statement = sql.connect()
+                    .prepareStatement(
+                            "UPDATE users SET doctorID = -1 WHERE id = ?"
+                    );
+            statement.setInt(1, patientID);
+            Boolean isUpdated = statement.executeUpdate() > 0;
+            if (isUpdated) {
+                response.put("status", "OK");
+            } else {
+                response.put("status", "ERROR");
+                response.put("message", "The patient could not be removed from your list.");
+
+            }
+            sql.disconnect();
+        } else {
+            response.put("status", "ERROR");
+            response.put("message", "You are not authorized for that action.");
+        }
+        return response;
+    }
+
+
+
+
 }
