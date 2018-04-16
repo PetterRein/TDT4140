@@ -61,27 +61,6 @@ public class Shared {
 
 
 
-    void registerPatient() throws Exception {
-        String userEmail = patientEmail.getText();
-        String userName = patientName.getText();
-        String userPassword = patientPassword.getText();
-
-        JSONObject response = main.createPatient(
-                userName,
-                userEmail,
-                userPassword,
-                main.getUserID()
-        );
-        //TODO Lag at det kommer en alert om det var sukssess eller ikke
-        if (response.getString("status").equals("OK")) {
-            patientEmail.clear();
-            patientName.clear();
-            patientPassword.clear();
-        } else {
-            System.out.println(response.getString("message"));
-        }
-    }
-
 
 
 
